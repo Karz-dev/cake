@@ -25,6 +25,7 @@ canvas{
     display:block;
     width:100vw;
     height:100vh;
+    cursor:crosshair;
 }
 
 #hud{
@@ -56,6 +57,7 @@ canvas{
     right:20px;
     color:#93c5fd;
     text-align:right;
+    max-width:420px;
 }
 
 #interact{
@@ -68,6 +70,28 @@ canvas{
     background:rgba(0,0,0,.72);
     border:1px solid rgba(255,255,255,.15);
     display:none;
+    font-weight:bold;
+}
+
+#start{
+    position:fixed;
+    z-index:30;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    padding:18px 42px;
+    border:0;
+    border-radius:14px;
+    background:#2563eb;
+    color:white;
+    font-size:25px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
+}
+
+#start:hover{
+    background:#3b82f6;
 }
 
 button{
@@ -88,16 +112,6 @@ button:hover{
 
 button.secondary{
     background:#334155;
-}
-
-#start{
-    position:fixed;
-    z-index:20;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    padding:18px 42px;
-    font-size:25px;
 }
 
 .overlay{
@@ -172,6 +186,7 @@ button.secondary{
     color:white;
     display:none;
     pointer-events:none;
+    z-index:40;
 }
 
 .progress{
@@ -253,24 +268,50 @@ button.secondary{
 <canvas id="game"></canvas>
 
 <div id="hud">
-    <div id="money">£23.00</div>
-    <div id="time">08:00</div>
-    <div id="objective">Get ingredients for a cake.</div>
-    <div id="interact">E — Interact</div>
-</div>
-
-<button id="start">PLAY</button>
-
-<div id="dialogue">
-    <div id="dialogueName"></div>
-    <div id="dialogueText"></div>
-    <div id="dialogueHint">Click or press SPACE</div>
-</div>
-
-<div id="storeUI" class="overlay">
-    <div class="panel">
 
 ```
+<div id="money">£23.00</div>
+
+<div id="time">08:00</div>
+
+<div id="objective">
+    Get ingredients for a cake.
+</div>
+
+<div id="interact">
+    E — Interact
+</div>
+```
+
+</div>
+
+<button id="start">
+    PLAY
+</button>
+
+<!-- DIALOGUE -->
+
+<div id="dialogue">
+
+```
+<div id="dialogueName"></div>
+
+<div id="dialogueText"></div>
+
+<div id="dialogueHint">
+    Click or press SPACE
+</div>
+```
+
+</div>
+
+<!-- STORE -->
+
+<div id="storeUI" class="overlay">
+
+```
+<div class="panel">
+
     <h1>GENERAL STORE</h1>
 
     <p>
@@ -300,7 +341,9 @@ button.secondary{
 
     <br>
 
-    <button class="secondary" onclick="leaveStore()">
+    <button
+        class="secondary"
+        onclick="leaveStore()">
         LEAVE
     </button>
 
@@ -309,10 +352,13 @@ button.secondary{
 
 </div>
 
+<!-- JOB -->
+
 <div id="jobUI" class="overlay">
-    <div class="panel">
 
 ```
+<div class="panel">
+
     <h1>CITY MART</h1>
 
     <p>
@@ -325,7 +371,9 @@ button.secondary{
         START SHIFT
     </button>
 
-    <button class="secondary" onclick="leaveJob()">
+    <button
+        class="secondary"
+        onclick="leaveJob()">
         LEAVE
     </button>
 
@@ -333,6 +381,8 @@ button.secondary{
 ```
 
 </div>
+
+<!-- JOB GAME -->
 
 <div id="jobGame" class="overlay">
 
@@ -344,6 +394,7 @@ button.secondary{
         justify-content:space-between;
         color:#cbd5e1;
     ">
+
         <span id="customerNumber">
             Customer 1
         </span>
@@ -351,6 +402,7 @@ button.secondary{
         <span id="shiftTimer">
             60s
         </span>
+
     </div>
 
     <div class="progress">
@@ -359,11 +411,15 @@ button.secondary{
 
     <div class="scanItem">
 
-        <div class="itemIcon" id="itemIcon">
+        <div
+            class="itemIcon"
+            id="itemIcon">
             🍞
         </div>
 
-        <div class="itemName" id="itemName">
+        <div
+            class="itemName"
+            id="itemName">
             Bread
         </div>
 
@@ -385,6 +441,8 @@ button.secondary{
 
 </div>
 
+<!-- TRAIN -->
+
 <div id="trainUI" class="overlay">
 
 ```
@@ -396,14 +454,14 @@ button.secondary{
         Destination: neighbouring city
     </p>
 
-    <p>
+    <p id="trainCost">
         Ticket: £45<br>
         Non-essential import tax: £184.50<br>
         <b>Total: £229.50</b>
     </p>
 
     <button onclick="takeTrain()">
-        BUY TICKET — £229.50
+        TAKE TRAIN
     </button>
 
     <button
@@ -416,6 +474,8 @@ button.secondary{
 ```
 
 </div>
+
+<!-- HIKE -->
 
 <div id="hikeUI" class="overlay">
 
@@ -449,6 +509,8 @@ button.secondary{
 ```
 
 </div>
+
+<!-- STORM -->
 
 <div id="stormUI" class="overlay">
 
@@ -488,6 +550,8 @@ button.secondary{
 
 </div>
 
+<!-- SLEEP -->
+
 <div id="sleepUI" class="overlay">
 
 ```
@@ -512,9 +576,46 @@ button.secondary{
 
 </div>
 
+<!-- RANDOM BUILDING -->
+
+<div id="buildingUI" class="overlay">
+
+```
+<div class="panel">
+
+    <h1 id="buildingTitle">
+        BUILDING
+    </h1>
+
+    <p id="buildingDescription">
+        An abandoned building.
+    </p>
+
+    <button
+        id="searchBuildingButton"
+        onclick="searchBuilding()">
+        SEARCH BUILDING
+    </button>
+
+    <button
+        class="secondary"
+        onclick="leaveRandomBuilding()">
+        LEAVE
+    </button>
+
+</div>
+```
+
+</div>
+
 <div id="message"></div>
 
 <script>
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
 
 const canvas =
     document.getElementById("game");
@@ -522,46 +623,511 @@ const canvas =
 const ctx =
     canvas.getContext("2d");
 
-let W = 0;
-let H = 0;
+let W=0;
+let H=0;
 
 function resize(){
 
-    W = canvas.width = innerWidth;
-    H = canvas.height = innerHeight;
+    W=canvas.width=innerWidth;
+    H=canvas.height=innerHeight;
 
 }
 
-addEventListener("resize",resize);
+addEventListener(
+    "resize",
+    resize
+);
 
 resize();
-
-let running = false;
-
-let scene = "title";
-
-let lastTime = 0;
-
-const keys = {};
 
 
 /* =========================================================
    WORLD
 ========================================================= */
 
-const world = {
+const world={
+
     width:5000,
+
     height:5000
+
 };
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+const GRID=600;
+
+const ROAD=150;
+
+
+/*
+    IMPORTANT:
+
+    Buildings are ALWAYS positioned
+    relative to grid cells.
+
+    Nothing gets an arbitrary world
+    position anymore.
+*/
+
+
+function gridBuilding(
+    col,
+    row,
+    widthCells,
+    heightCells,
+    name,
+    color,
+    options={}
+){
+
+    const roadOffset=ROAD+25;
+
+    return {
+
+        name:name,
+
+        x:
+            col*GRID+
+            roadOffset,
+
+        y:
+            row*GRID+
+            roadOffset,
+
+        w:
+            widthCells*GRID-
+            ROAD-
+            50,
+
+        h:
+            heightCells*GRID-
+            ROAD-
+            50,
+
+        color:color,
+
+        enterable:
+            options.enterable || false,
+
+        searched:false,
+
+        loot:
+            options.loot || null,
+
+        description:
+            options.description ||
+            "An ordinary building."
+
+    };
+
+}
+
+
+/* =========================================================
+   BUILDINGS
+========================================================= */
+
+const buildings=[
+
+    /*
+        IMPORTANT BUILDINGS
+    */
+
+    gridBuilding(
+        0,
+        0,
+        1,
+        1,
+        "GENERAL STORE",
+        "#263b52",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        3,
+        0,
+        1,
+        1,
+        "CITY MART",
+        "#293c4c",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        5,
+        3,
+        1,
+        1,
+        "CENTRAL TRANSIT",
+        "#25374a"
+    ),
+
+    gridBuilding(
+        6,
+        1,
+        1,
+        1,
+        "OUTER CITY",
+        "#253d30"
+    ),
+
+    gridBuilding(
+        1,
+        6,
+        1,
+        1,
+        "RESIDENTIAL",
+        "#283244"
+    ),
+
+    gridBuilding(
+        5,
+        6,
+        1,
+        1,
+        "RESIDENTIAL",
+        "#283244"
+    ),
+
+    gridBuilding(
+        2,
+        3,
+        1,
+        1,
+        "WAREHOUSE",
+        "#26313d"
+    ),
+
+    gridBuilding(
+        3,
+        3,
+        1,
+        1,
+        "GOVERNMENT",
+        "#302d3c"
+    ),
+
+    gridBuilding(
+        1,
+        1,
+        1,
+        1,
+        "HOUSING BLOCK",
+        "#273246"
+    ),
+
+    gridBuilding(
+        5,
+        1,
+        1,
+        1,
+        "HOUSING BLOCK",
+        "#273246"
+    ),
+
+
+    /*
+        RANDOM ENTERABLE BUILDINGS
+
+        All are still grid locked.
+    */
+
+    gridBuilding(
+        2,
+        1,
+        1,
+        1,
+        "APARTMENT BLOCK",
+        "#293445",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        4,
+        1,
+        1,
+        1,
+        "OLD RESIDENCE",
+        "#303845",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        0,
+        2,
+        1,
+        1,
+        "ABANDONED SHOP",
+        "#303744",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        3,
+        2,
+        1,
+        1,
+        "OLD OFFICE",
+        "#28323d",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        6,
+        2,
+        1,
+        1,
+        "EMPTY HOUSE",
+        "#303b40",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        0,
+        4,
+        1,
+        1,
+        "SMALL HOUSE",
+        "#303b45",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        3,
+        4,
+        1,
+        1,
+        "OLD FLAT",
+        "#303746",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        6,
+        4,
+        1,
+        1,
+        "DERELICT STORE",
+        "#34383d",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        0,
+        5,
+        1,
+        1,
+        "MAINTENANCE BUILDING",
+        "#2b3540",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        3,
+        5,
+        1,
+        1,
+        "OLD APARTMENT",
+        "#303745",
+        {
+            enterable:true
+        }
+    ),
+
+    gridBuilding(
+        6,
+        5,
+        1,
+        1,
+        "STORAGE HOUSE",
+        "#2d3741",
+        {
+            enterable:true
+        }
+    )
+
+];
+
+
+/* =========================================================
+   RANDOM LOOT
+========================================================= */
+
+const lootTypes=[
+
+    {
+        type:"money",
+        text:"You found £5 on the floor.",
+        value:5
+    },
+
+    {
+        type:"money",
+        text:"You found £5 behind some furniture.",
+        value:5
+    },
+
+    {
+        type:"money",
+        text:"You found £5 in an old drawer.",
+        value:5
+    },
+
+    {
+        type:"gear",
+        item:"Flashlight",
+        text:"You found a working flashlight."
+    },
+
+    {
+        type:"gear",
+        item:"Raincoat",
+        text:"You found a surprisingly good raincoat."
+    },
+
+    {
+        type:"gear",
+        item:"Boots",
+        text:"You found a pair of hiking boots."
+    },
+
+    {
+        type:"gear",
+        item:"Backpack",
+        text:"You found an old but usable backpack."
+    },
+
+    {
+        type:"gear",
+        item:"Tent",
+        text:"You found a compact camping tent."
+    },
+
+    {
+        type:"ticket",
+        text:
+            "NO WAY. You found an unused train ticket.",
+        value:1
+    }
+
+];
+
+
+/*
+    Give random enterable buildings
+    random loot.
+
+    Most = £5
+    Some = gear
+    Very rare = train ticket
+*/
+
+function assignBuildingLoot(){
+
+    for(
+        const building of buildings
+    ){
+
+        if(
+            !building.enterable ||
+            building.name==="GENERAL STORE" ||
+            building.name==="CITY MART"
+        ){
+
+            continue;
+
+        }
+
+        const roll=Math.random();
+
+        if(roll<.65){
+
+            building.loot={
+                type:"money",
+                value:5,
+                text:"You found £5."
+            };
+
+        }
+        else if(roll<.92){
+
+            const gearOptions=[
+                "Flashlight",
+                "Raincoat",
+                "Boots",
+                "Backpack"
+            ];
+
+            const item=
+                gearOptions[
+                    Math.floor(
+                        Math.random()*
+                        gearOptions.length
+                    )
+                ];
+
+            building.loot={
+                type:"gear",
+                item:item,
+                text:
+                    "You found a "+
+                    item+
+                    "."
+            };
+
+        }
+        else{
+
+            building.loot={
+                type:"ticket",
+                value:1,
+                text:
+                    "You found a train ticket!"
+            };
+
+        }
+
+    }
+
+}
+
+assignBuildingLoot();
 
 
 /* =========================================================
    PLAYER
 ========================================================= */
 
-const player = {
+const player={
 
     x:2500,
+
     y:3000,
 
     radius:18,
@@ -574,6 +1140,8 @@ const player = {
 
     inventory:[],
 
+    trainTickets:0,
+
     hour:8,
 
     minute:0
@@ -585,121 +1153,34 @@ const player = {
    CAMERA
 ========================================================= */
 
-const camera = {
+const camera={
+
     x:0,
+
     y:0
+
 };
 
 
 /* =========================================================
-   CITY GRID
+   KEYS
 ========================================================= */
 
-const GRID = 600;
-const ROAD = 150;
+const keys={};
 
 
 /* =========================================================
-   CITY BUILDINGS
+   SCENE
 ========================================================= */
 
-const buildings = [
+let scene="title";
 
-    {
-        name:"GENERAL STORE",
-        x:300,
-        y:300,
-        w:300,
-        h:300,
-        color:"#263b52"
-    },
 
-    {
-        name:"CITY MART",
-        x:2100,
-        y:300,
-        w:300,
-        h:300,
-        color:"#293c4c"
-    },
-
-    {
-        name:"CENTRAL TRANSIT",
-        x:3300,
-        y:1800,
-        w:400,
-        h:300,
-        color:"#25374a"
-    },
-
-    {
-        name:"OUTER CITY",
-        x:3900,
-        y:600,
-        w:400,
-        h:300,
-        color:"#253d30"
-    },
-
-    {
-        name:"RESIDENTIAL",
-        x:600,
-        y:3600,
-        w:450,
-        h:400,
-        color:"#283244"
-    },
-
-    {
-        name:"RESIDENTIAL",
-        x:3000,
-        y:3600,
-        w:450,
-        h:400,
-        color:"#283244"
-    },
-
-    {
-        name:"WAREHOUSE",
-        x:1200,
-        y:1800,
-        w:450,
-        h:300,
-        color:"#26313d"
-    },
-
-    {
-        name:"GOVERNMENT",
-        x:2100,
-        y:1800,
-        w:450,
-        h:300,
-        color:"#302d3c"
-    },
-
-    {
-        name:"HOUSING BLOCK",
-        x:600,
-        y:600,
-        w:300,
-        h:450,
-        color:"#273246"
-    },
-
-    {
-        name:"HOUSING BLOCK",
-        x:3000,
-        y:600,
-        w:450,
-        h:450,
-        color:"#273246"
-    }
-
-];
+let randomBuilding=null;
 
 
 /* =========================================================
-   BUILDING COLLISION
+   COLLISION
 ========================================================= */
 
 function circleRectCollision(
@@ -709,7 +1190,7 @@ function circleRectCollision(
     rect
 ){
 
-    const closestX =
+    const closestX=
         Math.max(
             rect.x,
             Math.min(
@@ -718,7 +1199,7 @@ function circleRectCollision(
             )
         );
 
-    const closestY =
+    const closestY=
         Math.max(
             rect.y,
             Math.min(
@@ -727,23 +1208,47 @@ function circleRectCollision(
             )
         );
 
-    const dx =
+    const dx=
         cx-closestX;
 
-    const dy =
+    const dy=
         cy-closestY;
 
-    return (
+    return(
         dx*dx+
         dy*dy
-    ) < radius*radius;
+    )<
+    radius*radius;
 
 }
 
 
 function isInsideBuilding(){
 
-    for(const building of buildings){
+    /*
+        When inside a random building,
+        city collision is disabled because
+        the player has moved into its interior.
+    */
+
+    if(scene==="randomInterior"){
+
+        return false;
+
+    }
+
+    if(
+        scene==="job" ||
+        scene==="store"
+    ){
+
+        return false;
+
+    }
+
+    for(
+        const building of buildings
+    ){
 
         if(
             circleRectCollision(
@@ -767,22 +1272,23 @@ function isInsideBuilding(){
 
 function movePlayer(dx,dy){
 
-    const oldX = player.x;
-    const oldY = player.y;
+    const oldX=player.x;
 
-    player.x += dx;
+    const oldY=player.y;
+
+    player.x+=dx;
 
     if(isInsideBuilding()){
 
-        player.x = oldX;
+        player.x=oldX;
 
     }
 
-    player.y += dy;
+    player.y+=dy;
 
     if(isInsideBuilding()){
 
-        player.y = oldY;
+        player.y=oldY;
 
     }
 
@@ -797,16 +1303,18 @@ document.addEventListener(
     "keydown",
     e=>{
 
-        keys[e.key.toLowerCase()] = true;
+        keys[e.key.toLowerCase()]=true;
 
-        if(e.code === "Space"){
+        if(
+            e.code==="Space"
+        ){
 
             e.preventDefault();
 
             if(
                 document.getElementById(
                     "dialogue"
-                ).style.display !== "none"
+                ).style.display!=="none"
             ){
 
                 advanceDialogue();
@@ -816,7 +1324,7 @@ document.addEventListener(
         }
 
         if(
-            e.key.toLowerCase() === "e"
+            e.key.toLowerCase()==="e"
         ){
 
             interact();
@@ -831,153 +1339,10 @@ document.addEventListener(
     "keyup",
     e=>{
 
-        keys[e.key.toLowerCase()] = false;
+        keys[e.key.toLowerCase()]=false;
 
     }
 );
-
-
-/* =========================================================
-   RAIN
-========================================================= */
-
-let rain = [];
-
-let rainIntensity = .5;
-
-let lightning = 0;
-
-let lightningTimer = 2;
-
-function makeRain(){
-
-    rain=[];
-
-    for(let i=0;i<700;i++){
-
-        rain.push({
-
-            x:Math.random()*W,
-
-            y:Math.random()*H,
-
-            speed:
-                500+
-                Math.random()*700,
-
-            length:
-                12+
-                Math.random()*22,
-
-            drift:
-                -80-
-                Math.random()*100
-
-        });
-
-    }
-
-}
-
-makeRain();
-
-
-function updateRain(dt){
-
-    for(const r of rain){
-
-        r.x += r.drift*dt;
-
-        r.y += r.speed*dt;
-
-        if(r.y > H+40){
-
-            r.y=-40;
-
-            r.x=Math.random()*W;
-
-        }
-
-        if(r.x < -50){
-
-            r.x=W+50;
-
-        }
-
-    }
-
-}
-
-
-function drawRain(){
-
-    ctx.save();
-
-    ctx.globalAlpha =
-        rainIntensity;
-
-    ctx.strokeStyle =
-        "rgba(160,200,255,.55)";
-
-    ctx.lineWidth=1;
-
-    for(const r of rain){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            r.x,
-            r.y
-        );
-
-        ctx.lineTo(
-            r.x+r.drift*.025,
-            r.y+r.length
-        );
-
-        ctx.stroke();
-
-    }
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   LIGHTNING
-========================================================= */
-
-function updateLightning(dt){
-
-    lightningTimer -= dt;
-
-    if(
-        lightningTimer <= 0
-    ){
-
-        lightningTimer =
-            2+
-            Math.random()*7;
-
-        if(
-            scene === "country" &&
-            Math.random()<.5
-        ){
-
-            lightning=.9;
-
-        }
-
-    }
-
-    lightning =
-        Math.max(
-            0,
-            lightning-dt*5
-        );
-
-}
 
 
 /* =========================================================
@@ -986,22 +1351,23 @@ function updateLightning(dt){
 
 function addMinutes(minutes){
 
-    player.minute += minutes;
+    player.minute+=minutes;
 
     while(
-        player.minute >= 60
+        player.minute>=60
     ){
 
-        player.minute -= 60;
+        player.minute-=60;
+
         player.hour++;
 
     }
 
     while(
-        player.hour >= 24
+        player.hour>=24
     ){
 
-        player.hour -= 24;
+        player.hour-=24;
 
     }
 
@@ -1033,13 +1399,13 @@ function updateHUD(){
 
     document.getElementById(
         "money"
-    ).textContent =
+    ).textContent=
         "£"+
         player.money.toFixed(2);
 
     document.getElementById(
         "time"
-    ).textContent =
+    ).textContent=
         formatTime();
 
 }
@@ -1053,7 +1419,7 @@ let messageTimer=0;
 
 function showMessage(text){
 
-    const el =
+    const el=
         document.getElementById(
             "message"
         );
@@ -1062,7 +1428,7 @@ function showMessage(text){
 
     el.style.display="block";
 
-    messageTimer=2.5;
+    messageTimer=3;
 
 }
 
@@ -1088,6 +1454,7 @@ let dialogueLines=[];
 
 let dialogueIndex=0;
 
+
 function startDialogue(lines){
 
     dialogueLines=lines;
@@ -1105,7 +1472,7 @@ function startDialogue(lines){
 
 function showDialogue(){
 
-    const line =
+    const line=
         dialogueLines[
             dialogueIndex
         ];
@@ -1126,7 +1493,7 @@ function advanceDialogue(){
     dialogueIndex++;
 
     if(
-        dialogueIndex >=
+        dialogueIndex>=
         dialogueLines.length
     ){
 
@@ -1137,6 +1504,7 @@ function advanceDialogue(){
         scene="street";
 
         player.x=1500;
+
         player.y=1200;
 
         setObjective(
@@ -1175,11 +1543,14 @@ function startGame(){
     scene="apartment";
 
     player.x=2500;
+
     player.y=3000;
 
     player.money=23;
 
     player.inventory=[];
+
+    player.trainTickets=0;
 
     player.hour=8;
 
@@ -1190,37 +1561,37 @@ function startGame(){
         {
             name:"YOU",
             text:
-            "I want a cake."
+                "I want a cake."
         },
 
         {
             name:"YOU",
             text:
-            "Apparently flour, sugar and eggs are now considered luxury goods."
+                "Apparently flour, sugar and eggs are now considered luxury goods."
         },
 
         {
             name:"NEWS SCREEN",
             text:
-            "REMINDER: CAKE IS NOT A NECESSITY."
+                "REMINDER: CAKE IS NOT A NECESSITY."
         },
 
         {
             name:"YOU",
             text:
-            "The neighbouring city still sells ingredients."
+                "The neighbouring city still sells ingredients."
         },
 
         {
             name:"YOU",
             text:
-            "The train costs £229.50."
+                "The train costs £229.50."
         },
 
         {
             name:"YOU",
             text:
-            "No chance. I'll walk."
+                "No chance. I'll walk."
         }
 
     ]);
@@ -1240,10 +1611,11 @@ function startGame(){
 function updatePlayer(dt){
 
     if(
-        scene !== "street" &&
-        scene !== "country" &&
-        scene !== "apartment" &&
-        scene !== "job"
+        scene!=="street" &&
+        scene!=="country" &&
+        scene!=="apartment" &&
+        scene!=="job" &&
+        scene!=="randomInterior"
     ){
 
         return;
@@ -1251,7 +1623,9 @@ function updatePlayer(dt){
     }
 
     let dx=0;
+
     let dy=0;
+
 
     if(
         keys["w"] ||
@@ -1259,9 +1633,11 @@ function updatePlayer(dt){
     ){
 
         dy--;
+
         player.direction="up";
 
     }
+
 
     if(
         keys["s"] ||
@@ -1269,9 +1645,11 @@ function updatePlayer(dt){
     ){
 
         dy++;
+
         player.direction="down";
 
     }
+
 
     if(
         keys["a"] ||
@@ -1279,9 +1657,11 @@ function updatePlayer(dt){
     ){
 
         dx--;
+
         player.direction="left";
 
     }
+
 
     if(
         keys["d"] ||
@@ -1289,52 +1669,102 @@ function updatePlayer(dt){
     ){
 
         dx++;
+
         player.direction="right";
 
     }
 
-    if(dx || dy){
 
-        const len =
+    if(dx||dy){
+
+        const len=
             Math.hypot(
                 dx,
                 dy
             );
 
         dx/=len;
+
         dy/=len;
 
-        movePlayer(
-            dx*
-            player.speed*
-            dt,
 
-            dy*
-            player.speed*
-            dt
-        );
+        if(
+            scene==="randomInterior"
+        ){
+
+            /*
+                Small interior.
+            */
+
+            player.x=
+                Math.max(
+                    100,
+                    Math.min(
+                        W-100,
+                        player.x+
+                        dx*
+                        player.speed*
+                        dt
+                    )
+                );
+
+            player.y=
+                Math.max(
+                    100,
+                    Math.min(
+                        H-100,
+                        player.y+
+                        dy*
+                        player.speed*
+                        dt
+                    )
+                );
+
+        }
+        else if(
+            scene==="job"
+        ){
+
+            player.x=
+                Math.max(
+                    120,
+                    Math.min(
+                        W-120,
+                        player.x+
+                        dx*
+                        player.speed*
+                        dt
+                    )
+                );
+
+            player.y=
+                Math.max(
+                    120,
+                    Math.min(
+                        H-120,
+                        player.y+
+                        dy*
+                        player.speed*
+                        dt
+                    )
+                );
+
+        }
+        else{
+
+            movePlayer(
+                dx*
+                player.speed*
+                dt,
+
+                dy*
+                player.speed*
+                dt
+            );
+
+        }
 
     }
-
-    player.x =
-        Math.max(
-            player.radius,
-            Math.min(
-                world.width-
-                player.radius,
-                player.x
-            )
-        );
-
-    player.y =
-        Math.max(
-            player.radius,
-            Math.min(
-                world.height-
-                player.radius,
-                player.y
-            )
-        );
 
 }
 
@@ -1345,13 +1775,13 @@ function updatePlayer(dt){
 
 function updateCamera(){
 
-    camera.x =
+    camera.x=
         player.x-W/2;
 
-    camera.y =
+    camera.y=
         player.y-H/2;
 
-    camera.x =
+    camera.x=
         Math.max(
             0,
             Math.min(
@@ -1360,7 +1790,7 @@ function updateCamera(){
             )
         );
 
-    camera.y =
+    camera.y=
         Math.max(
             0,
             Math.min(
@@ -1373,18 +1803,24 @@ function updateCamera(){
 
 
 /* =========================================================
-   PLAYER SPRITE
+   PLAYER
 ========================================================= */
 
 function drawPlayer(){
 
-    const x =
-        player.x-camera.x;
+    const x=
+        scene==="job" ||
+        scene==="randomInterior"
+        ?player.x
+        :player.x-camera.x;
 
-    const y =
-        player.y-camera.y;
+    const y=
+        scene==="job" ||
+        scene==="randomInterior"
+        ?player.y
+        :player.y-camera.y;
 
-    const bob =
+    const bob=
         Math.sin(
             performance.now()/120
         )*2;
@@ -1395,6 +1831,11 @@ function drawPlayer(){
         x,
         y+bob
     );
+
+
+    /*
+        LEGS
+    */
 
     ctx.fillStyle="#111827";
 
@@ -1412,6 +1853,11 @@ function drawPlayer(){
         17
     );
 
+
+    /*
+        BODY
+    */
+
     ctx.fillStyle="#334155";
 
     ctx.fillRect(
@@ -1420,6 +1866,11 @@ function drawPlayer(){
         30,
         22
     );
+
+
+    /*
+        HEAD
+    */
 
     ctx.fillStyle="#e6b891";
 
@@ -1430,6 +1881,11 @@ function drawPlayer(){
         17
     );
 
+
+    /*
+        HAIR
+    */
+
     ctx.fillStyle="#111827";
 
     ctx.fillRect(
@@ -1439,8 +1895,15 @@ function drawPlayer(){
         7
     );
 
+
+    /*
+        FACE
+
+        Up = back view
+    */
+
     if(
-        player.direction !== "up"
+        player.direction!=="up"
     ){
 
         ctx.fillStyle="#111827";
@@ -1456,7 +1919,8 @@ function drawPlayer(){
                 3
             );
 
-        }else if(
+        }
+        else if(
             player.direction==="right"
         ){
 
@@ -1467,7 +1931,8 @@ function drawPlayer(){
                 3
             );
 
-        }else{
+        }
+        else{
 
             ctx.fillRect(
                 -7,
@@ -1600,60 +2065,64 @@ function drawCity(){
         H
     );
 
-    const blockSize=GRID;
 
-    const startX =
-        Math.floor(
-            camera.x/blockSize
-        )*blockSize;
+    /*
+        BLOCKS
+    */
 
-    const startY =
+    const startX=
         Math.floor(
-            camera.y/blockSize
-        )*blockSize;
+            camera.x/GRID
+        )*GRID;
+
+    const startY=
+        Math.floor(
+            camera.y/GRID
+        )*GRID;
+
 
     for(
         let x=startX;
-        x<camera.x+W+blockSize;
-        x+=blockSize
+        x<camera.x+W+GRID;
+        x+=GRID
     ){
 
         for(
             let y=startY;
-            y<camera.y+H+blockSize;
-            y+=blockSize
+            y<camera.y+H+GRID;
+            y+=GRID
         ){
-
-            const sx =
-                x-camera.x;
-
-            const sy =
-                y-camera.y;
 
             ctx.fillStyle="#101722";
 
             ctx.fillRect(
-                sx,
-                sy,
-                blockSize,
-                blockSize
+                x-camera.x,
+                y-camera.y,
+                GRID,
+                GRID
             );
 
             ctx.strokeStyle=
                 "rgba(255,255,255,.035)";
 
             ctx.strokeRect(
-                sx,
-                sy,
-                blockSize,
-                blockSize
+                x-camera.x,
+                y-camera.y,
+                GRID,
+                GRID
             );
 
         }
 
     }
 
+
+    /*
+        ROADS
+    */
+
     ctx.fillStyle="#05070c";
+
 
     for(
         let x=0;
@@ -1670,6 +2139,7 @@ function drawCity(){
 
     }
 
+
     for(
         let y=0;
         y<world.height;
@@ -1685,7 +2155,13 @@ function drawCity(){
 
     }
 
+
+    /*
+        SIDEWALKS
+    */
+
     ctx.fillStyle="#18202b";
+
 
     for(
         let x=ROAD;
@@ -1702,6 +2178,7 @@ function drawCity(){
 
     }
 
+
     for(
         let y=ROAD;
         y<world.height;
@@ -1717,10 +2194,16 @@ function drawCity(){
 
     }
 
+
+    /*
+        ROAD MARKINGS
+    */
+
     ctx.strokeStyle=
         "rgba(220,220,220,.18)";
 
     ctx.lineWidth=2;
+
 
     for(
         let x=ROAD/2;
@@ -1752,6 +2235,7 @@ function drawCity(){
 
     }
 
+
     for(
         let y=ROAD/2;
         y<world.height;
@@ -1782,7 +2266,13 @@ function drawCity(){
 
     }
 
+
     drawCrosswalks();
+
+
+    /*
+        BUILDINGS
+    */
 
     for(
         const building of buildings
@@ -1793,6 +2283,40 @@ function drawCity(){
         );
 
     }
+
+
+    /*
+        DIRECTIONAL ARROWS
+    */
+
+    drawDirectionArrow(
+        1450,
+        950,
+        "CITY MART",
+        1,
+        0
+    );
+
+    drawDirectionArrow(
+        2800,
+        1500,
+        "TRAIN",
+        1,
+        0
+    );
+
+    drawDirectionArrow(
+        3650,
+        1000,
+        "TRAIL",
+        0,
+        -1
+    );
+
+
+    /*
+        PROPAGANDA
+    */
 
     drawSign(
         1100,
@@ -1822,80 +2346,30 @@ function drawCity(){
         "#a78bfa"
     );
 
+
     drawPlayer();
 
 }
 
 
 /* =========================================================
-   CROSSWALKS
+   CITY BUILDING
 ========================================================= */
 
-function drawCrosswalks(){
+function drawCityBuilding(
+    building
+){
 
-    ctx.fillStyle=
-        "rgba(255,255,255,.12)";
-
-    for(
-        let y=0;
-        y<world.height;
-        y+=GRID
-    ){
-
-        for(
-            let i=0;
-            i<7;
-            i++
-        ){
-
-            ctx.fillRect(
-                ROAD+20,
-                y+20+i*12-camera.y,
-                90,
-                6
-            );
-
-        }
-
-    }
-
-    for(
-        let x=0;
-        x<world.width;
-        x+=GRID
-    ){
-
-        for(
-            let i=0;
-            i<7;
-            i++
-        ){
-
-            ctx.fillRect(
-                x+20+i*12-camera.x,
-                ROAD+20,
-                6,
-                90
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   CITY BUILDINGS
-========================================================= */
-
-function drawCityBuilding(building){
-
-    const x =
+    const x=
         building.x-camera.x;
 
-    const y =
+    const y=
         building.y-camera.y;
+
+
+    /*
+        SHADOW
+    */
 
     ctx.fillStyle=
         "rgba(0,0,0,.5)";
@@ -1907,6 +2381,11 @@ function drawCityBuilding(building){
         building.h
     );
 
+
+    /*
+        BUILDING
+    */
+
     ctx.fillStyle=
         building.color;
 
@@ -1917,6 +2396,11 @@ function drawCityBuilding(building){
         building.h
     );
 
+
+    /*
+        ROOF
+    */
+
     ctx.fillStyle="#334155";
 
     ctx.fillRect(
@@ -1926,9 +2410,14 @@ function drawCityBuilding(building){
         12
     );
 
+
+    /*
+        WINDOWS
+    */
+
     ctx.fillStyle="#172033";
 
-    const cols =
+    const cols=
         Math.max(
             2,
             Math.floor(
@@ -1936,13 +2425,14 @@ function drawCityBuilding(building){
             )
         );
 
-    const rows =
+    const rows=
         Math.max(
             2,
             Math.floor(
                 building.h/75
             )
         );
+
 
     for(
         let cx=0;
@@ -1956,19 +2446,23 @@ function drawCityBuilding(building){
             cy++
         ){
 
-            const wx =
+            const wx=
                 x+
                 25+
                 cx*
-                ((building.w-50)/
-                cols);
+                (
+                    (building.w-50)/
+                    cols
+                );
 
-            const wy =
+            const wy=
                 y+
                 35+
                 cy*
-                ((building.h-60)/
-                rows);
+                (
+                    (building.h-60)/
+                    rows
+                );
 
             ctx.fillRect(
                 wx,
@@ -1981,18 +2475,58 @@ function drawCityBuilding(building){
 
     }
 
+
+    /*
+        DOOR
+    */
+
+    const doorX=
+        x+
+        building.w/2-
+        25;
+
+    const doorY=
+        y+
+        building.h-
+        65;
+
+
     ctx.fillStyle="#05070d";
 
     ctx.fillRect(
-        x+
-        building.w/2-
-        25,
-        y+
-        building.h-
-        65,
+        doorX,
+        doorY,
         50,
         65
     );
+
+
+    /*
+        ENTERABLE DOOR GLOW
+    */
+
+    if(
+        building.enterable
+    ){
+
+        ctx.strokeStyle=
+            "rgba(34,211,238,.7)";
+
+        ctx.lineWidth=2;
+
+        ctx.strokeRect(
+            doorX-4,
+            doorY-4,
+            58,
+            73
+        );
+
+    }
+
+
+    /*
+        SIGN
+    */
 
     ctx.fillStyle=
         "rgba(3,7,18,.92)";
@@ -2030,11 +2564,193 @@ function drawCityBuilding(building){
 
     ctx.textAlign="left";
 
+
+    /*
+        SMALL ENTERABLE LABEL
+    */
+
+    if(
+        building.enterable
+    ){
+
+        ctx.fillStyle="#67e8f9";
+
+        ctx.font=
+            "bold 11px Arial";
+
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            "ENTER",
+            doorX+25,
+            doorY+82
+        );
+
+        ctx.textAlign="left";
+
+    }
+
 }
 
 
 /* =========================================================
-   NEON SIGNS
+   DIRECTION ARROWS
+========================================================= */
+
+function drawDirectionArrow(
+    x,
+    y,
+    label,
+    dx,
+    dy
+){
+
+    const sx=
+        x-camera.x;
+
+    const sy=
+        y-camera.y;
+
+    if(
+        sx<-150 ||
+        sx>W+150 ||
+        sy<-150 ||
+        sy>H+150
+    ){
+
+        return;
+
+    }
+
+
+    ctx.save();
+
+    ctx.translate(
+        sx,
+        sy
+    );
+
+    const angle=
+        Math.atan2(
+            dy,
+            dx
+        );
+
+    ctx.rotate(angle);
+
+    ctx.shadowBlur=15;
+
+    ctx.shadowColor="#22d3ee";
+
+    ctx.fillStyle=
+        "rgba(34,211,238,.9)";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(35,0);
+
+    ctx.lineTo(5,-18);
+
+    ctx.lineTo(5,-7);
+
+    ctx.lineTo(-35,-7);
+
+    ctx.lineTo(-35,7);
+
+    ctx.lineTo(5,7);
+
+    ctx.lineTo(5,18);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    ctx.rotate(-angle);
+
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle="#e0f2fe";
+
+    ctx.font=
+        "bold 13px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        label,
+        0,
+        38
+    );
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   CROSSWALKS
+========================================================= */
+
+function drawCrosswalks(){
+
+    ctx.fillStyle=
+        "rgba(255,255,255,.12)";
+
+
+    for(
+        let y=0;
+        y<world.height;
+        y+=GRID
+    ){
+
+        for(
+            let i=0;
+            i<7;
+            i++
+        ){
+
+            ctx.fillRect(
+                ROAD+20,
+                y+20+i*12-camera.y,
+                90,
+                6
+            );
+
+        }
+
+    }
+
+
+    for(
+        let x=0;
+        x<world.width;
+        x+=GRID
+    ){
+
+        for(
+            let i=0;
+            i<7;
+            i++
+        ){
+
+            ctx.fillRect(
+                x+20+i*12-camera.x,
+                ROAD+20,
+                6,
+                90
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SIGNS
 ========================================================= */
 
 function drawSign(
@@ -2044,10 +2760,10 @@ function drawSign(
     color
 ){
 
-    const sx =
+    const sx=
         x-camera.x;
 
-    const sy =
+    const sy=
         y-camera.y;
 
     ctx.save();
@@ -2117,6 +2833,7 @@ function drawStoreInterior(){
         H-160
     );
 
+
     for(
         let i=0;
         i<5;
@@ -2152,6 +2869,7 @@ function drawStoreInterior(){
 
     }
 
+
     ctx.fillStyle="#0f172a";
 
     ctx.fillRect(
@@ -2160,6 +2878,7 @@ function drawStoreInterior(){
         W-260,
         80
     );
+
 
     ctx.fillStyle="#f1f5f9";
 
@@ -2170,6 +2889,7 @@ function drawStoreInterior(){
         150,
         H-260
     );
+
 
     drawCharacter(
         W/2,
@@ -2194,6 +2914,7 @@ function drawJobInterior(){
         H
     );
 
+
     ctx.fillStyle="#1e293b";
 
     ctx.fillRect(
@@ -2204,7 +2925,9 @@ function drawJobInterior(){
     );
 
 
-    /* checkout */
+    /*
+        CHECKOUT
+    */
 
     ctx.fillStyle="#020617";
 
@@ -2273,11 +2996,7 @@ function drawJobInterior(){
 
 
     /*
-        ACTUAL EXIT DOOR
-
-        This is deliberately separate
-        from the menu system so the
-        player can physically walk out.
+        EXIT DOOR
     */
 
     ctx.fillStyle="#020617";
@@ -2287,6 +3006,17 @@ function drawJobInterior(){
         H-165,
         90,
         85
+    );
+
+
+    ctx.strokeStyle=
+        "rgba(34,211,238,.7)";
+
+    ctx.strokeRect(
+        W/2-49,
+        H-169,
+        98,
+        93
     );
 
 
@@ -2321,12 +3051,154 @@ function drawJobInterior(){
 
 
 /* =========================================================
+   RANDOM INTERIOR
+========================================================= */
+
+function drawRandomInterior(){
+
+    ctx.fillStyle="#10151d";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /*
+        FLOOR
+    */
+
+    ctx.fillStyle="#202936";
+
+    ctx.fillRect(
+        80,
+        80,
+        W-160,
+        H-160
+    );
+
+
+    /*
+        WALLS
+    */
+
+    ctx.strokeStyle=
+        "#475569";
+
+    ctx.lineWidth=8;
+
+    ctx.strokeRect(
+        80,
+        80,
+        W-160,
+        H-160
+    );
+
+
+    /*
+        FURNITURE
+    */
+
+    ctx.fillStyle="#334155";
+
+    ctx.fillRect(
+        140,
+        180,
+        180,
+        90
+    );
+
+    ctx.fillRect(
+        W-320,
+        220,
+        160,
+        110
+    );
+
+    ctx.fillRect(
+        170,
+        H-300,
+        250,
+        70
+    );
+
+
+    /*
+        RANDOM WALL SCREEN
+    */
+
+    ctx.fillStyle="#05070d";
+
+    ctx.fillRect(
+        W/2-130,
+        140,
+        260,
+        130
+    );
+
+    ctx.fillStyle="#172b40";
+
+    ctx.fillRect(
+        W/2-115,
+        155,
+        230,
+        100
+    );
+
+
+    /*
+        EXIT DOOR
+    */
+
+    ctx.fillStyle="#020617";
+
+    ctx.fillRect(
+        W/2-45,
+        H-150,
+        90,
+        70
+    );
+
+    ctx.strokeStyle=
+        "rgba(34,211,238,.7)";
+
+    ctx.strokeRect(
+        W/2-49,
+        H-154,
+        98,
+        78
+    );
+
+
+    ctx.fillStyle="#22d3ee";
+
+    ctx.font="bold 13px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "EXIT",
+        W/2,
+        H-115
+    );
+
+    ctx.textAlign="left";
+
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
    CHARACTER
 ========================================================= */
 
 function drawCharacter(x,y){
 
-    const bob =
+    const bob=
         Math.sin(
             performance.now()/180
         )*3;
@@ -2376,7 +3248,7 @@ function drawCharacter(x,y){
 
 
 /* =========================================================
-   TRAIN STATION
+   TRAIN
 ========================================================= */
 
 function drawTrainStation(){
@@ -2489,6 +3361,7 @@ function drawCountryside(){
         H-horizon
     );
 
+
     ctx.fillStyle="#1f3527";
 
     ctx.beginPath();
@@ -2497,6 +3370,7 @@ function drawCountryside(){
         0,
         horizon
     );
+
 
     for(
         let x=0;
@@ -2515,6 +3389,7 @@ function drawCountryside(){
 
     }
 
+
     ctx.lineTo(
         W,
         horizon
@@ -2523,6 +3398,11 @@ function drawCountryside(){
     ctx.closePath();
 
     ctx.fill();
+
+
+    /*
+        ROAD
+    */
 
     ctx.fillStyle="#4b463b";
 
@@ -2552,7 +3432,13 @@ function drawCountryside(){
 
     ctx.fill();
 
+
+    /*
+        ROAD MARKERS
+    */
+
     ctx.fillStyle="#d6cfae";
+
 
     for(
         let i=0;
@@ -2560,7 +3446,7 @@ function drawCountryside(){
         i++
     ){
 
-        const y =
+        const y=
             horizon+
             (
                 (
@@ -2571,11 +3457,11 @@ function drawCountryside(){
                 (H-horizon)
             );
 
-        const scale =
+        const scale=
             (y-horizon)/
             (H-horizon);
 
-        const width =
+        const width=
             5+
             scale*10;
 
@@ -2588,13 +3474,18 @@ function drawCountryside(){
 
     }
 
+
+    /*
+        TREES
+    */
+
     for(
         let i=0;
         i<25;
         i++
     ){
 
-        const x =
+        const x=
             (
                 i*263-
                 countryOffset*.2
@@ -2603,7 +3494,7 @@ function drawCountryside(){
             (W+300)
             -150;
 
-        const y =
+        const y=
             horizon+
             60+
             ((i*137)%250);
@@ -2615,7 +3506,10 @@ function drawCountryside(){
 
     }
 
-    if(sleepAvailable){
+
+    if(
+        sleepAvailable
+    ){
 
         drawTent(
             W-180,
@@ -2623,6 +3517,7 @@ function drawCountryside(){
         );
 
     }
+
 
     drawPlayer();
 
@@ -2733,362 +3628,615 @@ function drawTent(x,y){
 
 
 /* =========================================================
-   HIKE
+   RANDOM BUILDING INTERACTION
 ========================================================= */
 
-function beginHike(){
+function enterRandomBuilding(
+    building
+){
+
+    randomBuilding=building;
+
+    scene="randomInterior";
+
+    player.x=W/2;
+
+    player.y=H-230;
 
     document.getElementById(
-        "hikeUI"
+        "buildingUI"
     ).style.display="none";
 
-    scene="country";
-
-    hikeActive=true;
-
-    hikeProgress=0;
-
-    hikeEventTimer=0;
-
-    nextHikeEvent=
-        25+
-        Math.random()*35;
-
-    player.x=2500;
-
-    player.y=4000;
-
-    rainIntensity=.45;
-
     setObjective(
-        "Reach the neighbouring city."
-    );
-
-    showMessage(
-        "The five-minute journey begins."
+        "Search the building or leave."
     );
 
 }
 
 
-function updateHike(dt){
+function searchBuilding(){
 
     if(
-        !hikeActive ||
-        stormActive
+        !randomBuilding ||
+        randomBuilding.searched
     ){
 
         return;
 
     }
 
-    hikeProgress += dt;
+    randomBuilding.searched=true;
 
-    countryOffset +=
-        140*dt;
+    const loot=
+        randomBuilding.loot;
 
-    addMinutes(
-        dt*2
-    );
-
-    hikeEventTimer += dt;
-
-    if(
-        hikeEventTimer >=
-        nextHikeEvent
-    ){
-
-        triggerHikeEvent();
-
-        hikeEventTimer=0;
-
-        nextHikeEvent=
-            25+
-            Math.random()*45;
-
-    }
-
-    if(
-        hikeProgress>=300
-    ){
-
-        finishHike();
-
-    }
-
-}
-
-
-function triggerHikeEvent(){
-
-    const roll =
-        Math.random();
-
-    if(
-        roll<.5 &&
-        player.inventory.includes("Tent")
-    ){
-
-        triggerStorm();
-
-        return;
-
-    }
-
-    if(
-        roll<.68
-    ){
-
-        addMinutes(12);
+    if(!loot){
 
         showMessage(
-            "A broken-down delivery truck blocks the road."
+            "Nothing useful here."
         );
 
-        return;
-
     }
-
-    if(
-        roll<.82
+    else if(
+        loot.type==="money"
     ){
 
-        addMinutes(5);
+        player.money+=loot.value;
 
         showMessage(
-            "You discover an old roadside shelter."
+            loot.text
         );
 
-        return;
+        updateHUD();
+
+    }
+    else if(
+        loot.type==="gear"
+    ){
+
+        if(
+            !player.inventory.includes(
+                loot.item
+            )
+        ){
+
+            player.inventory.push(
+                loot.item
+            );
+
+            showMessage(
+                loot.text
+            );
+
+        }
+        else{
+
+            player.money+=5;
+
+            showMessage(
+                "You already have one. You found £5 instead."
+            );
+
+            updateHUD();
+
+        }
+
+    }
+    else if(
+        loot.type==="ticket"
+    ){
+
+        player.trainTickets++;
+
+        showMessage(
+            "🎟️ You found a train ticket!"
+        );
 
     }
 
-    rainIntensity=
-        Math.min(
-            1,
-            rainIntensity+.15
-        );
-
-    showMessage(
-        "The rain suddenly gets heavier."
-    );
-
-}
-
-
-function triggerStorm(){
-
-    stormActive=true;
-
-    tentProgress=0;
-
-    tentHolding=false;
 
     document.getElementById(
-        "stormUI"
-    ).style.display="flex";
-
-    rainIntensity=1;
+        "searchBuildingButton"
+    ).disabled=true;
 
     setObjective(
-        "Set up your tent before the storm gets worse."
+        "Leave the building."
     );
 
 }
 
 
-function startTentSetup(){
-
-    if(
-        !stormActive
-    ){
-
-        return;
-
-    }
-
-    tentHolding=true;
-
-}
-
-
-function stopTentSetup(){
-
-    tentHolding=false;
-
-}
-
-
-function updateStorm(dt){
-
-    if(
-        !stormActive
-    ){
-
-        return;
-
-    }
-
-    if(
-        tentHolding
-    ){
-
-        tentProgress +=
-            dt*.42;
-
-        document.querySelector(
-            "#stormProgress div"
-        ).style.width=
-            Math.min(
-                100,
-                tentProgress*100
-            )+
-            "%";
-
-    }
-
-    if(
-        tentProgress>=1
-    ){
-
-        stormActive=false;
-
-        document.getElementById(
-            "stormUI"
-        ).style.display="none";
-
-        sleepAvailable=true;
-
-        document.getElementById(
-            "sleepUI"
-        ).style.display="flex";
-
-        addMinutes(30);
-
-        setObjective(
-            "The storm has passed. Get some sleep."
-        );
-
-    }
-
-}
-
-
-function sleepUntilMorning(){
+function leaveRandomBuilding(){
 
     document.getElementById(
-        "sleepUI"
+        "buildingUI"
     ).style.display="none";
-
-    sleepAvailable=false;
-
-    const current =
-        player.hour*60+
-        player.minute;
-
-    let minutesToMorning =
-        8*60-current;
-
-    if(
-        minutesToMorning<=0
-    ){
-
-        minutesToMorning+=1440;
-
-    }
-
-    addMinutes(
-        minutesToMorning
-    );
-
-    rainIntensity=.45;
-
-    showMessage(
-        "You wake up at 08:00."
-    );
-
-    setObjective(
-        "Continue hiking to the neighbouring city."
-    );
-
-}
-
-
-function finishHike(){
-
-    hikeActive=false;
 
     scene="street";
 
-    player.x=3900;
+    /*
+        Put the player just outside
+        the building's front door.
+    */
 
-    player.y=1500;
+    if(randomBuilding){
 
-    rainIntensity=.45;
+        player.x=
+            randomBuilding.x+
+            randomBuilding.w/2;
 
-    addMinutes(10);
+        player.y=
+            randomBuilding.y+
+            randomBuilding.h+
+            90;
+
+    }
+
+    randomBuilding=null;
 
     setObjective(
-        "You've reached the neighbouring city. Find the ingredients."
-    );
-
-    showMessage(
-        "You made it to the neighbouring city!"
+        "Find a way to get ingredients for your cake."
     );
 
 }
 
 
 /* =========================================================
-   TRAIN
+   INTERACTION
 ========================================================= */
 
-function takeTrain(){
+function interact(){
+
+    /*
+        RANDOM INTERIOR EXIT
+    */
 
     if(
-        player.money<229.50
+        scene==="randomInterior"
     ){
 
-        showMessage(
-            "You can't afford the train."
-        );
+        const d=
+            Math.hypot(
+                player.x-W/2,
+                player.y-(H-115)
+            );
+
+        if(
+            d<150
+        ){
+
+            leaveRandomBuilding();
+
+        }
 
         return;
 
     }
 
-    player.money-=229.50;
 
-    addMinutes(45);
+    /*
+        JOB EXIT
+    */
 
-    document.getElementById(
-        "trainUI"
-    ).style.display="none";
+    if(
+        scene==="job"
+    ){
 
-    scene="street";
+        const d=
+            Math.hypot(
+                player.x-W/2,
+                player.y-(H-120)
+            );
 
-    player.x=4300;
+        if(
+            d<150
+        ){
 
-    player.y=1600;
+            exitJobInterior();
 
-    setObjective(
-        "Find the ingredients in the neighbouring city."
-    );
+        }
 
-    showMessage(
-        "You arrive after paying the ridiculous import tax."
-    );
+        return;
 
-    updateHUD();
+    }
+
+
+    /*
+        STREET
+    */
+
+    if(
+        scene!=="street"
+    ){
+
+        return;
+
+    }
+
+
+    /*
+        IMPORTANT LOCATIONS
+
+        These are aligned to their
+        grid-locked building doors.
+    */
+
+    const locations=[
+
+        {
+            name:"GENERAL STORE",
+            x:
+                buildings[0].x+
+                buildings[0].w/2,
+            y:
+                buildings[0].y+
+                buildings[0].h+
+                90,
+            action:openStore
+        },
+
+        {
+            name:"CITY MART",
+            x:
+                buildings[1].x+
+                buildings[1].w/2,
+            y:
+                buildings[1].y+
+                buildings[1].h+
+                90,
+            action:openJob
+        },
+
+        {
+            name:"CENTRAL TRANSIT",
+            x:
+                buildings[2].x+
+                buildings[2].w/2,
+            y:
+                buildings[2].y+
+                buildings[2].h+
+                90,
+            action:()=>{
+                document.getElementById(
+                    "trainUI"
+                ).style.display="flex";
+            }
+        },
+
+        {
+            name:"OUTER CITY TRAIL",
+            x:
+                buildings[3].x+
+                buildings[3].w/2,
+            y:
+                buildings[3].y+
+                buildings[3].h+
+                90,
+            action:openHike
+        }
+
+    ];
+
+
+    for(
+        const location of locations
+    ){
+
+        const d=
+            Math.hypot(
+                player.x-location.x,
+                player.y-location.y
+            );
+
+        if(
+            d<190
+        ){
+
+            location.action();
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+        RANDOM ENTERABLE BUILDINGS
+    */
+
+    for(
+        const building of buildings
+    ){
+
+        if(
+            !building.enterable ||
+            building.name==="GENERAL STORE" ||
+            building.name==="CITY MART"
+        ){
+
+            continue;
+
+        }
+
+        const doorX=
+            building.x+
+            building.w/2;
+
+        const doorY=
+            building.y+
+            building.h+
+            20;
+
+
+        const d=
+            Math.hypot(
+                player.x-doorX,
+                player.y-doorY
+            );
+
+
+        if(
+            d<150
+        ){
+
+            if(
+                building.searched
+            ){
+
+                showMessage(
+                    "You've already searched this building."
+                );
+
+            }
+            else{
+
+                randomBuilding=building;
+
+                document.getElementById(
+                    "buildingTitle"
+                ).textContent=
+                    building.name;
+
+                document.getElementById(
+                    "buildingDescription"
+                ).textContent=
+                    building.description;
+
+                document.getElementById(
+                    "searchBuildingButton"
+                ).disabled=false;
+
+                document.getElementById(
+                    "buildingUI"
+                ).style.display="flex";
+
+            }
+
+            return;
+
+        }
+
+    }
 
 }
 
 
-function closeTrain(){
+/* =========================================================
+   PROMPT
+========================================================= */
 
-    document.getElementById(
-        "trainUI"
-    ).style.display="none";
+function updatePrompt(){
+
+    const prompt=
+        document.getElementById(
+            "interact"
+        );
+
+    prompt.style.display="none";
+
+
+    /*
+        RANDOM INTERIOR
+    */
+
+    if(
+        scene==="randomInterior"
+    ){
+
+        const d=
+            Math.hypot(
+                player.x-W/2,
+                player.y-(H-115)
+            );
+
+        if(
+            d<150
+        ){
+
+            prompt.textContent=
+                "E — EXIT BUILDING";
+
+            prompt.style.display="block";
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+        JOB
+    */
+
+    if(
+        scene==="job"
+    ){
+
+        const d=
+            Math.hypot(
+                player.x-W/2,
+                player.y-(H-120)
+            );
+
+        if(
+            d<150
+        ){
+
+            prompt.textContent=
+                "E — EXIT CITY MART";
+
+            prompt.style.display="block";
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        scene!=="street"
+    ){
+
+        return;
+
+    }
+
+
+    /*
+        MAJOR LOCATIONS
+    */
+
+    const locations=[
+
+        [
+            "GENERAL STORE",
+            buildings[0]
+        ],
+
+        [
+            "CITY MART",
+            buildings[1]
+        ],
+
+        [
+            "CENTRAL TRANSIT",
+            buildings[2]
+        ],
+
+        [
+            "OUTER CITY TRAIL",
+            buildings[3]
+        ]
+
+    ];
+
+
+    for(
+        const [name,building]
+        of locations
+    ){
+
+        const doorX=
+            building.x+
+            building.w/2;
+
+        const doorY=
+            building.y+
+            building.h+
+            90;
+
+
+        const d=
+            Math.hypot(
+                player.x-doorX,
+                player.y-doorY
+            );
+
+
+        if(
+            d<190
+        ){
+
+            prompt.textContent=
+                "E — "+
+                name;
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+        RANDOM BUILDINGS
+    */
+
+    for(
+        const building of buildings
+    ){
+
+        if(
+            !building.enterable ||
+            building.name==="GENERAL STORE" ||
+            building.name==="CITY MART"
+        ){
+
+            continue;
+
+        }
+
+        const doorX=
+            building.x+
+            building.w/2;
+
+        const doorY=
+            building.y+
+            building.h+
+            20;
+
+
+        const d=
+            Math.hypot(
+                player.x-doorX,
+                player.y-doorY
+            );
+
+
+        if(
+            d<150
+        ){
+
+            if(
+                building.searched
+            ){
+
+                prompt.textContent=
+                    "E — ENTER "+
+                    building.name+
+                    " (SEARCHED)";
+
+            }
+            else{
+
+                prompt.textContent=
+                    "E — ENTER "+
+                    building.name;
+
+            }
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+    }
 
 }
 
@@ -3101,6 +4249,20 @@ function buyItem(
     name,
     cost
 ){
+
+    if(
+        player.inventory.includes(
+            name
+        )
+    ){
+
+        showMessage(
+            "You already have that."
+        );
+
+        return;
+
+    }
 
     if(
         player.money<cost
@@ -3149,9 +4311,14 @@ function leaveStore(){
 
     scene="street";
 
-    player.x=450;
+    player.x=
+        buildings[0].x+
+        buildings[0].w/2;
 
-    player.y=650;
+    player.y=
+        buildings[0].y+
+        buildings[0].h+
+        90;
 
 }
 
@@ -3241,6 +4408,7 @@ function nextCustomer(){
             )
         ];
 
+
     itemOptions=
         products
         .slice()
@@ -3251,6 +4419,7 @@ function nextCustomer(){
             0,
             4
         );
+
 
     if(
         !itemOptions.includes(
@@ -3263,9 +4432,11 @@ function nextCustomer(){
                 Math.random()*
                 itemOptions.length
             )
-        ]=currentItem;
+        ]=
+            currentItem;
 
     }
+
 
     document.getElementById(
         "customerNumber"
@@ -3283,12 +4454,14 @@ function nextCustomer(){
     ).textContent=
         currentItem.name;
 
+
     const buttons=
         document.getElementById(
             "scanButtons"
         );
 
     buttons.innerHTML="";
+
 
     for(
         const product of itemOptions
@@ -3326,6 +4499,7 @@ function scanItem(product){
 
     }
 
+
     if(
         product===currentItem
     ){
@@ -3340,7 +4514,8 @@ function scanItem(product){
 
         nextCustomer();
 
-    }else{
+    }
+    else{
 
         shiftTime-=5;
 
@@ -3365,6 +4540,7 @@ function updateShift(dt){
 
     shiftTime-=dt;
 
+
     document.getElementById(
         "shiftTimer"
     ).textContent=
@@ -3376,6 +4552,7 @@ function updateShift(dt){
         )+
         "s";
 
+
     document.getElementById(
         "shiftProgress"
     ).style.width=
@@ -3384,6 +4561,7 @@ function updateShift(dt){
             shiftTime/60*100
         )+
         "%";
+
 
     if(
         shiftTime<=0
@@ -3400,32 +4578,33 @@ function endShift(){
 
     shiftActive=false;
 
+
     document.getElementById(
         "jobGame"
     ).style.display="none";
 
-    /*
-        IMPORTANT:
-        Stay inside the job building.
-        The player can now physically
-        walk to the EXIT door.
-    */
 
     scene="job";
 
     player.x=W/2;
+
     player.y=H-300;
+
 
     const earnings=
         customersServed*4;
 
+
     player.money+=earnings;
+
 
     addMinutes(
         8*60
     );
 
+
     updateHUD();
+
 
     showMessage(
         "Shift complete! "+
@@ -3433,6 +4612,7 @@ function endShift(){
         " customers. Earned £"+
         earnings.toFixed(2)
     );
+
 
     setObjective(
         "Walk to the exit and press E to leave."
@@ -3445,13 +4625,10 @@ function openJob(){
 
     scene="job";
 
-    /*
-        Spawn at the entrance/door area,
-        not in the middle of the building.
-    */
-
     player.x=W/2;
-    player.y=H-260;
+
+    player.y=H-300;
+
 
     document.getElementById(
         "jobUI"
@@ -3468,9 +4645,15 @@ function leaveJob(){
 
     scene="street";
 
-    player.x=2250;
+    player.x=
+        buildings[1].x+
+        buildings[1].w/2;
 
-    player.y=650;
+    player.y=
+        buildings[1].y+
+        buildings[1].h+
+        90;
+
 
     setObjective(
         "Find a way to get ingredients for your cake."
@@ -3478,10 +4661,6 @@ function leaveJob(){
 
 }
 
-
-/* =========================================================
-   JOB EXIT
-========================================================= */
 
 function exitJobInterior(){
 
@@ -3493,19 +4672,24 @@ function exitJobInterior(){
         "jobGame"
     ).style.display="none";
 
+
     scene="street";
 
-    /*
-        Put player just outside
-        CITY MART's entrance.
-    */
 
-    player.x=2250;
-    player.y=650;
+    player.x=
+        buildings[1].x+
+        buildings[1].w/2;
+
+    player.y=
+        buildings[1].y+
+        buildings[1].h+
+        90;
+
 
     setObjective(
         "Find a way to get ingredients for your cake."
     );
+
 
     showMessage(
         "You leave CITY MART."
@@ -3515,7 +4699,125 @@ function exitJobInterior(){
 
 
 /* =========================================================
-   HIKE MENU
+   TRAIN
+========================================================= */
+
+function takeTrain(){
+
+    const ticketAvailable=
+        player.trainTickets>0;
+
+
+    /*
+        Train fare is £45.
+
+        A found train ticket covers
+        that £45 portion.
+
+        Import tax remains.
+    */
+
+    const fare=45;
+
+    const tax=184.50;
+
+    let fareCost=0;
+
+
+    if(
+        ticketAvailable
+    ){
+
+        player.trainTickets--;
+
+        showMessage(
+            "🎟️ Train ticket used."
+        );
+
+    }
+    else{
+
+        fareCost=fare;
+
+    }
+
+
+    const total=
+        fareCost+
+        tax;
+
+
+    if(
+        player.money<total
+    ){
+
+        /*
+            Refund ticket if the player
+            cannot afford the tax.
+        */
+
+        if(
+            ticketAvailable
+        ){
+
+            player.trainTickets++;
+
+        }
+
+        showMessage(
+            "You can't afford the train's import tax."
+        );
+
+        return;
+
+    }
+
+
+    player.money-=total;
+
+
+    addMinutes(45);
+
+
+    document.getElementById(
+        "trainUI"
+    ).style.display="none";
+
+
+    scene="street";
+
+
+    player.x=4300;
+
+    player.y=1600;
+
+
+    setObjective(
+        "Find the ingredients in the neighbouring city."
+    );
+
+
+    showMessage(
+        "You arrive after paying the ridiculous import tax."
+    );
+
+
+    updateHUD();
+
+}
+
+
+function closeTrain(){
+
+    document.getElementById(
+        "trainUI"
+    ).style.display="none";
+
+}
+
+
+/* =========================================================
+   HIKE
 ========================================================= */
 
 function openHike(){
@@ -3524,12 +4826,14 @@ function openHike(){
         "hikeUI"
     ).style.display="flex";
 
+
     const gear=
         player.inventory.length
         ?
         player.inventory.join(", ")
         :
         "No gear";
+
 
     document.getElementById(
         "gearStatus"
@@ -3549,107 +4853,431 @@ function closeHike(){
 }
 
 
+function beginHike(){
+
+    document.getElementById(
+        "hikeUI"
+    ).style.display="none";
+
+
+    scene="country";
+
+    hikeActive=true;
+
+    hikeProgress=0;
+
+    hikeEventTimer=0;
+
+    nextHikeEvent=
+        25+
+        Math.random()*35;
+
+
+    player.x=2500;
+
+    player.y=4000;
+
+
+    setObjective(
+        "Reach the neighbouring city."
+    );
+
+
+    showMessage(
+        "The five-minute journey begins."
+    );
+
+}
+
+
+function updateHike(dt){
+
+    if(
+        !hikeActive ||
+        stormActive
+    ){
+
+        return;
+
+    }
+
+
+    hikeProgress+=dt;
+
+    countryOffset+=
+        140*dt;
+
+
+    addMinutes(
+        dt*2
+    );
+
+
+    hikeEventTimer+=dt;
+
+
+    if(
+        hikeEventTimer>=
+        nextHikeEvent
+    ){
+
+        triggerHikeEvent();
+
+        hikeEventTimer=0;
+
+        nextHikeEvent=
+            25+
+            Math.random()*45;
+
+    }
+
+
+    if(
+        hikeProgress>=300
+    ){
+
+        finishHike();
+
+    }
+
+}
+
+
+function triggerHikeEvent(){
+
+    const roll=
+        Math.random();
+
+
+    if(
+        roll<.5 &&
+        player.inventory.includes(
+            "Tent"
+        )
+    ){
+
+        triggerStorm();
+
+        return;
+
+    }
+
+
+    if(
+        roll<.68
+    ){
+
+        addMinutes(12);
+
+        showMessage(
+            "A broken-down delivery truck blocks the road."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        roll<.82
+    ){
+
+        addMinutes(5);
+
+        showMessage(
+            "You discover an old roadside shelter."
+        );
+
+        return;
+
+    }
+
+
+    rainIntensity=
+        Math.min(
+            1,
+            rainIntensity+.15
+        );
+
+
+    showMessage(
+        "The rain suddenly gets heavier."
+    );
+
+}
+
+
+function triggerStorm(){
+
+    stormActive=true;
+
+    tentProgress=0;
+
+    tentHolding=false;
+
+
+    document.getElementById(
+        "stormUI"
+    ).style.display="flex";
+
+
+    rainIntensity=1;
+
+
+    setObjective(
+        "Set up your tent before the storm gets worse."
+    );
+
+}
+
+
+function startTentSetup(){
+
+    if(
+        !stormActive
+    ){
+
+        return;
+
+    }
+
+    tentHolding=true;
+
+}
+
+
+function stopTentSetup(){
+
+    tentHolding=false;
+
+}
+
+
+function updateStorm(dt){
+
+    if(
+        !stormActive
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        tentHolding
+    ){
+
+        tentProgress+=
+            dt*.42;
+
+
+        document.querySelector(
+            "#stormProgress div"
+        ).style.width=
+            Math.min(
+                100,
+                tentProgress*100
+            )+
+            "%";
+
+    }
+
+
+    if(
+        tentProgress>=1
+    ){
+
+        stormActive=false;
+
+
+        document.getElementById(
+            "stormUI"
+        ).style.display="none";
+
+
+        sleepAvailable=true;
+
+
+        document.getElementById(
+            "sleepUI"
+        ).style.display="flex";
+
+
+        addMinutes(30);
+
+
+        setObjective(
+            "The storm has passed. Get some sleep."
+        );
+
+    }
+
+}
+
+
+function sleepUntilMorning(){
+
+    document.getElementById(
+        "sleepUI"
+    ).style.display="none";
+
+
+    sleepAvailable=false;
+
+
+    const current=
+        player.hour*60+
+        player.minute;
+
+
+    let minutesToMorning=
+        8*60-current;
+
+
+    if(
+        minutesToMorning<=0
+    ){
+
+        minutesToMorning+=1440;
+
+    }
+
+
+    addMinutes(
+        minutesToMorning
+    );
+
+
+    rainIntensity=.45;
+
+
+    showMessage(
+        "You wake up at 08:00."
+    );
+
+
+    setObjective(
+        "Continue hiking to the neighbouring city."
+    );
+
+}
+
+
+function finishHike(){
+
+    hikeActive=false;
+
+    scene="street";
+
+
+    player.x=3900;
+
+    player.y=1500;
+
+
+    rainIntensity=.45;
+
+
+    addMinutes(10);
+
+
+    setObjective(
+        "You've reached the neighbouring city. Find the ingredients."
+    );
+
+
+    showMessage(
+        "You made it to the neighbouring city!"
+    );
+
+}
+
+
 /* =========================================================
-   INTERACTION
+   RAIN
 ========================================================= */
 
-function interact(){
+let rain=[];
 
-    /*
-        JOB INTERIOR EXIT
-    */
+let rainIntensity=.5;
 
-    if(
-        scene==="job"
-    ){
+let lightning=0;
 
-        const exitX=W/2;
-        const exitY=H-120;
-
-        const d=
-            Math.hypot(
-                player.x-exitX,
-                player.y-exitY
-            );
-
-        if(
-            d<150
-        ){
-
-            exitJobInterior();
-
-            return;
-
-        }
-
-        return;
-
-    }
+let lightningTimer=2;
 
 
-    if(
-        scene!=="street"
-    ){
+function makeRain(){
 
-        return;
-
-    }
-
-
-    const locations=[
-
-        {
-            name:"GENERAL STORE",
-            x:450,
-            y:650,
-            action:openStore
-        },
-
-        {
-            name:"CITY MART",
-            x:2250,
-            y:650,
-            action:openJob
-        },
-
-        {
-            name:"CENTRAL TRANSIT",
-            x:3500,
-            y:2150,
-            action:()=>{
-                document.getElementById(
-                    "trainUI"
-                ).style.display="flex";
-            }
-        },
-
-        {
-            name:"OUTER CITY TRAIL",
-            x:4100,
-            y:950,
-            action:openHike
-        }
-
-    ];
+    rain=[];
 
 
     for(
-        const location of locations
+        let i=0;
+        i<700;
+        i++
     ){
 
-        const d=
-            Math.hypot(
-                player.x-location.x,
-                player.y-location.y
-            );
+        rain.push({
+
+            x:
+                Math.random()*W,
+
+            y:
+                Math.random()*H,
+
+            speed:
+                500+
+                Math.random()*700,
+
+            length:
+                12+
+                Math.random()*22,
+
+            drift:
+                -80-
+                Math.random()*100
+
+        });
+
+    }
+
+}
+
+
+makeRain();
+
+
+function updateRain(dt){
+
+    for(
+        const r of rain
+    ){
+
+        r.x+=
+            r.drift*dt;
+
+        r.y+=
+            r.speed*dt;
+
 
         if(
-            d<190
+            r.y>H+40
         ){
 
-            location.action();
+            r.y=-40;
 
-            return;
+            r.x=
+                Math.random()*W;
+
+        }
+
+
+        if(
+            r.x<-50
+        ){
+
+            r.x=W+50;
 
         }
 
@@ -3658,101 +5286,82 @@ function interact(){
 }
 
 
-/* =========================================================
-   INTERACTION PROMPT
-========================================================= */
+function drawRain(){
 
-function updatePrompt(){
+    ctx.save();
 
-    const prompt=
-        document.getElementById(
-            "interact"
-        );
+    ctx.globalAlpha=
+        rainIntensity;
 
-    prompt.style.display="none";
+    ctx.strokeStyle=
+        "rgba(160,200,255,.55)";
 
-
-    /*
-        JOB EXIT PROMPT
-    */
-
-    if(
-        scene==="job"
-    ){
-
-        const exitX=W/2;
-        const exitY=H-120;
-
-        const d=
-            Math.hypot(
-                player.x-exitX,
-                player.y-exitY
-            );
-
-        if(
-            d<150
-        ){
-
-            prompt.textContent=
-                "E — EXIT CITY MART";
-
-            prompt.style.display="block";
-
-        }
-
-        return;
-
-    }
-
-
-    if(
-        scene!=="street"
-    ){
-
-        return;
-
-    }
-
-
-    const locations=[
-
-        ["GENERAL STORE",450,650],
-
-        ["CITY MART",2250,650],
-
-        ["CENTRAL TRANSIT",3500,2150],
-
-        ["OUTER CITY TRAIL",4100,950]
-
-    ];
+    ctx.lineWidth=1;
 
 
     for(
-        const loc of locations
+        const r of rain
     ){
 
-        const distance=
-            Math.hypot(
-                player.x-loc[1],
-                player.y-loc[2]
-            );
+        ctx.beginPath();
+
+        ctx.moveTo(
+            r.x,
+            r.y
+        );
+
+        ctx.lineTo(
+            r.x+
+            r.drift*.025,
+            r.y+
+            r.length
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   LIGHTNING
+========================================================= */
+
+function updateLightning(dt){
+
+    lightningTimer-=dt;
+
+
+    if(
+        lightningTimer<=0
+    ){
+
+        lightningTimer=
+            2+
+            Math.random()*7;
 
 
         if(
-            distance<190
+            scene==="country" &&
+            Math.random()<.5
         ){
 
-            prompt.textContent=
-                "E — "+
-                loc[0];
-
-            prompt.style.display="block";
-
-            return;
+            lightning=.9;
 
         }
 
     }
+
+
+    lightning=
+        Math.max(
+            0,
+            lightning-dt*5
+        );
 
 }
 
@@ -3785,7 +5394,6 @@ function draw(){
         );
 
     }
-
     else if(
         scene==="apartment"
     ){
@@ -3793,7 +5401,6 @@ function draw(){
         drawApartment();
 
     }
-
     else if(
         scene==="street"
     ){
@@ -3801,7 +5408,6 @@ function draw(){
         drawCity();
 
     }
-
     else if(
         scene==="store"
     ){
@@ -3809,7 +5415,6 @@ function draw(){
         drawStoreInterior();
 
     }
-
     else if(
         scene==="job"
     ){
@@ -3817,7 +5422,13 @@ function draw(){
         drawJobInterior();
 
     }
+    else if(
+        scene==="randomInterior"
+    ){
 
+        drawRandomInterior();
+
+    }
     else if(
         scene==="country"
     ){
@@ -3826,6 +5437,11 @@ function draw(){
 
     }
 
+
+    /*
+        Rain stays visible in
+        outdoor scenes only.
+    */
 
     if(
         scene==="street" ||
@@ -3858,18 +5474,22 @@ function draw(){
 
 
 /* =========================================================
-   GAME LOOP
+   LOOP
 ========================================================= */
+
+let running=false;
+
+let lastTime=0;
+
 
 function loop(time){
 
-    if(
-        !running
-    ){
+    if(!running){
 
         return;
 
     }
+
 
     const dt=
         Math.min(
@@ -3877,23 +5497,16 @@ function loop(time){
             .05
         );
 
+
     lastTime=time;
+
 
     updateRain(dt);
 
     updateLightning(dt);
 
 
-    if(
-        scene==="street" ||
-        scene==="country" ||
-        scene==="apartment" ||
-        scene==="job"
-    ){
-
-        updatePlayer(dt);
-
-    }
+    updatePlayer(dt);
 
 
     if(
@@ -3908,19 +5521,11 @@ function loop(time){
 
 
     if(
-        scene==="job"
+        scene==="job" &&
+        shiftActive
     ){
 
-        /*
-            The shift itself runs separately
-            while the job minigame is open.
-        */
-
-        if(shiftActive){
-
-            updateShift(dt);
-
-        }
+        updateShift(dt);
 
     }
 
@@ -3930,6 +5535,7 @@ function loop(time){
     ){
 
         messageTimer-=dt;
+
 
         if(
             messageTimer<=0
@@ -3943,11 +5549,13 @@ function loop(time){
 
     }
 
+
     updateCamera();
 
     updatePrompt();
 
     draw();
+
 
     requestAnimationFrame(
         loop
@@ -3957,6 +5565,8 @@ function loop(time){
 
 
 updateHUD();
+
+draw();
 
 </script>
 
