@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,8 +15,9 @@ html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#05070d;
+    background:#0b1018;
     font-family:Arial,sans-serif;
+    color:white;
     user-select:none;
 }
 
@@ -25,117 +25,145 @@ canvas{
     display:block;
     width:100vw;
     height:100vh;
-    cursor:crosshair;
+    image-rendering:pixelated;
 }
 
 #hud{
     position:fixed;
     inset:0;
     pointer-events:none;
-    color:white;
-    text-shadow:0 2px 5px #000;
+    z-index:10;
 }
 
 #money{
     position:absolute;
-    top:18px;
-    left:20px;
-    font-size:21px;
+    top:16px;
+    left:18px;
+    padding:9px 13px;
+    background:rgba(5,10,18,.78);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:8px;
+    font-size:18px;
     font-weight:bold;
+    text-shadow:0 2px 4px #000;
 }
 
 #time{
     position:absolute;
-    top:48px;
-    left:20px;
-    color:#cbd5e1;
+    top:16px;
+    right:18px;
+    padding:9px 13px;
+    background:rgba(5,10,18,.78);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:8px;
+    font-size:18px;
+    font-weight:bold;
 }
 
 #objective{
     position:absolute;
-    top:18px;
-    right:20px;
-    color:#93c5fd;
-    text-align:right;
-    max-width:420px;
+    top:61px;
+    left:18px;
+    padding:7px 11px;
+    background:rgba(5,10,18,.68);
+    border-radius:7px;
+    color:#dbeafe;
+    font-size:14px;
 }
 
 #interact{
-    position:absolute;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%);
-    padding:10px 18px;
-    border-radius:10px;
-    background:rgba(0,0,0,.72);
-    border:1px solid rgba(255,255,255,.15);
     display:none;
+    position:absolute;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    padding:10px 17px;
+    border-radius:9px;
+    background:rgba(5,10,18,.9);
+    border:1px solid rgba(255,255,255,.2);
     font-weight:bold;
+    font-size:15px;
+    box-shadow:0 5px 25px rgba(0,0,0,.35);
+}
+
+#dialogue{
+    display:none;
+    position:fixed;
+    left:50%;
+    bottom:32px;
+    transform:translateX(-50%);
+    width:min(720px,90vw);
+    padding:18px 22px;
+    background:rgba(8,14,24,.95);
+    border:2px solid rgba(255,255,255,.2);
+    border-radius:12px;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
+    pointer-events:auto;
+}
+
+#dialogueName{
+    color:#93c5fd;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+#dialogueText{
+    font-size:17px;
+    line-height:1.45;
+}
+
+#dialogueHint{
+    margin-top:9px;
+    color:#94a3b8;
+    font-size:12px;
 }
 
 #start{
     position:fixed;
-    z-index:30;
     left:50%;
     top:50%;
     transform:translate(-50%,-50%);
-    padding:18px 42px;
+    padding:16px 42px;
     border:0;
-    border-radius:14px;
+    border-radius:12px;
     background:#2563eb;
     color:white;
-    font-size:25px;
+    font-size:24px;
     font-weight:bold;
     cursor:pointer;
-    box-shadow:0 10px 40px rgba(0,0,0,.5);
+    box-shadow:0 8px 35px rgba(0,0,0,.45);
+    z-index:30;
 }
 
 #start:hover{
     background:#3b82f6;
 }
 
-button{
-    border:0;
-    border-radius:10px;
-    padding:12px 20px;
-    margin:6px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#3b82f6;
-}
-
-button.secondary{
-    background:#334155;
-}
-
 .overlay{
+    display:none;
     position:fixed;
     inset:0;
-    display:none;
     align-items:center;
     justify-content:center;
-    pointer-events:none;
+    background:rgba(3,7,13,.76);
+    z-index:20;
+    pointer-events:auto;
 }
 
 .panel{
     width:min(520px,90vw);
+    max-height:88vh;
+    overflow:auto;
     padding:28px;
-    border-radius:18px;
-    background:rgba(7,12,25,.97);
-    border:1px solid rgba(255,255,255,.15);
-    color:white;
-    box-shadow:0 20px 80px rgba(0,0,0,.65);
-    pointer-events:auto;
+    background:rgba(15,23,42,.97);
+    border:2px solid rgba(148,163,184,.25);
+    border-radius:15px;
+    box-shadow:0 15px 60px rgba(0,0,0,.55);
 }
 
 .panel h1{
     margin:0 0 12px;
+    font-size:27px;
 }
 
 .panel p{
@@ -143,124 +171,143 @@ button.secondary{
     line-height:1.5;
 }
 
-#dialogue{
-    position:fixed;
-    left:50%;
-    bottom:35px;
-    transform:translateX(-50%);
-    width:min(760px,90vw);
-    padding:20px 24px;
-    background:rgba(3,7,18,.95);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:16px;
-    color:white;
-    display:none;
-    pointer-events:auto;
-}
-
-#dialogueName{
-    color:#60a5fa;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-
-#dialogueText{
-    font-size:18px;
-    line-height:1.45;
-}
-
-#dialogueHint{
+.panel button{
+    display:block;
+    width:100%;
     margin-top:10px;
-    color:#94a3b8;
+    padding:12px;
+    border:0;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.panel button:hover{
+    background:#3b82f6;
+}
+
+.panel button.secondary{
+    background:#334155;
+}
+
+.panel button.secondary:hover{
+    background:#475569;
+}
+
+.itemRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.itemRow button{
+    width:120px;
+    margin:0;
+}
+
+.itemOwned{
+    color:#86efac;
     font-size:12px;
 }
 
-#message{
-    position:fixed;
-    left:50%;
-    top:80px;
-    transform:translateX(-50%);
-    padding:12px 18px;
-    background:rgba(0,0,0,.8);
-    border-radius:10px;
-    color:white;
-    display:none;
-    pointer-events:none;
-    z-index:40;
-}
-
 .progress{
-    height:10px;
+    width:100%;
+    height:12px;
     background:#1e293b;
-    border-radius:20px;
+    border-radius:6px;
     overflow:hidden;
-    margin:12px 0 20px;
+    margin:12px 0 18px;
 }
 
 .progress div{
-    height:100%;
     width:0%;
-    background:#22c55e;
+    height:100%;
+    background:#3b82f6;
 }
 
 .scanItem{
-    background:#111827;
-    border-radius:14px;
-    padding:20px;
     text-align:center;
 }
 
 .itemIcon{
-    font-size:65px;
+    font-size:55px;
 }
 
 .itemName{
-    font-size:25px;
+    font-size:22px;
     font-weight:bold;
-}
-
-.barcode{
-    margin:18px auto;
-    width:220px;
-    height:60px;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            #fff 0px,
-            #fff 3px,
-            #111 3px,
-            #111 7px,
-            #fff 7px,
-            #fff 10px
-        );
+    margin:6px;
 }
 
 .scanButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.scanButtons button{
+    margin:0;
+}
+
+#message{
+    display:none;
+    position:fixed;
+    left:50%;
+    top:18%;
+    transform:translateX(-50%);
+    padding:12px 18px;
+    background:rgba(5,10,18,.94);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:9px;
+    z-index:40;
+    font-weight:bold;
+}
+
+#cakeSteps{
     display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
+    gap:8px;
+    margin:16px 0;
 }
 
-#stormProgress{
-    height:16px;
+.cakeStep{
+    flex:1;
+    padding:9px 5px;
+    text-align:center;
+    border-radius:7px;
     background:#1e293b;
-    border-radius:20px;
-    overflow:hidden;
-    margin:20px 0;
+    color:#94a3b8;
+    font-size:12px;
 }
 
-#stormProgress div{
-    height:100%;
-    width:0%;
-    background:#38bdf8;
+.cakeStep.active{
+    background:#2563eb;
+    color:white;
 }
 
-.sleepIcon{
-    font-size:60px;
+.cakeStep.done{
+    background:#166534;
+    color:#dcfce7;
+}
+
+#ending{
     text-align:center;
 }
-</style>
 
+.bigCake{
+    font-size:80px;
+    margin:10px;
+}
+
+#gearStatus{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+</style>
 </head>
 
 <body>
@@ -268,48 +315,33 @@ button.secondary{
 <canvas id="game"></canvas>
 
 <div id="hud">
+    <div id="money">£23.00</div>
+    <div id="time">08:00</div>
 
-```
-<div id="money">£23.00</div>
+    <div id="objective">
+        Get ingredients for a cake.
+    </div>
 
-<div id="time">08:00</div>
-
-<div id="objective">
-    Get ingredients for a cake.
+    <div id="interact">
+        E — Interact
+    </div>
 </div>
 
-<div id="interact">
-    E — Interact
-</div>
-```
-
+<div id="dialogue">
+    <div id="dialogueName"></div>
+    <div id="dialogueText"></div>
+    <div id="dialogueHint">
+        Click or press SPACE
+    </div>
 </div>
 
 <button id="start">
     PLAY
 </button>
 
-<!-- DIALOGUE -->
-
-<div id="dialogue">
-
-```
-<div id="dialogueName"></div>
-
-<div id="dialogueText"></div>
-
-<div id="dialogueHint">
-    Click or press SPACE
-</div>
-```
-
-</div>
-
-<!-- STORE -->
+<!-- GENERAL STORE -->
 
 <div id="storeUI" class="overlay">
-
-```
 <div class="panel">
 
     <h1>GENERAL STORE</h1>
@@ -319,44 +351,18 @@ button.secondary{
         walking into another city is still considered useful.
     </p>
 
-    <button onclick="buyItem('Backpack',12)">
-        Backpack — £12
-    </button>
+    <div id="storeItems"></div>
 
-    <button onclick="buyItem('Tent',25)">
-        Tent — £25
-    </button>
-
-    <button onclick="buyItem('Boots',18)">
-        Boots — £18
-    </button>
-
-    <button onclick="buyItem('Raincoat',15)">
-        Raincoat — £15
-    </button>
-
-    <button onclick="buyItem('Flashlight',8)">
-        Flashlight — £8
-    </button>
-
-    <br>
-
-    <button
-        class="secondary"
-        onclick="leaveStore()">
+    <button class="secondary" onclick="leaveStore()">
         LEAVE
     </button>
 
 </div>
-```
-
 </div>
 
-<!-- JOB -->
+<!-- CITY MART JOB -->
 
 <div id="jobUI" class="overlay">
-
-```
 <div class="panel">
 
     <h1>CITY MART</h1>
@@ -371,22 +377,16 @@ button.secondary{
         START SHIFT
     </button>
 
-    <button
-        class="secondary"
-        onclick="leaveJob()">
+    <button class="secondary" onclick="leaveJob()">
         LEAVE
     </button>
 
 </div>
-```
-
 </div>
 
-<!-- JOB GAME -->
+<!-- SHIFT -->
 
 <div id="jobGame" class="overlay">
-
-```
 <div class="panel">
 
     <div style="
@@ -394,7 +394,6 @@ button.secondary{
         justify-content:space-between;
         color:#cbd5e1;
     ">
-
         <span id="customerNumber">
             Customer 1
         </span>
@@ -402,7 +401,6 @@ button.secondary{
         <span id="shiftTimer">
             60s
         </span>
-
     </div>
 
     <div class="progress">
@@ -411,15 +409,11 @@ button.secondary{
 
     <div class="scanItem">
 
-        <div
-            class="itemIcon"
-            id="itemIcon">
+        <div class="itemIcon" id="itemIcon">
             🍞
         </div>
 
-        <div
-            class="itemName"
-            id="itemName">
+        <div class="itemName" id="itemName">
             Bread
         </div>
 
@@ -429,23 +423,38 @@ button.secondary{
             Select the correct product:
         </p>
 
-        <div
-            class="scanButtons"
-            id="scanButtons">
+        <div class="scanButtons" id="scanButtons">
         </div>
 
     </div>
 
 </div>
-```
+</div>
 
+<!-- WAREHOUSE -->
+
+<div id="warehouseUI" class="overlay">
+<div class="panel">
+
+    <h1>WAREHOUSE GEAR DEPOT</h1>
+
+    <p>
+        Outdoor equipment distribution.
+        Somehow this stuff survived the non-essential goods ban.
+    </p>
+
+    <div id="warehouseItems"></div>
+
+    <button class="secondary" onclick="leaveWarehouse()">
+        EXIT WAREHOUSE
+    </button>
+
+</div>
 </div>
 
 <!-- TRAIN -->
 
 <div id="trainUI" class="overlay">
-
-```
 <div class="panel">
 
     <h1>CENTRAL TRANSIT</h1>
@@ -464,22 +473,16 @@ button.secondary{
         TAKE TRAIN
     </button>
 
-    <button
-        class="secondary"
-        onclick="closeTrain()">
+    <button class="secondary" onclick="closeTrain()">
         LEAVE
     </button>
 
 </div>
-```
-
 </div>
 
 <!-- HIKE -->
 
 <div id="hikeUI" class="overlay">
-
-```
 <div class="panel">
 
     <h1>OUTER CITY TRAIL</h1>
@@ -499,22 +502,16 @@ button.secondary{
         START HIKE
     </button>
 
-    <button
-        class="secondary"
-        onclick="closeHike()">
+    <button class="secondary" onclick="closeHike()">
         CANCEL
     </button>
 
 </div>
-```
-
 </div>
 
 <!-- STORM -->
 
 <div id="stormUI" class="overlay">
-
-```
 <div class="panel">
 
     <div style="
@@ -531,8 +528,8 @@ button.secondary{
         Get your tent up before it gets worse.
     </p>
 
-    <div id="stormProgress">
-        <div></div>
+    <div class="progress">
+        <div id="stormProgress"></div>
     </div>
 
     <button
@@ -546,18 +543,17 @@ button.secondary{
     </button>
 
 </div>
-```
-
 </div>
 
 <!-- SLEEP -->
 
 <div id="sleepUI" class="overlay">
-
-```
 <div class="panel">
 
-    <div class="sleepIcon">
+    <div style="
+        text-align:center;
+        font-size:50px;
+    ">
         ⛺
     </div>
 
@@ -572,15 +568,11 @@ button.secondary{
     </button>
 
 </div>
-```
-
 </div>
 
 <!-- RANDOM BUILDING -->
 
-<div id="buildingUI" class="overlay">
-
-```
+<div id="randomBuildingUI" class="overlay">
 <div class="panel">
 
     <h1 id="buildingTitle">
@@ -604,40 +596,112 @@ button.secondary{
     </button>
 
 </div>
-```
+</div>
 
+<!-- NEIGHBOR GROCERY -->
+
+<div id="groceryUI" class="overlay">
+<div class="panel">
+
+    <h1>SUNRISE GROCER</h1>
+
+    <p>
+        Everything you need to make an actual cake.
+    </p>
+
+    <div id="ingredientItems"></div>
+
+    <button class="secondary" onclick="leaveGrocery()">
+        LEAVE
+    </button>
+
+</div>
+</div>
+
+<!-- CAKE LAB -->
+
+<div id="labUI" class="overlay">
+<div class="panel">
+
+    <h1>HIDDEN CAKE LAB</h1>
+
+    <p id="cakeLabText">
+        A secret kitchen hidden behind the old service door.
+    </p>
+
+    <div id="cakeSteps">
+        <div class="cakeStep active" id="step0">MIX</div>
+        <div class="cakeStep" id="step1">BAKE</div>
+        <div class="cakeStep" id="step2">FROST</div>
+    </div>
+
+    <div class="progress">
+        <div id="cakeProgress"></div>
+    </div>
+
+    <button id="cakeAction" onclick="cakeAction()">
+        MIX INGREDIENTS
+    </button>
+
+    <button class="secondary" onclick="leaveLab()">
+        LEAVE
+    </button>
+
+</div>
+</div>
+
+<!-- ENDING -->
+
+<div id="endingUI" class="overlay">
+<div class="panel" id="ending">
+
+    <div class="bigCake">
+        🎂
+    </div>
+
+    <h1>2077 CAKE ACHIEVED</h1>
+
+    <p>
+        After all that work, hiking, taxes, storms
+        and suspiciously locked doors...
+    </p>
+
+    <p>
+        You finally made the cake.
+    </p>
+
+    <p>
+        And honestly?
+        It was worth it.
+    </p>
+
+    <button onclick="location.reload()">
+        PLAY AGAIN
+    </button>
+
+</div>
 </div>
 
 <div id="message"></div>
 
 <script>
 
-
 /* =========================================================
    CANVAS
 ========================================================= */
 
-const canvas =
-    document.getElementById("game");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-const ctx =
-    canvas.getContext("2d");
-
-let W=0;
-let H=0;
+let W = 0;
+let H = 0;
 
 function resize(){
-
-    W=canvas.width=innerWidth;
-    H=canvas.height=innerHeight;
-
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
 }
 
-addEventListener(
-    "resize",
-    resize
-);
-
+window.addEventListener("resize",resize);
 resize();
 
 
@@ -645,507 +709,41 @@ resize();
    WORLD
 ========================================================= */
 
-const world={
-
-    width:5000,
-
-    height:5000
-
+const world = {
+    width:7200,
+    height:4800
 };
 
+const GRID = 600;
+const ROAD = 150;
 
-/* =========================================================
-   GRID
-========================================================= */
-
-const GRID=600;
-
-const ROAD=150;
-
-
-/*
-    IMPORTANT:
-
-    Buildings are ALWAYS positioned
-    relative to grid cells.
-
-    Nothing gets an arbitrary world
-    position anymore.
-*/
-
-
-function gridBuilding(
-    col,
-    row,
-    widthCells,
-    heightCells,
-    name,
-    color,
-    options={}
-){
-
-    const roadOffset=ROAD+25;
-
-    return {
-
-        name:name,
-
-        x:
-            col*GRID+
-            roadOffset,
-
-        y:
-            row*GRID+
-            roadOffset,
-
-        w:
-            widthCells*GRID-
-            ROAD-
-            50,
-
-        h:
-            heightCells*GRID-
-            ROAD-
-            50,
-
-        color:color,
-
-        enterable:
-            options.enterable || false,
-
-        searched:false,
-
-        loot:
-            options.loot || null,
-
-        description:
-            options.description ||
-            "An ordinary building."
-
-    };
-
+function snap(n){
+    return Math.round(n / GRID) * GRID;
 }
 
 
 /* =========================================================
-   BUILDINGS
+   SCENE
 ========================================================= */
 
-const buildings=[
+let scene = "title";
+let running = false;
 
-    /*
-        IMPORTANT BUILDINGS
-    */
+let lastTime = 0;
 
-    gridBuilding(
-        0,
-        0,
-        1,
-        1,
-        "GENERAL STORE",
-        "#263b52",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        3,
-        0,
-        1,
-        1,
-        "CITY MART",
-        "#293c4c",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        5,
-        3,
-        1,
-        1,
-        "CENTRAL TRANSIT",
-        "#25374a"
-    ),
-
-    gridBuilding(
-        6,
-        1,
-        1,
-        1,
-        "OUTER CITY",
-        "#253d30"
-    ),
-
-    gridBuilding(
-        1,
-        6,
-        1,
-        1,
-        "RESIDENTIAL",
-        "#283244"
-    ),
-
-    gridBuilding(
-        5,
-        6,
-        1,
-        1,
-        "RESIDENTIAL",
-        "#283244"
-    ),
-
-    gridBuilding(
-        2,
-        3,
-        1,
-        1,
-        "WAREHOUSE",
-        "#26313d"
-    ),
-
-    gridBuilding(
-        3,
-        3,
-        1,
-        1,
-        "GOVERNMENT",
-        "#302d3c"
-    ),
-
-    gridBuilding(
-        1,
-        1,
-        1,
-        1,
-        "HOUSING BLOCK",
-        "#273246"
-    ),
-
-    gridBuilding(
-        5,
-        1,
-        1,
-        1,
-        "HOUSING BLOCK",
-        "#273246"
-    ),
-
-
-    /*
-        RANDOM ENTERABLE BUILDINGS
-
-        All are still grid locked.
-    */
-
-    gridBuilding(
-        2,
-        1,
-        1,
-        1,
-        "APARTMENT BLOCK",
-        "#293445",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        4,
-        1,
-        1,
-        1,
-        "OLD RESIDENCE",
-        "#303845",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        0,
-        2,
-        1,
-        1,
-        "ABANDONED SHOP",
-        "#303744",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        3,
-        2,
-        1,
-        1,
-        "OLD OFFICE",
-        "#28323d",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        6,
-        2,
-        1,
-        1,
-        "EMPTY HOUSE",
-        "#303b40",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        0,
-        4,
-        1,
-        1,
-        "SMALL HOUSE",
-        "#303b45",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        3,
-        4,
-        1,
-        1,
-        "OLD FLAT",
-        "#303746",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        6,
-        4,
-        1,
-        1,
-        "DERELICT STORE",
-        "#34383d",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        0,
-        5,
-        1,
-        1,
-        "MAINTENANCE BUILDING",
-        "#2b3540",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        3,
-        5,
-        1,
-        1,
-        "OLD APARTMENT",
-        "#303745",
-        {
-            enterable:true
-        }
-    ),
-
-    gridBuilding(
-        6,
-        5,
-        1,
-        1,
-        "STORAGE HOUSE",
-        "#2d3741",
-        {
-            enterable:true
-        }
-    )
-
-];
-
-
-/* =========================================================
-   RANDOM LOOT
-========================================================= */
-
-const lootTypes=[
-
-    {
-        type:"money",
-        text:"You found £5 on the floor.",
-        value:5
-    },
-
-    {
-        type:"money",
-        text:"You found £5 behind some furniture.",
-        value:5
-    },
-
-    {
-        type:"money",
-        text:"You found £5 in an old drawer.",
-        value:5
-    },
-
-    {
-        type:"gear",
-        item:"Flashlight",
-        text:"You found a working flashlight."
-    },
-
-    {
-        type:"gear",
-        item:"Raincoat",
-        text:"You found a surprisingly good raincoat."
-    },
-
-    {
-        type:"gear",
-        item:"Boots",
-        text:"You found a pair of hiking boots."
-    },
-
-    {
-        type:"gear",
-        item:"Backpack",
-        text:"You found an old but usable backpack."
-    },
-
-    {
-        type:"gear",
-        item:"Tent",
-        text:"You found a compact camping tent."
-    },
-
-    {
-        type:"ticket",
-        text:
-            "NO WAY. You found an unused train ticket.",
-        value:1
-    }
-
-];
-
-
-/*
-    Give random enterable buildings
-    random loot.
-
-    Most = £5
-    Some = gear
-    Very rare = train ticket
-*/
-
-function assignBuildingLoot(){
-
-    for(
-        const building of buildings
-    ){
-
-        if(
-            !building.enterable ||
-            building.name==="GENERAL STORE" ||
-            building.name==="CITY MART"
-        ){
-
-            continue;
-
-        }
-
-        const roll=Math.random();
-
-        if(roll<.65){
-
-            building.loot={
-                type:"money",
-                value:5,
-                text:"You found £5."
-            };
-
-        }
-        else if(roll<.92){
-
-            const gearOptions=[
-                "Flashlight",
-                "Raincoat",
-                "Boots",
-                "Backpack"
-            ];
-
-            const item=
-                gearOptions[
-                    Math.floor(
-                        Math.random()*
-                        gearOptions.length
-                    )
-                ];
-
-            building.loot={
-                type:"gear",
-                item:item,
-                text:
-                    "You found a "+
-                    item+
-                    "."
-            };
-
-        }
-        else{
-
-            building.loot={
-                type:"ticket",
-                value:1,
-                text:
-                    "You found a train ticket!"
-            };
-
-        }
-
-    }
-
-}
-
-assignBuildingLoot();
+let gameMinutes = 8 * 60;
 
 
 /* =========================================================
    PLAYER
 ========================================================= */
 
-const player={
-
-    x:2500,
-
-    y:3000,
-
+const player = {
+    x:900,
+    y:1200,
     radius:18,
-
-    speed:220,
-
-    direction:"down",
-
-    money:23,
-
-    inventory:[],
-
-    trainTickets:0,
-
-    hour:8,
-
-    minute:0
-
+    speed:240,
+    dir:"down"
 };
 
 
@@ -1153,142 +751,308 @@ const player={
    CAMERA
 ========================================================= */
 
-const camera={
-
+const camera = {
     x:0,
-
     y:0
-
 };
 
 
 /* =========================================================
-   KEYS
+   INPUT
 ========================================================= */
 
-const keys={};
+const keys = {
+    up:false,
+    down:false,
+    left:false,
+    right:false
+};
+
+let interactPressed = false;
+
+window.addEventListener("keydown",e=>{
+
+    const code = e.code;
+
+    if([
+        "Space",
+        "KeyW",
+        "KeyA",
+        "KeyS",
+        "KeyD",
+        "KeyE",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight"
+    ].includes(code)){
+        e.preventDefault();
+    }
+
+    if(code==="KeyW" || code==="ArrowUp")
+        keys.up=true;
+
+    if(code==="KeyS" || code==="ArrowDown")
+        keys.down=true;
+
+    if(code==="KeyA" || code==="ArrowLeft")
+        keys.left=true;
+
+    if(code==="KeyD" || code==="ArrowRight")
+        keys.right=true;
+
+    if(code==="KeyE" && !e.repeat)
+        interactPressed=true;
+
+    if(code==="Space" && !e.repeat){
+        if(dialogueActive){
+            advanceDialogue();
+        }
+    }
+
+});
+
+window.addEventListener("keyup",e=>{
+
+    if(e.code==="KeyW" || e.code==="ArrowUp")
+        keys.up=false;
+
+    if(e.code==="KeyS" || e.code==="ArrowDown")
+        keys.down=false;
+
+    if(e.code==="KeyA" || e.code==="ArrowLeft")
+        keys.left=false;
+
+    if(e.code==="KeyD" || e.code==="ArrowRight")
+        keys.right=false;
+
+});
 
 
 /* =========================================================
-   SCENE
+   MONEY / INVENTORY
 ========================================================= */
 
-let scene="title";
+let money = 23;
 
+const gear = {
+    backpack:false,
+    tent:false,
+    boots:false,
+    raincoat:false,
+    flashlight:false
+};
 
-let randomBuilding=null;
+let hasTrainTicket = false;
+
+const ingredients = {
+    flour:0,
+    sugar:0,
+    eggs:0,
+    milk:0,
+    butter:0,
+    vanilla:0
+};
+
+const ingredientPrices = {
+    flour:4,
+    sugar:3,
+    eggs:2,
+    milk:3,
+    butter:5,
+    vanilla:4
+};
+
+const recipe = {
+    flour:2,
+    sugar:1,
+    eggs:3,
+    milk:1,
+    butter:1,
+    vanilla:1
+};
+
+let cakeMade = false;
 
 
 /* =========================================================
-   COLLISION
+   BUILDINGS
 ========================================================= */
 
-function circleRectCollision(
-    cx,
-    cy,
-    radius,
-    rect
-){
+/*
+    HOME CITY
 
-    const closestX=
-        Math.max(
-            rect.x,
-            Math.min(
-                cx,
-                rect.x+rect.w
-            )
+    Positions deliberately line up with the 600-unit grid.
+*/
+
+const buildings = [
+
+    {
+        id:"generalStore",
+        name:"GENERAL STORE",
+        x:300,
+        y:300,
+        w:300,
+        h:300,
+        color:"#263b52",
+        important:true
+    },
+
+    {
+        id:"cityMart",
+        name:"CITY MART",
+        x:2100,
+        y:300,
+        w:300,
+        h:300,
+        color:"#293c4c",
+        important:true
+    },
+
+    {
+        id:"transit",
+        name:"CENTRAL TRANSIT",
+        x:3300,
+        y:1800,
+        w:400,
+        h:300,
+        color:"#25374a",
+        important:true
+    },
+
+    {
+        id:"outerCity",
+        name:"OUTER CITY",
+        x:3900,
+        y:600,
+        w:400,
+        h:300,
+        color:"#253d30",
+        important:true
+    },
+
+    {
+        id:"res1",
+        name:"RESIDENTIAL",
+        x:600,
+        y:3600,
+        w:450,
+        h:400,
+        color:"#283244"
+    },
+
+    {
+        id:"res2",
+        name:"RESIDENTIAL",
+        x:3000,
+        y:3600,
+        w:450,
+        h:400,
+        color:"#283244"
+    },
+
+    {
+        id:"warehouse",
+        name:"WAREHOUSE",
+        x:1200,
+        y:1800,
+        w:450,
+        h:300,
+        color:"#26313d",
+        important:true
+    },
+
+    {
+        id:"government",
+        name:"GOVERNMENT",
+        x:2100,
+        y:1800,
+        w:450,
+        h:300,
+        color:"#302d3c"
+    },
+
+    {
+        id:"housing1",
+        name:"HOUSING BLOCK",
+        x:600,
+        y:600,
+        w:300,
+        h:450,
+        color:"#273246"
+    },
+
+    {
+        id:"housing2",
+        name:"HOUSING BLOCK",
+        x:3000,
+        y:600,
+        w:450,
+        h:450,
+        color:"#273246"
+    }
+];
+
+
+/* =========================================================
+   RANDOM BUILDINGS
+========================================================= */
+
+const randomBuildings = [];
+
+const randomLoot = [
+    "money",
+    "money",
+    "money",
+    "money",
+    "gear",
+    "ticket"
+];
+
+for(let gx=0;gx<6;gx++){
+
+    for(let gy=0;gy<5;gy++){
+
+        if(Math.random() > .38)
+            continue;
+
+        const x = gx * GRID + 390;
+        const y = gy * GRID + 330;
+
+        const overlaps = buildings.some(b=>
+            x < b.x+b.w+50 &&
+            x+240 > b.x-50 &&
+            y < b.y+b.h+50 &&
+            y+240 > b.y-50
         );
 
-    const closestY=
-        Math.max(
-            rect.y,
-            Math.min(
-                cy,
-                rect.y+rect.h
-            )
-        );
+        if(overlaps)
+            continue;
 
-    const dx=
-        cx-closestX;
+        randomBuildings.push({
 
-    const dy=
-        cy-closestY;
+            id:"random_"+randomBuildings.length,
 
-    return(
-        dx*dx+
-        dy*dy
-    )<
-    radius*radius;
+            name:"OLD BUILDING",
 
-}
+            x,
+            y,
 
+            w:240,
+            h:240,
 
-function isInsideBuilding(){
+            color:"#252d39",
 
-    /*
-        When inside a random building,
-        city collision is disabled because
-        the player has moved into its interior.
-    */
+            loot:
+                randomLoot[
+                    Math.floor(
+                        Math.random()*randomLoot.length
+                    )
+                ],
 
-    if(scene==="randomInterior"){
+            searched:false
 
-        return false;
-
-    }
-
-    if(
-        scene==="job" ||
-        scene==="store"
-    ){
-
-        return false;
-
-    }
-
-    for(
-        const building of buildings
-    ){
-
-        if(
-            circleRectCollision(
-                player.x,
-                player.y,
-                player.radius,
-                building
-            )
-        ){
-
-            return true;
-
-        }
-
-    }
-
-    return false;
-
-}
-
-
-function movePlayer(dx,dy){
-
-    const oldX=player.x;
-
-    const oldY=player.y;
-
-    player.x+=dx;
-
-    if(isInsideBuilding()){
-
-        player.x=oldX;
-
-    }
-
-    player.y+=dy;
-
-    if(isInsideBuilding()){
-
-        player.y=oldY;
+        });
 
     }
 
@@ -1296,98 +1060,172 @@ function movePlayer(dx,dy){
 
 
 /* =========================================================
-   KEYBOARD
+   NEIGHBOR CITY
 ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    e=>{
+const neighborBuildings = [
 
-        keys[e.key.toLowerCase()]=true;
+    {
+        id:"grocer",
+        name:"SUNRISE GROCER",
+        x:5400,
+        y:600,
+        w:600,
+        h:450,
+        color:"#38435b",
+        important:true
+    },
 
-        if(
-            e.code==="Space"
-        ){
+    {
+        id:"market",
+        name:"NIGHT MARKET",
+        x:6000,
+        y:1800,
+        w:600,
+        h:450,
+        color:"#45334d"
+    },
 
-            e.preventDefault();
+    {
+        id:"cafe",
+        name:"CAFE",
+        x:5400,
+        y:3000,
+        w:450,
+        h:300,
+        color:"#3e493d"
+    },
 
-            if(
-                document.getElementById(
-                    "dialogue"
-                ).style.display!=="none"
-            ){
+    {
+        id:"arcade",
+        name:"ARCADE",
+        x:6000,
+        y:3000,
+        w:450,
+        h:300,
+        color:"#44324d"
+    },
 
-                advanceDialogue();
+    {
+        id:"lab",
+        name:"HIDDEN CAKE LAB",
+        x:6600,
+        y:3900,
+        w:450,
+        h:300,
+        color:"#293d45",
+        important:true
+    },
 
-            }
-
-        }
-
-        if(
-            e.key.toLowerCase()==="e"
-        ){
-
-            interact();
-
-        }
-
+    {
+        id:"neighborHousing",
+        name:"HOUSING",
+        x:4800,
+        y:3000,
+        w:450,
+        h:300,
+        color:"#30384a"
     }
-);
 
-
-document.addEventListener(
-    "keyup",
-    e=>{
-
-        keys[e.key.toLowerCase()]=false;
-
-    }
-);
+];
 
 
 /* =========================================================
-   TIME
+   INTERIOR DATA
 ========================================================= */
 
-function addMinutes(minutes){
+const interior = {
+    width:900,
+    height:650
+};
 
-    player.minute+=minutes;
 
-    while(
-        player.minute>=60
-    ){
+/* =========================================================
+   DIALOGUE
+========================================================= */
 
-        player.minute-=60;
+let dialogueActive = false;
+let dialogueLines = [];
+let dialogueIndex = 0;
+let dialogueCallback = null;
 
-        player.hour++;
+function startDialogue(name,lines,callback){
 
+    dialogueActive=true;
+    dialogueLines=lines;
+    dialogueIndex=0;
+    dialogueCallback=callback||null;
+
+    document.getElementById("dialogueName").textContent=name;
+
+    document.getElementById("dialogueText").textContent=
+        dialogueLines[0];
+
+    document.getElementById("dialogue").style.display="block";
+}
+
+function advanceDialogue(){
+
+    if(!dialogueActive)
+        return;
+
+    dialogueIndex++;
+
+    if(dialogueIndex>=dialogueLines.length){
+
+        dialogueActive=false;
+
+        document.getElementById("dialogue").style.display="none";
+
+        const cb=dialogueCallback;
+
+        dialogueCallback=null;
+
+        if(cb)
+            cb();
+
+        return;
     }
 
-    while(
-        player.hour>=24
-    ){
-
-        player.hour-=24;
-
-    }
-
-    updateHUD();
-
+    document.getElementById("dialogueText").textContent=
+        dialogueLines[dialogueIndex];
 }
 
 
-function formatTime(){
+/* =========================================================
+   UI HELPERS
+========================================================= */
 
-    return String(
-        player.hour
-    ).padStart(2,"0")
-    +
-    ":"
-    +
-    String(
-        player.minute
-    ).padStart(2,"0");
+function showMessage(text){
 
+    const el=document.getElementById("message");
+
+    el.textContent=text;
+    el.style.display="block";
+
+    clearTimeout(showMessage.timer);
+
+    showMessage.timer=setTimeout(()=>{
+        el.style.display="none";
+    },2200);
+}
+
+function hideAllMenus(){
+
+    document
+        .querySelectorAll(".overlay")
+        .forEach(x=>x.style.display="none");
+
+}
+
+function openMenu(id){
+
+    document.getElementById(id).style.display="flex";
+}
+
+function closeMenu(id){
+
+    document.getElementById(id).style.display="none";
 }
 
 
@@ -1395,212 +1233,58 @@ function formatTime(){
    HUD
 ========================================================= */
 
+function formatTime(){
+
+    let h=Math.floor(gameMinutes/60);
+    let m=Math.floor(gameMinutes%60);
+
+    if(h>=24)
+        h-=24;
+
+    return String(h).padStart(2,"0")+":"+
+           String(m).padStart(2,"0");
+}
+
 function updateHUD(){
 
-    document.getElementById(
-        "money"
-    ).textContent=
-        "£"+
-        player.money.toFixed(2);
+    document.getElementById("money").textContent=
+        "£"+money.toFixed(2);
 
-    document.getElementById(
-        "time"
-    ).textContent=
+    document.getElementById("time").textContent=
         formatTime();
 
-}
+    let objective="Get ingredients for a cake.";
 
+    if(scene==="street"){
 
-/* =========================================================
-   MESSAGE
-========================================================= */
+        if(!hasTrainTicket && money<229.5)
+            objective="Work for money or find a train ticket.";
 
-let messageTimer=0;
+        else if(!hasTrainTicket)
+            objective="Reach Central Transit or hike to the neighbouring city.";
 
-function showMessage(text){
-
-    const el=
-        document.getElementById(
-            "message"
-        );
-
-    el.textContent=text;
-
-    el.style.display="block";
-
-    messageTimer=3;
-
-}
-
-
-/* =========================================================
-   OBJECTIVE
-========================================================= */
-
-function setObjective(text){
-
-    document.getElementById(
-        "objective"
-    ).textContent=text;
-
-}
-
-
-/* =========================================================
-   DIALOGUE
-========================================================= */
-
-let dialogueLines=[];
-
-let dialogueIndex=0;
-
-
-function startDialogue(lines){
-
-    dialogueLines=lines;
-
-    dialogueIndex=0;
-
-    document.getElementById(
-        "dialogue"
-    ).style.display="block";
-
-    showDialogue();
-
-}
-
-
-function showDialogue(){
-
-    const line=
-        dialogueLines[
-            dialogueIndex
-        ];
-
-    document.getElementById(
-        "dialogueName"
-    ).textContent=line.name;
-
-    document.getElementById(
-        "dialogueText"
-    ).textContent=line.text;
-
-}
-
-
-function advanceDialogue(){
-
-    dialogueIndex++;
-
-    if(
-        dialogueIndex>=
-        dialogueLines.length
-    ){
-
-        document.getElementById(
-            "dialogue"
-        ).style.display="none";
-
-        scene="street";
-
-        player.x=1500;
-
-        player.y=1200;
-
-        setObjective(
-            "Find a way to get ingredients for your cake."
-        );
-
-        return;
+        else
+            objective="Take the train to the neighbouring city.";
 
     }
 
-    showDialogue();
+    if(scene==="country")
+        objective="Survive the journey to the neighbouring city.";
 
-}
+    if(scene==="neighbor")
+        objective="Find the Sunrise Grocer and buy cake ingredients.";
 
+    if(scene==="neighborStore")
+        objective="Buy everything needed for the cake.";
 
-/* =========================================================
-   START
-========================================================= */
+    if(scene==="lab")
+        objective="Cook the cake.";
 
-document.getElementById(
-    "start"
-).addEventListener(
-    "click",
-    startGame
-);
+    if(cakeMade)
+        objective="Enjoy your cake.";
 
-
-function startGame(){
-
-    running=true;
-
-    document.getElementById(
-        "start"
-    ).style.display="none";
-
-    scene="apartment";
-
-    player.x=2500;
-
-    player.y=3000;
-
-    player.money=23;
-
-    player.inventory=[];
-
-    player.trainTickets=0;
-
-    player.hour=8;
-
-    player.minute=0;
-
-    startDialogue([
-
-        {
-            name:"YOU",
-            text:
-                "I want a cake."
-        },
-
-        {
-            name:"YOU",
-            text:
-                "Apparently flour, sugar and eggs are now considered luxury goods."
-        },
-
-        {
-            name:"NEWS SCREEN",
-            text:
-                "REMINDER: CAKE IS NOT A NECESSITY."
-        },
-
-        {
-            name:"YOU",
-            text:
-                "The neighbouring city still sells ingredients."
-        },
-
-        {
-            name:"YOU",
-            text:
-                "The train costs £229.50."
-        },
-
-        {
-            name:"YOU",
-            text:
-                "No chance. I'll walk."
-        }
-
-    ]);
-
-    lastTime=
-        performance.now();
-
-    requestAnimationFrame(loop);
-
+    document.getElementById("objective").textContent=
+        objective;
 }
 
 
@@ -1610,162 +1294,153 @@ function startGame(){
 
 function updatePlayer(dt){
 
-    if(
-        scene!=="street" &&
-        scene!=="country" &&
-        scene!=="apartment" &&
-        scene!=="job" &&
-        scene!=="randomInterior"
-    ){
-
+    if(dialogueActive)
         return;
 
-    }
+    const canMove =
+        scene==="street" ||
+        scene==="apartment" ||
+        scene==="country" ||
+        scene==="job" ||
+        scene==="warehouse" ||
+        scene==="neighbor" ||
+        scene==="neighborStore" ||
+        scene==="lab" ||
+        scene==="random";
+
+    if(!canMove)
+        return;
 
     let dx=0;
-
     let dy=0;
 
+    if(keys.left) dx--;
+    if(keys.right) dx++;
+    if(keys.up) dy--;
+    if(keys.down) dy++;
 
-    if(
-        keys["w"] ||
-        keys["arrowup"]
-    ){
+    if(dx===0 && dy===0)
+        return;
 
-        dy--;
+    const len=Math.hypot(dx,dy);
 
-        player.direction="up";
+    dx/=len;
+    dy/=len;
 
-    }
+    if(Math.abs(dx)>Math.abs(dy)){
 
+        player.dir=dx>0?"right":"left";
 
-    if(
-        keys["s"] ||
-        keys["arrowdown"]
-    ){
+    }else{
 
-        dy++;
-
-        player.direction="down";
-
-    }
-
-
-    if(
-        keys["a"] ||
-        keys["arrowleft"]
-    ){
-
-        dx--;
-
-        player.direction="left";
+        player.dir=dy>0?"down":"up";
 
     }
 
+    const oldX=player.x;
+    const oldY=player.y;
 
-    if(
-        keys["d"] ||
-        keys["arrowright"]
-    ){
+    player.x+=dx*player.speed*dt;
+    player.y+=dy*player.speed*dt;
 
-        dx++;
+    if(scene==="street"){
 
-        player.direction="right";
+        if(isInsideAnyBuilding(player.x,player.y)){
 
-    }
-
-
-    if(dx||dy){
-
-        const len=
-            Math.hypot(
-                dx,
-                dy
-            );
-
-        dx/=len;
-
-        dy/=len;
-
-
-        if(
-            scene==="randomInterior"
-        ){
-
-            /*
-                Small interior.
-            */
-
-            player.x=
-                Math.max(
-                    100,
-                    Math.min(
-                        W-100,
-                        player.x+
-                        dx*
-                        player.speed*
-                        dt
-                    )
-                );
-
-            player.y=
-                Math.max(
-                    100,
-                    Math.min(
-                        H-100,
-                        player.y+
-                        dy*
-                        player.speed*
-                        dt
-                    )
-                );
-
-        }
-        else if(
-            scene==="job"
-        ){
-
-            player.x=
-                Math.max(
-                    120,
-                    Math.min(
-                        W-120,
-                        player.x+
-                        dx*
-                        player.speed*
-                        dt
-                    )
-                );
-
-            player.y=
-                Math.max(
-                    120,
-                    Math.min(
-                        H-120,
-                        player.y+
-                        dy*
-                        player.speed*
-                        dt
-                    )
-                );
-
-        }
-        else{
-
-            movePlayer(
-                dx*
-                player.speed*
-                dt,
-
-                dy*
-                player.speed*
-                dt
-            );
+            player.x=oldX;
+            player.y=oldY;
 
         }
 
     }
 
+    if(scene==="neighbor"){
+
+        if(isInsideNeighborBuilding(player.x,player.y)){
+
+            player.x=oldX;
+            player.y=oldY;
+
+        }
+
+    }
+
+    if(scene==="country"){
+
+        player.x=Math.max(
+            100,
+            Math.min(world.width-100,player.x)
+        );
+
+        player.y=Math.max(
+            100,
+            Math.min(world.height-100,player.y)
+        );
+
+    }
+
+    if(
+        scene==="job" ||
+        scene==="warehouse" ||
+        scene==="neighborStore" ||
+        scene==="lab" ||
+        scene==="random"
+    ){
+
+        player.x=Math.max(
+            player.radius,
+            Math.min(
+                interior.width-player.radius,
+                player.x
+            )
+        );
+
+        player.y=Math.max(
+            player.radius,
+            Math.min(
+                interior.height-player.radius,
+                player.y
+            )
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COLLISION
+========================================================= */
+
+function circleRectCollision(cx,cy,r,b){
+
+    const closestX=
+        Math.max(b.x,Math.min(cx,b.x+b.w));
+
+    const closestY=
+        Math.max(b.y,Math.min(cy,b.y+b.h));
+
+    return Math.hypot(
+        cx-closestX,
+        cy-closestY
+    )<r;
+}
+
+function isInsideAnyBuilding(x,y){
+
+    return [
+        ...buildings,
+        ...randomBuildings
+    ].some(b=>
+        circleRectCollision(x,y,player.radius,b)
+    );
+}
+
+function isInsideNeighborBuilding(x,y){
+
+    return neighborBuildings.some(b=>
+        circleRectCollision(x,y,player.radius,b)
+    );
 }
 
 
@@ -1775,354 +1450,95 @@ function updatePlayer(dt){
 
 function updateCamera(){
 
-    camera.x=
-        player.x-W/2;
+    camera.x=player.x-W/2;
+    camera.y=player.y-H/2;
 
-    camera.y=
-        player.y-H/2;
+    camera.x=Math.max(
+        0,
+        Math.min(world.width-W,camera.x)
+    );
 
-    camera.x=
-        Math.max(
-            0,
-            Math.min(
-                world.width-W,
-                camera.x
-            )
-        );
-
-    camera.y=
-        Math.max(
-            0,
-            Math.min(
-                world.height-H,
-                camera.y
-            )
-        );
-
+    camera.y=Math.max(
+        0,
+        Math.min(world.height-H,camera.y)
+    );
 }
 
 
 /* =========================================================
-   PLAYER
+   GRID
 ========================================================= */
 
-function drawPlayer(){
-
-    const x=
-        scene==="job" ||
-        scene==="randomInterior"
-        ?player.x
-        :player.x-camera.x;
-
-    const y=
-        scene==="job" ||
-        scene==="randomInterior"
-        ?player.y
-        :player.y-camera.y;
-
-    const bob=
-        Math.sin(
-            performance.now()/120
-        )*2;
+function drawGrid(){
 
     ctx.save();
 
-    ctx.translate(
-        x,
-        y+bob
-    );
+    ctx.strokeStyle="rgba(255,255,255,.045)";
+    ctx.lineWidth=1;
 
+    const startX=
+        Math.floor(camera.x/GRID)*GRID;
 
-    /*
-        LEGS
-    */
+    const startY=
+        Math.floor(camera.y/GRID)*GRID;
 
-    ctx.fillStyle="#111827";
-
-    ctx.fillRect(
-        -11,
-        7,
-        9,
-        17
-    );
-
-    ctx.fillRect(
-        2,
-        7,
-        9,
-        17
-    );
-
-
-    /*
-        BODY
-    */
-
-    ctx.fillStyle="#334155";
-
-    ctx.fillRect(
-        -15,
-        -9,
-        30,
-        22
-    );
-
-
-    /*
-        HEAD
-    */
-
-    ctx.fillStyle="#e6b891";
-
-    ctx.fillRect(
-        -11,
-        -25,
-        22,
-        17
-    );
-
-
-    /*
-        HAIR
-    */
-
-    ctx.fillStyle="#111827";
-
-    ctx.fillRect(
-        -13,
-        -27,
-        26,
-        7
-    );
-
-
-    /*
-        FACE
-
-        Up = back view
-    */
-
-    if(
-        player.direction!=="up"
+    for(
+        let x=startX;
+        x<=camera.x+W;
+        x+=GRID
     ){
 
-        ctx.fillStyle="#111827";
+        ctx.beginPath();
 
-        if(
-            player.direction==="left"
-        ){
+        ctx.moveTo(
+            x-camera.x,
+            0
+        );
 
-            ctx.fillRect(
-                -13,
-                -4,
-                4,
-                3
-            );
+        ctx.lineTo(
+            x-camera.x,
+            H
+        );
 
-        }
-        else if(
-            player.direction==="right"
-        ){
+        ctx.stroke();
 
-            ctx.fillRect(
-                9,
-                -4,
-                4,
-                3
-            );
+    }
 
-        }
-        else{
+    for(
+        let y=startY;
+        y<=camera.y+H;
+        y+=GRID
+    ){
 
-            ctx.fillRect(
-                -7,
-                -3,
-                3,
-                3
-            );
+        ctx.beginPath();
 
-            ctx.fillRect(
-                4,
-                -3,
-                3,
-                3
-            );
+        ctx.moveTo(
+            0,
+            y-camera.y
+        );
 
-        }
+        ctx.lineTo(
+            W,
+            y-camera.y
+        );
+
+        ctx.stroke();
 
     }
 
     ctx.restore();
-
 }
 
 
 /* =========================================================
-   APARTMENT
+   ROADS
 ========================================================= */
 
-function drawApartment(){
+function drawRoads(){
 
-    ctx.fillStyle="#151a25";
+    ctx.save();
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-    ctx.fillStyle="#252b39";
-
-    ctx.fillRect(
-        100,
-        80,
-        W-200,
-        H-160
-    );
-
-    ctx.fillStyle="#050b16";
-
-    ctx.fillRect(
-        150,
-        140,
-        300,
-        180
-    );
-
-    ctx.fillStyle="#193b5c";
-
-    ctx.fillRect(
-        160,
-        150,
-        280,
-        160
-    );
-
-    ctx.fillStyle="#05070d";
-
-    ctx.fillRect(
-        W-430,
-        150,
-        280,
-        180
-    );
-
-    ctx.fillStyle="#2563eb";
-
-    ctx.fillRect(
-        W-420,
-        160,
-        260,
-        160
-    );
-
-    ctx.fillStyle="#fff";
-
-    ctx.font="bold 22px Arial";
-
-    ctx.fillText(
-        "2077",
-        W-330,
-        245
-    );
-
-    ctx.fillStyle="#111827";
-
-    ctx.fillRect(
-        180,
-        H-270,
-        350,
-        110
-    );
-
-    ctx.fillStyle="#5b402c";
-
-    ctx.fillRect(
-        W/2-100,
-        H-300,
-        200,
-        90
-    );
-
-    drawPlayer();
-
-}
-
-
-/* =========================================================
-   CITY
-========================================================= */
-
-function drawCity(){
-
-    ctx.fillStyle="#070a10";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    /*
-        BLOCKS
-    */
-
-    const startX=
-        Math.floor(
-            camera.x/GRID
-        )*GRID;
-
-    const startY=
-        Math.floor(
-            camera.y/GRID
-        )*GRID;
-
-
-    for(
-        let x=startX;
-        x<camera.x+W+GRID;
-        x+=GRID
-    ){
-
-        for(
-            let y=startY;
-            y<camera.y+H+GRID;
-            y+=GRID
-        ){
-
-            ctx.fillStyle="#101722";
-
-            ctx.fillRect(
-                x-camera.x,
-                y-camera.y,
-                GRID,
-                GRID
-            );
-
-            ctx.strokeStyle=
-                "rgba(255,255,255,.035)";
-
-            ctx.strokeRect(
-                x-camera.x,
-                y-camera.y,
-                GRID,
-                GRID
-            );
-
-        }
-
-    }
-
-
-    /*
-        ROADS
-    */
-
-    ctx.fillStyle="#05070c";
-
+    ctx.fillStyle="#151c26";
 
     for(
         let x=0;
@@ -2139,7 +1555,6 @@ function drawCity(){
 
     }
 
-
     for(
         let y=0;
         y<world.height;
@@ -2155,667 +1570,437 @@ function drawCity(){
 
     }
 
-
-    /*
-        SIDEWALKS
-    */
-
-    ctx.fillStyle="#18202b";
-
-
-    for(
-        let x=ROAD;
-        x<world.width;
-        x+=GRID
-    ){
-
-        ctx.fillRect(
-            x-camera.x,
-            0,
-            25,
-            H
-        );
-
-    }
-
-
-    for(
-        let y=ROAD;
-        y<world.height;
-        y+=GRID
-    ){
-
-        ctx.fillRect(
-            0,
-            y-camera.y,
-            W,
-            25
-        );
-
-    }
-
-
-    /*
-        ROAD MARKINGS
-    */
-
-    ctx.strokeStyle=
-        "rgba(220,220,220,.18)";
-
-    ctx.lineWidth=2;
-
-
-    for(
-        let x=ROAD/2;
-        x<world.width;
-        x+=GRID
-    ){
-
-        for(
-            let y=0;
-            y<world.height;
-            y+=70
-        ){
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x-camera.x,
-                y-camera.y
-            );
-
-            ctx.lineTo(
-                x-camera.x,
-                y+35-camera.y
-            );
-
-            ctx.stroke();
-
-        }
-
-    }
-
-
-    for(
-        let y=ROAD/2;
-        y<world.height;
-        y+=GRID
-    ){
-
-        for(
-            let x=0;
-            x<world.width;
-            x+=70
-        ){
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x-camera.x,
-                y-camera.y
-            );
-
-            ctx.lineTo(
-                x+35-camera.x,
-                y-camera.y
-            );
-
-            ctx.stroke();
-
-        }
-
-    }
-
-
-    drawCrosswalks();
-
-
-    /*
-        BUILDINGS
-    */
-
-    for(
-        const building of buildings
-    ){
-
-        drawCityBuilding(
-            building
-        );
-
-    }
-
-
-    /*
-        DIRECTIONAL ARROWS
-    */
-
-    drawDirectionArrow(
-        1450,
-        950,
-        "CITY MART",
-        1,
-        0
-    );
-
-    drawDirectionArrow(
-        2800,
-        1500,
-        "TRAIN",
-        1,
-        0
-    );
-
-    drawDirectionArrow(
-        3650,
-        1000,
-        "TRAIL",
-        0,
-        -1
-    );
-
-
-    /*
-        PROPAGANDA
-    */
-
-    drawSign(
-        1100,
-        1200,
-        "SAVE MONEY",
-        "#22d3ee"
-    );
-
-    drawSign(
-        3000,
-        1200,
-        "CAKE IS NOT A NECESSITY",
-        "#ef4444"
-    );
-
-    drawSign(
-        1100,
-        2700,
-        "NON-ESSENTIAL GOODS ARE WASTEFUL",
-        "#f59e0b"
-    );
-
-    drawSign(
-        3900,
-        2700,
-        "ECONOMIC STABILITY",
-        "#a78bfa"
-    );
-
-
-    drawPlayer();
-
+    ctx.restore();
 }
 
 
 /* =========================================================
-   CITY BUILDING
+   BUILDINGS
 ========================================================= */
 
-function drawCityBuilding(
-    building
-){
+function drawCityBuilding(b){
 
-    const x=
-        building.x-camera.x;
+    const x=b.x-camera.x;
+    const y=b.y-camera.y;
 
-    const y=
-        building.y-camera.y;
+    ctx.save();
 
-
-    /*
-        SHADOW
-    */
-
-    ctx.fillStyle=
-        "rgba(0,0,0,.5)";
-
-    ctx.fillRect(
-        x+12,
-        y+15,
-        building.w,
-        building.h
-    );
-
-
-    /*
-        BUILDING
-    */
-
-    ctx.fillStyle=
-        building.color;
+    ctx.fillStyle=b.color;
 
     ctx.fillRect(
         x,
         y,
-        building.w,
-        building.h
+        b.w,
+        b.h
     );
 
+    ctx.strokeStyle="rgba(255,255,255,.12)";
+    ctx.lineWidth=3;
 
-    /*
-        ROOF
-    */
-
-    ctx.fillStyle="#334155";
-
-    ctx.fillRect(
+    ctx.strokeRect(
         x,
         y,
-        building.w,
-        12
+        b.w,
+        b.h
     );
 
-
-    /*
-        WINDOWS
-    */
-
-    ctx.fillStyle="#172033";
-
-    const cols=
-        Math.max(
-            2,
-            Math.floor(
-                building.w/75
-            )
-        );
-
-    const rows=
-        Math.max(
-            2,
-            Math.floor(
-                building.h/75
-            )
-        );
-
+    /* windows */
 
     for(
-        let cx=0;
-        cx<cols;
-        cx++
+        let wx=x+25;
+        wx<b.x+b.w-camera.x-15;
+        wx+=55
     ){
 
         for(
-            let cy=0;
-            cy<rows;
-            cy++
+            let wy=y+35;
+            wy<b.y+b.h-camera.y-20;
+            wy+=55
         ){
 
-            const wx=
-                x+
-                25+
-                cx*
-                (
-                    (building.w-50)/
-                    cols
-                );
-
-            const wy=
-                y+
-                35+
-                cy*
-                (
-                    (building.h-60)/
-                    rows
-                );
+            ctx.fillStyle=
+                "rgba(120,170,210,.09)";
 
             ctx.fillRect(
                 wx,
                 wy,
-                25,
-                32
+                28,
+                22
             );
 
         }
 
     }
 
+    /* sign */
 
-    /*
-        DOOR
-    */
+    if(b.important){
 
-    const doorX=
-        x+
-        building.w/2-
-        25;
+        ctx.fillStyle="rgba(5,10,18,.8)";
 
-    const doorY=
-        y+
-        building.h-
-        65;
-
-
-    ctx.fillStyle="#05070d";
-
-    ctx.fillRect(
-        doorX,
-        doorY,
-        50,
-        65
-    );
-
-
-    /*
-        ENTERABLE DOOR GLOW
-    */
-
-    if(
-        building.enterable
-    ){
-
-        ctx.strokeStyle=
-            "rgba(34,211,238,.7)";
-
-        ctx.lineWidth=2;
-
-        ctx.strokeRect(
-            doorX-4,
-            doorY-4,
-            58,
-            73
+        ctx.fillRect(
+            x+12,
+            y+12,
+            Math.min(b.w-24,240),
+            30
         );
 
-    }
-
-
-    /*
-        SIGN
-    */
-
-    ctx.fillStyle=
-        "rgba(3,7,18,.92)";
-
-    ctx.fillRect(
-        x+15,
-        y+15,
-        building.w-30,
-        48
-    );
-
-    ctx.strokeStyle=
-        "rgba(96,165,250,.55)";
-
-    ctx.strokeRect(
-        x+15,
-        y+15,
-        building.w-30,
-        48
-    );
-
-    ctx.fillStyle="#e2e8f0";
-
-    ctx.font=
-        "bold 15px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.fillText(
-        building.name,
-        x+
-        building.w/2,
-        y+45
-    );
-
-    ctx.textAlign="left";
-
-
-    /*
-        SMALL ENTERABLE LABEL
-    */
-
-    if(
-        building.enterable
-    ){
-
-        ctx.fillStyle="#67e8f9";
-
-        ctx.font=
-            "bold 11px Arial";
-
-        ctx.textAlign="center";
+        ctx.fillStyle="#dbeafe";
+        ctx.font="bold 13px Arial";
 
         ctx.fillText(
-            "ENTER",
-            doorX+25,
-            doorY+82
+            b.name,
+            x+20,
+            y+32
         );
-
-        ctx.textAlign="left";
 
     }
 
+    ctx.restore();
 }
 
 
 /* =========================================================
-   DIRECTION ARROWS
+   CITY SIGNS
 ========================================================= */
 
-function drawDirectionArrow(
-    x,
-    y,
-    label,
-    dx,
-    dy
-){
-
-    const sx=
-        x-camera.x;
-
-    const sy=
-        y-camera.y;
-
-    if(
-        sx<-150 ||
-        sx>W+150 ||
-        sy<-150 ||
-        sy>H+150
-    ){
-
-        return;
-
+const signs=[
+    {
+        x:1500,
+        y:900,
+        text:"SAVE MONEY"
+    },
+    {
+        x:2400,
+        y:1200,
+        text:"CAKE IS NOT A NECESSITY"
+    },
+    {
+        x:3600,
+        y:2700,
+        text:"NON-ESSENTIAL GOODS ARE WASTEFUL"
+    },
+    {
+        x:900,
+        y:2700,
+        text:"ECONOMIC STABILITY"
     }
+];
 
+function drawSign(s){
+
+    const x=s.x-camera.x;
+    const y=s.y-camera.y;
+
+    ctx.save();
+
+    ctx.fillStyle="rgba(8,13,22,.9)";
+    ctx.fillRect(
+        x-100,
+        y-24,
+        200,
+        48
+    );
+
+    ctx.strokeStyle="rgba(100,150,200,.25)";
+    ctx.strokeRect(
+        x-100,
+        y-24,
+        200,
+        48
+    );
+
+    ctx.fillStyle="#94a3b8";
+    ctx.font="bold 11px Arial";
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        s.text,
+        x,
+        y+4
+    );
+
+    ctx.restore();
+}
+
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+function drawWorldArrow(x,y,label){
+
+    const sx=x-camera.x;
+    const sy=y-camera.y;
+
+    const pulse=
+        Math.sin(performance.now()/250)*4;
 
     ctx.save();
 
     ctx.translate(
         sx,
-        sy
+        sy+pulse
     );
 
-    const angle=
-        Math.atan2(
-            dy,
-            dx
-        );
-
-    ctx.rotate(angle);
-
-    ctx.shadowBlur=15;
-
-    ctx.shadowColor="#22d3ee";
-
-    ctx.fillStyle=
-        "rgba(34,211,238,.9)";
-
+    ctx.fillStyle="#60a5fa";
 
     ctx.beginPath();
 
-    ctx.moveTo(35,0);
-
-    ctx.lineTo(5,-18);
-
-    ctx.lineTo(5,-7);
-
-    ctx.lineTo(-35,-7);
-
-    ctx.lineTo(-35,7);
-
-    ctx.lineTo(5,7);
-
-    ctx.lineTo(5,18);
+    ctx.moveTo(0,-28);
+    ctx.lineTo(-13,-8);
+    ctx.lineTo(-5,-8);
+    ctx.lineTo(-5,15);
+    ctx.lineTo(5,15);
+    ctx.lineTo(5,-8);
+    ctx.lineTo(13,-8);
 
     ctx.closePath();
 
     ctx.fill();
 
-
-    ctx.rotate(-angle);
-
-    ctx.shadowBlur=0;
-
-    ctx.fillStyle="#e0f2fe";
-
-    ctx.font=
-        "bold 13px Arial";
-
+    ctx.font="bold 12px Arial";
     ctx.textAlign="center";
-
-    ctx.fillText(
-        label,
-        0,
-        38
-    );
+    ctx.fillText(label,0,35);
 
     ctx.restore();
+}
+
+
+/* =========================================================
+   RANDOM BUILDINGS
+========================================================= */
+
+function drawRandomBuildings(){
+
+    for(const b of randomBuildings)
+        drawCityBuilding(b);
 
 }
 
 
 /* =========================================================
-   CROSSWALKS
+   PLAYER
 ========================================================= */
 
-function drawCrosswalks(){
+function drawPlayer(){
 
-    ctx.fillStyle=
-        "rgba(255,255,255,.12)";
+    let x;
+    let y;
 
-
-    for(
-        let y=0;
-        y<world.height;
-        y+=GRID
+    if(
+        scene==="street" ||
+        scene==="neighbor" ||
+        scene==="country"
     ){
 
-        for(
-            let i=0;
-            i<7;
-            i++
-        ){
+        x=player.x-camera.x;
+        y=player.y-camera.y;
 
-            ctx.fillRect(
-                ROAD+20,
-                y+20+i*12-camera.y,
-                90,
-                6
-            );
+    }else{
 
-        }
+        x=player.x;
+        y=player.y;
 
     }
-
-
-    for(
-        let x=0;
-        x<world.width;
-        x+=GRID
-    ){
-
-        for(
-            let i=0;
-            i<7;
-            i++
-        ){
-
-            ctx.fillRect(
-                x+20+i*12-camera.x,
-                ROAD+20,
-                6,
-                90
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   SIGNS
-========================================================= */
-
-function drawSign(
-    x,
-    y,
-    text,
-    color
-){
-
-    const sx=
-        x-camera.x;
-
-    const sy=
-        y-camera.y;
 
     ctx.save();
 
-    ctx.shadowBlur=18;
+    /* shadow */
 
-    ctx.shadowColor=color;
+    ctx.fillStyle="rgba(0,0,0,.35)";
 
-    ctx.fillStyle=
-        "rgba(3,7,18,.9)";
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y+14,
+        17,
+        7,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    /* body */
+
+    ctx.fillStyle="#2563eb";
 
     ctx.fillRect(
-        sx,
-        sy,
-        360,
-        65
+        x-12,
+        y-5,
+        24,
+        28
     );
 
-    ctx.shadowBlur=0;
+    /* head */
 
-    ctx.strokeStyle=color;
+    ctx.fillStyle="#f1c7a5";
 
-    ctx.strokeRect(
-        sx,
-        sy,
-        360,
-        65
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y-14,
+        10,
+        0,
+        Math.PI*2
     );
 
-    ctx.fillStyle=color;
+    ctx.fill();
 
-    ctx.font=
-        "bold 14px Arial";
+    /* hair */
 
-    ctx.fillText(
-        text,
-        sx+15,
-        sy+39
+    ctx.fillStyle="#172033";
+
+    ctx.fillRect(
+        x-10,
+        y-23,
+        20,
+        6
     );
+
+    /* direction details */
+
+    if(player.dir==="down"){
+
+        ctx.fillStyle="#111827";
+
+        ctx.fillRect(
+            x-5,
+            y-16,
+            3,
+            3
+        );
+
+        ctx.fillRect(
+            x+2,
+            y-16,
+            3,
+            3
+        );
+
+    }
+
+    if(player.dir==="left"){
+
+        ctx.fillStyle="#111827";
+
+        ctx.fillRect(
+            x-8,
+            y-17,
+            3,
+            3
+        );
+
+    }
+
+    if(player.dir==="right"){
+
+        ctx.fillStyle="#111827";
+
+        ctx.fillRect(
+            x+5,
+            y-17,
+            3,
+            3
+        );
+
+    }
 
     ctx.restore();
-
 }
 
 
 /* =========================================================
-   STORE INTERIOR
+   RAIN
 ========================================================= */
 
-function drawStoreInterior(){
+const rain=[];
 
-    ctx.fillStyle="#111827";
+for(let i=0;i<220;i++){
+
+    rain.push({
+
+        x:Math.random()*W,
+        y:Math.random()*H,
+
+        speed:
+            350+Math.random()*300,
+
+        length:
+            10+Math.random()*18
+
+    });
+
+}
+
+function updateRain(dt){
+
+    for(const r of rain){
+
+        r.y+=r.speed*dt;
+
+        if(r.y>H+30){
+
+            r.y=-30;
+            r.x=Math.random()*W;
+
+        }
+
+    }
+
+}
+
+function drawRain(){
+
+    if(scene==="neighbor")
+        return;
+
+    if(scene!=="street" && scene!=="country")
+        return;
+
+    ctx.save();
+
+    ctx.strokeStyle="rgba(150,190,230,.22)";
+    ctx.lineWidth=1;
+
+    for(const r of rain){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            r.x,
+            r.y
+        );
+
+        ctx.lineTo(
+            r.x-4,
+            r.y+r.length
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+}
+
+
+/* =========================================================
+   NEIGHBOR CITY
+========================================================= */
+
+function drawNeighborCity(){
+
+    /*
+       Same original dark visual language,
+       but this district is more lively and colourful.
+    */
+
+    ctx.fillStyle="#171b28";
 
     ctx.fillRect(
         0,
@@ -2824,7 +2009,226 @@ function drawStoreInterior(){
         H
     );
 
-    ctx.fillStyle="#1e293b";
+    drawRoads();
+
+    for(const b of neighborBuildings)
+        drawCityBuilding(b);
+
+    /* colourful storefront lights */
+
+    const lights=[
+        [5480,560,"#f472b6"],
+        [5660,560,"#22d3ee"],
+        [5840,560,"#facc15"],
+        [6020,560,"#a78bfa"],
+
+        [6080,1760,"#22d3ee"],
+        [6260,1760,"#f472b6"],
+        [6440,1760,"#facc15"],
+
+        [5470,2960,"#4ade80"],
+        [5630,2960,"#22d3ee"],
+        [6140,2960,"#f472b6"],
+        [6300,2960,"#a78bfa"]
+    ];
+
+    for(const l of lights){
+
+        const x=l[0]-camera.x;
+        const y=l[1]-camera.y;
+
+        ctx.save();
+
+        ctx.shadowBlur=18;
+        ctx.shadowColor=l[2];
+
+        ctx.fillStyle=l[2];
+
+        ctx.fillRect(
+            x,
+            y,
+            55,
+            7
+        );
+
+        ctx.restore();
+
+    }
+
+    /* market stalls */
+
+    for(let i=0;i<7;i++){
+
+        const x=4920+i*150-camera.x;
+        const y=2250-camera.y;
+
+        ctx.fillStyle=[
+            "#26384a",
+            "#493147",
+            "#354834"
+        ][i%3];
+
+        ctx.fillRect(
+            x,
+            y,
+            110,
+            70
+        );
+
+        ctx.fillStyle="#b8c5d8";
+
+        ctx.fillRect(
+            x+10,
+            y+10,
+            90,
+            8
+        );
+
+    }
+
+    /* plants */
+
+    for(let i=0;i<12;i++){
+
+        const x=
+            4800+(i*113)%1700-camera.x;
+
+        const y=
+            1050+(i*173)%2700-camera.y;
+
+        ctx.fillStyle="#31523c";
+
+        ctx.fillRect(
+            x,
+            y,
+            13,
+            30
+        );
+
+        ctx.fillStyle="#477957";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x+6,
+            y-2,
+            15,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+    /* city billboards */
+
+    const boards=[
+        [5100,1350,"FRESH FOOD"," #22d3ee"],
+        [6250,1200,"LIVE WELL"," #f472b6"],
+        [5200,3450,"OPEN MARKET"," #facc15"]
+    ];
+
+    for(const b of boards){
+
+        const x=b[0]-camera.x;
+        const y=b[1]-camera.y;
+
+        ctx.save();
+
+        ctx.fillStyle="rgba(10,15,25,.9)";
+        ctx.fillRect(x,y,210,55);
+
+        ctx.strokeStyle="#475569";
+        ctx.strokeRect(x,y,210,55);
+
+        ctx.fillStyle=b[3].trim();
+
+        ctx.font="bold 14px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            b[2],
+            x+105,
+            y+34
+        );
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================================================
+   WORLD DRAW
+========================================================= */
+
+function drawStreet(){
+
+    ctx.fillStyle="#111722";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawRoads();
+    drawGrid();
+
+    for(const b of buildings)
+        drawCityBuilding(b);
+
+    drawRandomBuildings();
+
+    for(const s of signs)
+        drawSign(s);
+
+    drawWorldArrow(
+        2250,
+        670,
+        "WORK"
+    );
+
+    drawWorldArrow(
+        1425,
+        2170,
+        "GEAR"
+    );
+
+    drawWorldArrow(
+        3500,
+        2170,
+        "TRAIN"
+    );
+
+    drawWorldArrow(
+        4100,
+        970,
+        "HIKE"
+    );
+
+}
+
+
+/* =========================================================
+   APARTMENT
+========================================================= */
+
+function drawApartment(){
+
+    ctx.fillStyle="#171d28";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    ctx.fillStyle="#252d3b";
 
     ctx.fillRect(
         80,
@@ -2833,68 +2237,132 @@ function drawStoreInterior(){
         H-160
     );
 
+    ctx.strokeStyle="rgba(255,255,255,.12)";
+    ctx.lineWidth=4;
 
-    for(
-        let i=0;
-        i<5;
-        i++
-    ){
+    ctx.strokeRect(
+        80,
+        80,
+        W-160,
+        H-160
+    );
 
-        ctx.fillStyle="#334155";
+    /* bed */
 
-        ctx.fillRect(
-            120+i*170,
-            180,
-            120,
-            300
-        );
+    ctx.fillStyle="#202b3c";
 
-        ctx.fillStyle="#fbbf24";
+    ctx.fillRect(
+        W*.15,
+        H*.25,
+        210,
+        130
+    );
 
-        ctx.fillRect(
-            140+i*170,
-            220,
-            80,
-            25
-        );
+    /* table */
 
-        ctx.fillStyle="#60a5fa";
+    ctx.fillStyle="#34302c";
 
-        ctx.fillRect(
-            140+i*170,
-            280,
-            80,
-            25
-        );
+    ctx.fillRect(
+        W*.65,
+        H*.3,
+        190,
+        100
+    );
+
+    /* cake poster */
+
+    ctx.fillStyle="#1e293b";
+
+    ctx.fillRect(
+        W*.42,
+        H*.15,
+        180,
+        120
+    );
+
+    ctx.fillStyle="#94a3b8";
+    ctx.font="bold 17px Arial";
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "CAKE",
+        W*.51,
+        H*.215
+    );
+
+    ctx.font="12px Arial";
+
+    ctx.fillText(
+        "A completely reasonable goal.",
+        W*.51,
+        H*.25
+    );
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   INTERIORS
+========================================================= */
+
+function drawInteriorBase(){
+
+    ctx.fillStyle="#151b25";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    ctx.fillStyle="#202936";
+
+    ctx.fillRect(
+        40,
+        40,
+        W-80,
+        H-80
+    );
+
+    ctx.strokeStyle="rgba(255,255,255,.13)";
+    ctx.lineWidth=4;
+
+    ctx.strokeRect(
+        40,
+        40,
+        W-80,
+        H-80
+    );
+
+    /* floor grid */
+
+    ctx.strokeStyle="rgba(255,255,255,.035)";
+    ctx.lineWidth=1;
+
+    for(let x=40;x<W-40;x+=60){
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,40);
+        ctx.lineTo(x,H-40);
+
+        ctx.stroke();
 
     }
 
+    for(let y=40;y<H-40;y+=60){
 
-    ctx.fillStyle="#0f172a";
+        ctx.beginPath();
 
-    ctx.fillRect(
-        130,
-        H-230,
-        W-260,
-        80
-    );
+        ctx.moveTo(40,y);
+        ctx.lineTo(W-40,y);
 
+        ctx.stroke();
 
-    ctx.fillStyle="#f1f5f9";
-
-    ctx.font="bold 22px Arial";
-
-    ctx.fillText(
-        "GENERAL STORE",
-        150,
-        H-260
-    );
-
-
-    drawCharacter(
-        W/2,
-        H-270
-    );
+    }
 
 }
 
@@ -2905,147 +2373,302 @@ function drawStoreInterior(){
 
 function drawJobInterior(){
 
-    ctx.fillStyle="#111827";
+    drawInteriorBase();
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
+    /* checkout */
 
+    for(let i=0;i<3;i++){
 
-    ctx.fillStyle="#1e293b";
+        const x=130+i*210;
 
-    ctx.fillRect(
-        80,
-        80,
-        W-160,
-        H-160
-    );
+        ctx.fillStyle="#303b49";
 
-
-    /*
-        CHECKOUT
-    */
-
-    ctx.fillStyle="#020617";
-
-    ctx.fillRect(
-        120,
-        H-260,
-        W-240,
-        90
-    );
-
-
-    for(
-        let x=150;
-        x<W-150;
-        x+=50
-    ){
-
-        ctx.fillStyle="#475569";
-
-        ctx.beginPath();
-
-        ctx.arc(
+        ctx.fillRect(
             x,
-            H-215,
-            15,
-            0,
-            Math.PI*2
+            170,
+            170,
+            85
         );
 
-        ctx.fill();
+        ctx.fillStyle="#111827";
+
+        ctx.fillRect(
+            x+55,
+            185,
+            60,
+            30
+        );
+
+        ctx.fillStyle="#64748b";
+
+        ctx.fillRect(
+            x+10,
+            225,
+            150,
+            12
+        );
 
     }
 
+    /* manager */
 
-    ctx.fillStyle="#334155";
-
-    ctx.fillRect(
-        W/2-100,
-        H-360,
-        200,
-        100
+    drawCharacter(
+        700,
+        180,
+        "#64748b"
     );
 
+    /* exit */
 
-    ctx.fillStyle="#60a5fa";
-
-    ctx.fillRect(
-        W/2-65,
-        H-335,
-        130,
-        50
-    );
-
-
-    ctx.fillStyle="#e2e8f0";
-
-    ctx.font="bold 24px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.fillText(
-        "CITY MART",
-        W/2,
-        140
-    );
-
-
-    /*
-        EXIT DOOR
-    */
-
-    ctx.fillStyle="#020617";
+    ctx.fillStyle="#0f172a";
 
     ctx.fillRect(
         W/2-45,
-        H-165,
+        H-80,
         90,
-        85
+        40
     );
 
-
-    ctx.strokeStyle=
-        "rgba(34,211,238,.7)";
-
-    ctx.strokeRect(
-        W/2-49,
-        H-169,
-        98,
-        93
-    );
-
-
-    ctx.fillStyle="#22d3ee";
-
-    ctx.font="bold 14px Arial";
+    ctx.fillStyle="#94a3b8";
+    ctx.font="bold 12px Arial";
+    ctx.textAlign="center";
 
     ctx.fillText(
         "EXIT",
         W/2,
-        H-125
+        H-55
     );
 
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   WAREHOUSE INTERIOR
+========================================================= */
+
+function drawWarehouseInterior(){
+
+    drawInteriorBase();
+
+    /* crates */
+
+    for(let i=0;i<8;i++){
+
+        const x=110+(i%4)*175;
+        const y=130+Math.floor(i/4)*150;
+
+        ctx.fillStyle="#374151";
+
+        ctx.fillRect(
+            x,
+            y,
+            120,
+            90
+        );
+
+        ctx.strokeStyle="#64748b";
+
+        ctx.strokeRect(
+            x,
+            y,
+            120,
+            90
+        );
+
+        ctx.fillStyle="#94a3b8";
+        ctx.font="bold 11px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            "GEAR",
+            x+60,
+            y+50
+        );
+
+    }
+
+    /* gear counter */
+
+    ctx.fillStyle="#26384a";
+
+    ctx.fillRect(
+        W-300,
+        140,
+        180,
+        250
+    );
+
+    ctx.fillStyle="#dbeafe";
+    ctx.font="bold 16px Arial";
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "GEAR DEPOT",
+        W-210,
+        175
+    );
+
+    /* tent icon */
+
+    ctx.strokeStyle="#60a5fa";
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(W-260,340);
+    ctx.lineTo(W-210,240);
+    ctx.lineTo(W-160,340);
+    ctx.closePath();
+
+    ctx.stroke();
+
+    /* exit */
+
+    drawInteriorExit();
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   NEIGHBOR GROCERY INTERIOR
+========================================================= */
+
+function drawGroceryInterior(){
+
+    drawInteriorBase();
+
+    const shelves=[
+        ["FLOUR",120,120],
+        ["SUGAR",320,120],
+        ["EGGS",520,120],
+        ["MILK",120,290],
+        ["BUTTER",320,290],
+        ["VANILLA",520,290]
+    ];
+
+    for(const s of shelves){
+
+        ctx.fillStyle="#334155";
+
+        ctx.fillRect(
+            s[1],
+            s[2],
+            150,
+            100
+        );
+
+        ctx.fillStyle="#cbd5e1";
+        ctx.font="bold 13px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            s[0],
+            s[1]+75,
+            s[2]+58
+        );
+
+    }
+
+    drawInteriorExit();
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   CAKE LAB INTERIOR
+========================================================= */
+
+function drawLabInterior(){
+
+    drawInteriorBase();
+
+    /* oven */
+
+    ctx.fillStyle="#111827";
+
+    ctx.fillRect(
+        120,
+        140,
+        210,
+        270
+    );
+
+    ctx.strokeStyle="#64748b";
+    ctx.lineWidth=3;
+
+    ctx.strokeRect(
+        120,
+        140,
+        210,
+        270
+    );
+
+    ctx.fillStyle="#263b52";
+
+    ctx.fillRect(
+        150,
+        205,
+        150,
+        120
+    );
+
+    /* mixing counter */
+
+    ctx.fillStyle="#374151";
+
+    ctx.fillRect(
+        410,
+        160,
+        310,
+        80
+    );
+
+    /* bowl */
 
     ctx.fillStyle="#94a3b8";
 
-    ctx.font="12px Arial";
+    ctx.beginPath();
+
+    ctx.arc(
+        565,
+        205,
+        35,
+        0,
+        Math.PI
+    );
+
+    ctx.fill();
+
+    /* hidden sign */
+
+    ctx.fillStyle="#111827";
+
+    ctx.fillRect(
+        420,
+        300,
+        280,
+        60
+    );
+
+    ctx.fillStyle="#a78bfa";
+    ctx.font="bold 16px Arial";
+    ctx.textAlign="center";
 
     ctx.fillText(
-        "Walk here + press E",
-        W/2,
-        H-100
+        "AUTHORIZED CAKE OPERATIONS",
+        560,
+        335
     );
 
+    drawInteriorExit();
 
-    drawCharacter(
-        W/2,
-        H-430
-    );
+    drawPlayer();
 
 }
 
@@ -3056,139 +2679,81 @@ function drawJobInterior(){
 
 function drawRandomInterior(){
 
-    ctx.fillStyle="#10151d";
+    drawInteriorBase();
+
+    /* furniture */
+
+    ctx.fillStyle="#303846";
 
     ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    /*
-        FLOOR
-    */
-
-    ctx.fillStyle="#202936";
-
-    ctx.fillRect(
-        80,
-        80,
-        W-160,
-        H-160
-    );
-
-
-    /*
-        WALLS
-    */
-
-    ctx.strokeStyle=
-        "#475569";
-
-    ctx.lineWidth=8;
-
-    ctx.strokeRect(
-        80,
-        80,
-        W-160,
-        H-160
-    );
-
-
-    /*
-        FURNITURE
-    */
-
-    ctx.fillStyle="#334155";
-
-    ctx.fillRect(
+        120,
         140,
-        180,
-        180,
-        90
-    );
-
-    ctx.fillRect(
-        W-320,
-        220,
-        160,
-        110
-    );
-
-    ctx.fillRect(
-        170,
-        H-300,
-        250,
-        70
-    );
-
-
-    /*
-        RANDOM WALL SCREEN
-    */
-
-    ctx.fillStyle="#05070d";
-
-    ctx.fillRect(
-        W/2-130,
-        140,
-        260,
-        130
-    );
-
-    ctx.fillStyle="#172b40";
-
-    ctx.fillRect(
-        W/2-115,
-        155,
         230,
         100
     );
 
+    ctx.fillRect(
+        470,
+        300,
+        200,
+        120
+    );
 
-    /*
-        EXIT DOOR
-    */
+    /* loot marker */
 
-    ctx.fillStyle="#020617";
+    if(
+        currentRandomBuilding &&
+        !currentRandomBuilding.searched
+    ){
+
+        ctx.fillStyle="#facc15";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            W/2,
+            H/2,
+            13+Math.sin(performance.now()/180)*3,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+    drawInteriorExit();
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   INTERIOR EXIT
+========================================================= */
+
+function drawInteriorExit(){
+
+    ctx.fillStyle="#0f172a";
 
     ctx.fillRect(
-        W/2-45,
-        H-150,
-        90,
-        70
+        W/2-50,
+        H-85,
+        100,
+        45
     );
 
-    ctx.strokeStyle=
-        "rgba(34,211,238,.7)";
+    ctx.fillStyle="#cbd5e1";
 
-    ctx.strokeRect(
-        W/2-49,
-        H-154,
-        98,
-        78
-    );
-
-
-    ctx.fillStyle="#22d3ee";
-
-    ctx.font="bold 13px Arial";
-
+    ctx.font="bold 12px Arial";
     ctx.textAlign="center";
 
     ctx.fillText(
         "EXIT",
         W/2,
-        H-115
+        H-58
     );
-
-    ctx.textAlign="left";
-
-
-    drawPlayer();
-
 }
 
 
@@ -3196,122 +2761,72 @@ function drawRandomInterior(){
    CHARACTER
 ========================================================= */
 
-function drawCharacter(x,y){
-
-    const bob=
-        Math.sin(
-            performance.now()/180
-        )*3;
+function drawCharacter(x,y,color){
 
     ctx.save();
 
-    ctx.translate(
-        x,
-        y+bob
-    );
-
-    ctx.fillStyle="#0f172a";
+    ctx.fillStyle=color;
 
     ctx.fillRect(
-        -20,
-        0,
-        40,
-        55
+        x-14,
+        y-4,
+        28,
+        35
     );
 
-    ctx.fillStyle="#e0b08d";
+    ctx.fillStyle="#e5c2a4";
 
     ctx.beginPath();
 
     ctx.arc(
-        0,
-        -20,
-        22,
+        x,
+        y-17,
+        12,
         0,
         Math.PI*2
     );
 
     ctx.fill();
 
-    ctx.fillStyle="#111827";
-
-    ctx.fillRect(
-        -24,
-        -42,
-        48,
-        14
-    );
-
     ctx.restore();
-
 }
 
 
 /* =========================================================
-   TRAIN
+   TENT
 ========================================================= */
 
-function drawTrainStation(){
+function drawTent(){
 
-    ctx.fillStyle="#0f172a";
+    const x=player.x-camera.x;
+    const y=player.y-camera.y;
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
+    ctx.save();
 
-    ctx.fillStyle="#1e293b";
+    ctx.strokeStyle="#64748b";
+    ctx.lineWidth=4;
 
-    ctx.fillRect(
-        0,
-        H-260,
-        W,
-        260
-    );
+    ctx.beginPath();
+
+    ctx.moveTo(x-45,y+25);
+    ctx.lineTo(x,y-35);
+    ctx.lineTo(x+45,y+25);
+
+    ctx.stroke();
 
     ctx.fillStyle="#334155";
 
-    ctx.fillRect(
-        0,
-        100,
-        W,
-        40
-    );
+    ctx.beginPath();
 
-    ctx.fillStyle="#020617";
+    ctx.moveTo(x-45,y+25);
+    ctx.lineTo(x,y-35);
+    ctx.lineTo(x+45,y+25);
 
-    ctx.fillRect(
-        100,
-        H-210,
-        W-200,
-        100
-    );
+    ctx.closePath();
 
-    ctx.fillStyle="#60a5fa";
+    ctx.fill();
 
-    ctx.fillRect(
-        180,
-        H-185,
-        W-360,
-        40
-    );
-
-    ctx.fillStyle="#f1f5f9";
-
-    ctx.font="bold 28px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.fillText(
-        "CENTRAL TRANSIT",
-        W/2,
-        190
-    );
-
-    ctx.textAlign="left";
-
+    ctx.restore();
 }
 
 
@@ -3319,28 +2834,9 @@ function drawTrainStation(){
    COUNTRY
 ========================================================= */
 
-let countryOffset=0;
-
-let hikeProgress=0;
-
-let hikeActive=false;
-
-let hikeEventTimer=0;
-
-let nextHikeEvent=30;
-
-let stormActive=false;
-
-let tentProgress=0;
-
-let tentHolding=false;
-
-let sleepAvailable=false;
-
-
 function drawCountryside(){
 
-    ctx.fillStyle="#17251b";
+    ctx.fillStyle="#1c2a25";
 
     ctx.fillRect(
         0,
@@ -3349,2019 +2845,107 @@ function drawCountryside(){
         H
     );
 
-    const horizon=
-        H*.38;
+    /* path */
 
-    ctx.fillStyle="#263d2c";
+    ctx.fillStyle="#4a4032";
 
     ctx.fillRect(
+        W/2-90,
         0,
-        horizon,
-        W,
-        H-horizon
-    );
-
-
-    ctx.fillStyle="#1f3527";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        horizon
-    );
-
-
-    for(
-        let x=0;
-        x<=W;
-        x+=100
-    ){
-
-        ctx.lineTo(
-            x,
-            horizon-
-            80-
-            Math.sin(
-                (x+countryOffset)/300
-            )*60
-        );
-
-    }
-
-
-    ctx.lineTo(
-        W,
-        horizon
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /*
-        ROAD
-    */
-
-    ctx.fillStyle="#4b463b";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.42,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.58,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.78,
+        180,
         H
     );
 
-    ctx.lineTo(
-        W*.22,
-        H
-    );
+    /* grass */
 
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /*
-        ROAD MARKERS
-    */
-
-    ctx.fillStyle="#d6cfae";
-
-
-    for(
-        let i=0;
-        i<9;
-        i++
-    ){
-
-        const y=
-            horizon+
-            (
-                (
-                    i*180+
-                    countryOffset*.35
-                )
-                %
-                (H-horizon)
-            );
-
-        const scale=
-            (y-horizon)/
-            (H-horizon);
-
-        const width=
-            5+
-            scale*10;
-
-        ctx.fillRect(
-            W/2-width/2,
-            y,
-            width,
-            25
-        );
-
-    }
-
-
-    /*
-        TREES
-    */
-
-    for(
-        let i=0;
-        i<25;
-        i++
-    ){
+    for(let i=0;i<90;i++){
 
         const x=
-            (
-                i*263-
-                countryOffset*.2
-            )
-            %
-            (W+300)
-            -150;
+            (i*137)%W;
 
         const y=
-            horizon+
-            60+
-            ((i*137)%250);
+            (i*83)%H;
 
-        drawTree(
+        ctx.fillStyle=
+            i%2
+                ? "#314638"
+                : "#263b30";
+
+        ctx.fillRect(
             x,
-            y
+            y,
+            20,
+            8
         );
 
     }
 
+    /* trees */
 
-    if(
-        sleepAvailable
-    ){
+    for(let i=0;i<25;i++){
 
-        drawTent(
-            W-180,
-            H-170
-        );
+        const x=
+            80+(i*191)%Math.max(100,W-160);
+
+        const y=
+            80+(i*137)%Math.max(100,H-160);
+
+        drawTree(x,y);
 
     }
 
+    if(hikeDistance>=hikeTotalDistance){
+
+        ctx.fillStyle="#cbd5e1";
+        ctx.font="bold 18px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            "NEIGHBOURING CITY AHEAD",
+            W/2,
+            80
+        );
+
+    }
 
     drawPlayer();
 
+    drawRain();
+
+    if(tentActive)
+        drawTent();
+
 }
 
+
+/* =========================================================
+   TREE
+========================================================= */
 
 function drawTree(x,y){
 
-    ctx.fillStyle="#4b2e1c";
+    ctx.fillStyle="#352d25";
 
     ctx.fillRect(
-        x-8,
+        x-5,
         y,
-        16,
-        70
+        10,
+        35
     );
 
-    ctx.fillStyle="#17351f";
+    ctx.fillStyle="#2e503a";
 
     ctx.beginPath();
 
     ctx.arc(
         x,
-        y-10,
-        45,
+        y-5,
+        28,
         0,
         Math.PI*2
     );
 
     ctx.fill();
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x-30,
-        y+15,
-        30,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+30,
-        y+15,
-        30,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-function drawTent(x,y){
-
-    ctx.fillStyle="#334155";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x-70,
-        y+50
-    );
-
-    ctx.lineTo(
-        x,
-        y-50
-    );
-
-    ctx.lineTo(
-        x+70,
-        y+50
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-    ctx.fillStyle="#111827";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x-20,
-        y+50
-    );
-
-    ctx.lineTo(
-        x,
-        y+5
-    );
-
-    ctx.lineTo(
-        x+20,
-        y+50
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   RANDOM BUILDING INTERACTION
-========================================================= */
-
-function enterRandomBuilding(
-    building
-){
-
-    randomBuilding=building;
-
-    scene="randomInterior";
-
-    player.x=W/2;
-
-    player.y=H-230;
-
-    document.getElementById(
-        "buildingUI"
-    ).style.display="none";
-
-    setObjective(
-        "Search the building or leave."
-    );
-
-}
-
-
-function searchBuilding(){
-
-    if(
-        !randomBuilding ||
-        randomBuilding.searched
-    ){
-
-        return;
-
-    }
-
-    randomBuilding.searched=true;
-
-    const loot=
-        randomBuilding.loot;
-
-    if(!loot){
-
-        showMessage(
-            "Nothing useful here."
-        );
-
-    }
-    else if(
-        loot.type==="money"
-    ){
-
-        player.money+=loot.value;
-
-        showMessage(
-            loot.text
-        );
-
-        updateHUD();
-
-    }
-    else if(
-        loot.type==="gear"
-    ){
-
-        if(
-            !player.inventory.includes(
-                loot.item
-            )
-        ){
-
-            player.inventory.push(
-                loot.item
-            );
-
-            showMessage(
-                loot.text
-            );
-
-        }
-        else{
-
-            player.money+=5;
-
-            showMessage(
-                "You already have one. You found £5 instead."
-            );
-
-            updateHUD();
-
-        }
-
-    }
-    else if(
-        loot.type==="ticket"
-    ){
-
-        player.trainTickets++;
-
-        showMessage(
-            "🎟️ You found a train ticket!"
-        );
-
-    }
-
-
-    document.getElementById(
-        "searchBuildingButton"
-    ).disabled=true;
-
-    setObjective(
-        "Leave the building."
-    );
-
-}
-
-
-function leaveRandomBuilding(){
-
-    document.getElementById(
-        "buildingUI"
-    ).style.display="none";
-
-    scene="street";
-
-    /*
-        Put the player just outside
-        the building's front door.
-    */
-
-    if(randomBuilding){
-
-        player.x=
-            randomBuilding.x+
-            randomBuilding.w/2;
-
-        player.y=
-            randomBuilding.y+
-            randomBuilding.h+
-            90;
-
-    }
-
-    randomBuilding=null;
-
-    setObjective(
-        "Find a way to get ingredients for your cake."
-    );
-
-}
-
-
-/* =========================================================
-   INTERACTION
-========================================================= */
-
-function interact(){
-
-    /*
-        RANDOM INTERIOR EXIT
-    */
-
-    if(
-        scene==="randomInterior"
-    ){
-
-        const d=
-            Math.hypot(
-                player.x-W/2,
-                player.y-(H-115)
-            );
-
-        if(
-            d<150
-        ){
-
-            leaveRandomBuilding();
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-        JOB EXIT
-    */
-
-    if(
-        scene==="job"
-    ){
-
-        const d=
-            Math.hypot(
-                player.x-W/2,
-                player.y-(H-120)
-            );
-
-        if(
-            d<150
-        ){
-
-            exitJobInterior();
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-        STREET
-    */
-
-    if(
-        scene!=="street"
-    ){
-
-        return;
-
-    }
-
-
-    /*
-        IMPORTANT LOCATIONS
-
-        These are aligned to their
-        grid-locked building doors.
-    */
-
-    const locations=[
-
-        {
-            name:"GENERAL STORE",
-            x:
-                buildings[0].x+
-                buildings[0].w/2,
-            y:
-                buildings[0].y+
-                buildings[0].h+
-                90,
-            action:openStore
-        },
-
-        {
-            name:"CITY MART",
-            x:
-                buildings[1].x+
-                buildings[1].w/2,
-            y:
-                buildings[1].y+
-                buildings[1].h+
-                90,
-            action:openJob
-        },
-
-        {
-            name:"CENTRAL TRANSIT",
-            x:
-                buildings[2].x+
-                buildings[2].w/2,
-            y:
-                buildings[2].y+
-                buildings[2].h+
-                90,
-            action:()=>{
-                document.getElementById(
-                    "trainUI"
-                ).style.display="flex";
-            }
-        },
-
-        {
-            name:"OUTER CITY TRAIL",
-            x:
-                buildings[3].x+
-                buildings[3].w/2,
-            y:
-                buildings[3].y+
-                buildings[3].h+
-                90,
-            action:openHike
-        }
-
-    ];
-
-
-    for(
-        const location of locations
-    ){
-
-        const d=
-            Math.hypot(
-                player.x-location.x,
-                player.y-location.y
-            );
-
-        if(
-            d<190
-        ){
-
-            location.action();
-
-            return;
-
-        }
-
-    }
-
-
-    /*
-        RANDOM ENTERABLE BUILDINGS
-    */
-
-    for(
-        const building of buildings
-    ){
-
-        if(
-            !building.enterable ||
-            building.name==="GENERAL STORE" ||
-            building.name==="CITY MART"
-        ){
-
-            continue;
-
-        }
-
-        const doorX=
-            building.x+
-            building.w/2;
-
-        const doorY=
-            building.y+
-            building.h+
-            20;
-
-
-        const d=
-            Math.hypot(
-                player.x-doorX,
-                player.y-doorY
-            );
-
-
-        if(
-            d<150
-        ){
-
-            if(
-                building.searched
-            ){
-
-                showMessage(
-                    "You've already searched this building."
-                );
-
-            }
-            else{
-
-                randomBuilding=building;
-
-                document.getElementById(
-                    "buildingTitle"
-                ).textContent=
-                    building.name;
-
-                document.getElementById(
-                    "buildingDescription"
-                ).textContent=
-                    building.description;
-
-                document.getElementById(
-                    "searchBuildingButton"
-                ).disabled=false;
-
-                document.getElementById(
-                    "buildingUI"
-                ).style.display="flex";
-
-            }
-
-            return;
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   PROMPT
-========================================================= */
-
-function updatePrompt(){
-
-    const prompt=
-        document.getElementById(
-            "interact"
-        );
-
-    prompt.style.display="none";
-
-
-    /*
-        RANDOM INTERIOR
-    */
-
-    if(
-        scene==="randomInterior"
-    ){
-
-        const d=
-            Math.hypot(
-                player.x-W/2,
-                player.y-(H-115)
-            );
-
-        if(
-            d<150
-        ){
-
-            prompt.textContent=
-                "E — EXIT BUILDING";
-
-            prompt.style.display="block";
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-        JOB
-    */
-
-    if(
-        scene==="job"
-    ){
-
-        const d=
-            Math.hypot(
-                player.x-W/2,
-                player.y-(H-120)
-            );
-
-        if(
-            d<150
-        ){
-
-            prompt.textContent=
-                "E — EXIT CITY MART";
-
-            prompt.style.display="block";
-
-        }
-
-        return;
-
-    }
-
-
-    if(
-        scene!=="street"
-    ){
-
-        return;
-
-    }
-
-
-    /*
-        MAJOR LOCATIONS
-    */
-
-    const locations=[
-
-        [
-            "GENERAL STORE",
-            buildings[0]
-        ],
-
-        [
-            "CITY MART",
-            buildings[1]
-        ],
-
-        [
-            "CENTRAL TRANSIT",
-            buildings[2]
-        ],
-
-        [
-            "OUTER CITY TRAIL",
-            buildings[3]
-        ]
-
-    ];
-
-
-    for(
-        const [name,building]
-        of locations
-    ){
-
-        const doorX=
-            building.x+
-            building.w/2;
-
-        const doorY=
-            building.y+
-            building.h+
-            90;
-
-
-        const d=
-            Math.hypot(
-                player.x-doorX,
-                player.y-doorY
-            );
-
-
-        if(
-            d<190
-        ){
-
-            prompt.textContent=
-                "E — "+
-                name;
-
-            prompt.style.display="block";
-
-            return;
-
-        }
-
-    }
-
-
-    /*
-        RANDOM BUILDINGS
-    */
-
-    for(
-        const building of buildings
-    ){
-
-        if(
-            !building.enterable ||
-            building.name==="GENERAL STORE" ||
-            building.name==="CITY MART"
-        ){
-
-            continue;
-
-        }
-
-        const doorX=
-            building.x+
-            building.w/2;
-
-        const doorY=
-            building.y+
-            building.h+
-            20;
-
-
-        const d=
-            Math.hypot(
-                player.x-doorX,
-                player.y-doorY
-            );
-
-
-        if(
-            d<150
-        ){
-
-            if(
-                building.searched
-            ){
-
-                prompt.textContent=
-                    "E — ENTER "+
-                    building.name+
-                    " (SEARCHED)";
-
-            }
-            else{
-
-                prompt.textContent=
-                    "E — ENTER "+
-                    building.name;
-
-            }
-
-            prompt.style.display="block";
-
-            return;
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   STORE
-========================================================= */
-
-function buyItem(
-    name,
-    cost
-){
-
-    if(
-        player.inventory.includes(
-            name
-        )
-    ){
-
-        showMessage(
-            "You already have that."
-        );
-
-        return;
-
-    }
-
-    if(
-        player.money<cost
-    ){
-
-        showMessage(
-            "Not enough money."
-        );
-
-        return;
-
-    }
-
-    player.money-=cost;
-
-    player.inventory.push(
-        name
-    );
-
-    updateHUD();
-
-    showMessage(
-        name+
-        " purchased."
-    );
-
-}
-
-
-function openStore(){
-
-    scene="store";
-
-    document.getElementById(
-        "storeUI"
-    ).style.display="flex";
-
-}
-
-
-function leaveStore(){
-
-    document.getElementById(
-        "storeUI"
-    ).style.display="none";
-
-    scene="street";
-
-    player.x=
-        buildings[0].x+
-        buildings[0].w/2;
-
-    player.y=
-        buildings[0].y+
-        buildings[0].h+
-        90;
-
-}
-
-
-/* =========================================================
-   JOB
-========================================================= */
-
-let shiftActive=false;
-
-let shiftTime=60;
-
-let customer=1;
-
-let customersServed=0;
-
-let currentItem=null;
-
-let itemOptions=[];
-
-
-const products=[
-
-    {
-        name:"Bread",
-        icon:"🍞"
-    },
-
-    {
-        name:"Milk",
-        icon:"🥛"
-    },
-
-    {
-        name:"Apple",
-        icon:"🍎"
-    },
-
-    {
-        name:"Soup",
-        icon:"🥫"
-    },
-
-    {
-        name:"Cereal",
-        icon:"🥣"
-    },
-
-    {
-        name:"Eggs",
-        icon:"🥚"
-    }
-
-];
-
-
-function startShift(){
-
-    document.getElementById(
-        "jobUI"
-    ).style.display="none";
-
-    document.getElementById(
-        "jobGame"
-    ).style.display="flex";
-
-    shiftActive=true;
-
-    shiftTime=60;
-
-    customer=1;
-
-    customersServed=0;
-
-    nextCustomer();
-
-}
-
-
-function nextCustomer(){
-
-    currentItem=
-        products[
-            Math.floor(
-                Math.random()*
-                products.length
-            )
-        ];
-
-
-    itemOptions=
-        products
-        .slice()
-        .sort(
-            ()=>Math.random()-.5
-        )
-        .slice(
-            0,
-            4
-        );
-
-
-    if(
-        !itemOptions.includes(
-            currentItem
-        )
-    ){
-
-        itemOptions[
-            Math.floor(
-                Math.random()*
-                itemOptions.length
-            )
-        ]=
-            currentItem;
-
-    }
-
-
-    document.getElementById(
-        "customerNumber"
-    ).textContent=
-        "Customer "+
-        customer;
-
-    document.getElementById(
-        "itemIcon"
-    ).textContent=
-        currentItem.icon;
-
-    document.getElementById(
-        "itemName"
-    ).textContent=
-        currentItem.name;
-
-
-    const buttons=
-        document.getElementById(
-            "scanButtons"
-        );
-
-    buttons.innerHTML="";
-
-
-    for(
-        const product of itemOptions
-    ){
-
-        const button=
-            document.createElement(
-                "button"
-            );
-
-        button.textContent=
-            product.name;
-
-        button.onclick=
-            ()=>{
-                scanItem(product);
-            };
-
-        buttons.appendChild(
-            button
-        );
-
-    }
-
-}
-
-
-function scanItem(product){
-
-    if(
-        !shiftActive
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        product===currentItem
-    ){
-
-        customersServed++;
-
-        customer++;
-
-        showMessage(
-            "✓ Correct scan!"
-        );
-
-        nextCustomer();
-
-    }
-    else{
-
-        shiftTime-=5;
-
-        showMessage(
-            "✗ Wrong item! -5 seconds"
-        );
-
-    }
-
-}
-
-
-function updateShift(dt){
-
-    if(
-        !shiftActive
-    ){
-
-        return;
-
-    }
-
-    shiftTime-=dt;
-
-
-    document.getElementById(
-        "shiftTimer"
-    ).textContent=
-        Math.max(
-            0,
-            Math.ceil(
-                shiftTime
-            )
-        )+
-        "s";
-
-
-    document.getElementById(
-        "shiftProgress"
-    ).style.width=
-        Math.max(
-            0,
-            shiftTime/60*100
-        )+
-        "%";
-
-
-    if(
-        shiftTime<=0
-    ){
-
-        endShift();
-
-    }
-
-}
-
-
-function endShift(){
-
-    shiftActive=false;
-
-
-    document.getElementById(
-        "jobGame"
-    ).style.display="none";
-
-
-    scene="job";
-
-    player.x=W/2;
-
-    player.y=H-300;
-
-
-    const earnings=
-        customersServed*4;
-
-
-    player.money+=earnings;
-
-
-    addMinutes(
-        8*60
-    );
-
-
-    updateHUD();
-
-
-    showMessage(
-        "Shift complete! "+
-        customersServed+
-        " customers. Earned £"+
-        earnings.toFixed(2)
-    );
-
-
-    setObjective(
-        "Walk to the exit and press E to leave."
-    );
-
-}
-
-
-function openJob(){
-
-    scene="job";
-
-    player.x=W/2;
-
-    player.y=H-300;
-
-
-    document.getElementById(
-        "jobUI"
-    ).style.display="flex";
-
-}
-
-
-function leaveJob(){
-
-    document.getElementById(
-        "jobUI"
-    ).style.display="none";
-
-    scene="street";
-
-    player.x=
-        buildings[1].x+
-        buildings[1].w/2;
-
-    player.y=
-        buildings[1].y+
-        buildings[1].h+
-        90;
-
-
-    setObjective(
-        "Find a way to get ingredients for your cake."
-    );
-
-}
-
-
-function exitJobInterior(){
-
-    document.getElementById(
-        "jobUI"
-    ).style.display="none";
-
-    document.getElementById(
-        "jobGame"
-    ).style.display="none";
-
-
-    scene="street";
-
-
-    player.x=
-        buildings[1].x+
-        buildings[1].w/2;
-
-    player.y=
-        buildings[1].y+
-        buildings[1].h+
-        90;
-
-
-    setObjective(
-        "Find a way to get ingredients for your cake."
-    );
-
-
-    showMessage(
-        "You leave CITY MART."
-    );
-
-}
-
-
-/* =========================================================
-   TRAIN
-========================================================= */
-
-function takeTrain(){
-
-    const ticketAvailable=
-        player.trainTickets>0;
-
-
-    /*
-        Train fare is £45.
-
-        A found train ticket covers
-        that £45 portion.
-
-        Import tax remains.
-    */
-
-    const fare=45;
-
-    const tax=184.50;
-
-    let fareCost=0;
-
-
-    if(
-        ticketAvailable
-    ){
-
-        player.trainTickets--;
-
-        showMessage(
-            "🎟️ Train ticket used."
-        );
-
-    }
-    else{
-
-        fareCost=fare;
-
-    }
-
-
-    const total=
-        fareCost+
-        tax;
-
-
-    if(
-        player.money<total
-    ){
-
-        /*
-            Refund ticket if the player
-            cannot afford the tax.
-        */
-
-        if(
-            ticketAvailable
-        ){
-
-            player.trainTickets++;
-
-        }
-
-        showMessage(
-            "You can't afford the train's import tax."
-        );
-
-        return;
-
-    }
-
-
-    player.money-=total;
-
-
-    addMinutes(45);
-
-
-    document.getElementById(
-        "trainUI"
-    ).style.display="none";
-
-
-    scene="street";
-
-
-    player.x=4300;
-
-    player.y=1600;
-
-
-    setObjective(
-        "Find the ingredients in the neighbouring city."
-    );
-
-
-    showMessage(
-        "You arrive after paying the ridiculous import tax."
-    );
-
-
-    updateHUD();
-
-}
-
-
-function closeTrain(){
-
-    document.getElementById(
-        "trainUI"
-    ).style.display="none";
-
-}
-
-
-/* =========================================================
-   HIKE
-========================================================= */
-
-function openHike(){
-
-    document.getElementById(
-        "hikeUI"
-    ).style.display="flex";
-
-
-    const gear=
-        player.inventory.length
-        ?
-        player.inventory.join(", ")
-        :
-        "No gear";
-
-
-    document.getElementById(
-        "gearStatus"
-    ).textContent=
-        "Gear: "+
-        gear;
-
-}
-
-
-function closeHike(){
-
-    document.getElementById(
-        "hikeUI"
-    ).style.display="none";
-
-}
-
-
-function beginHike(){
-
-    document.getElementById(
-        "hikeUI"
-    ).style.display="none";
-
-
-    scene="country";
-
-    hikeActive=true;
-
-    hikeProgress=0;
-
-    hikeEventTimer=0;
-
-    nextHikeEvent=
-        25+
-        Math.random()*35;
-
-
-    player.x=2500;
-
-    player.y=4000;
-
-
-    setObjective(
-        "Reach the neighbouring city."
-    );
-
-
-    showMessage(
-        "The five-minute journey begins."
-    );
-
-}
-
-
-function updateHike(dt){
-
-    if(
-        !hikeActive ||
-        stormActive
-    ){
-
-        return;
-
-    }
-
-
-    hikeProgress+=dt;
-
-    countryOffset+=
-        140*dt;
-
-
-    addMinutes(
-        dt*2
-    );
-
-
-    hikeEventTimer+=dt;
-
-
-    if(
-        hikeEventTimer>=
-        nextHikeEvent
-    ){
-
-        triggerHikeEvent();
-
-        hikeEventTimer=0;
-
-        nextHikeEvent=
-            25+
-            Math.random()*45;
-
-    }
-
-
-    if(
-        hikeProgress>=300
-    ){
-
-        finishHike();
-
-    }
-
-}
-
-
-function triggerHikeEvent(){
-
-    const roll=
-        Math.random();
-
-
-    if(
-        roll<.5 &&
-        player.inventory.includes(
-            "Tent"
-        )
-    ){
-
-        triggerStorm();
-
-        return;
-
-    }
-
-
-    if(
-        roll<.68
-    ){
-
-        addMinutes(12);
-
-        showMessage(
-            "A broken-down delivery truck blocks the road."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        roll<.82
-    ){
-
-        addMinutes(5);
-
-        showMessage(
-            "You discover an old roadside shelter."
-        );
-
-        return;
-
-    }
-
-
-    rainIntensity=
-        Math.min(
-            1,
-            rainIntensity+.15
-        );
-
-
-    showMessage(
-        "The rain suddenly gets heavier."
-    );
-
-}
-
-
-function triggerStorm(){
-
-    stormActive=true;
-
-    tentProgress=0;
-
-    tentHolding=false;
-
-
-    document.getElementById(
-        "stormUI"
-    ).style.display="flex";
-
-
-    rainIntensity=1;
-
-
-    setObjective(
-        "Set up your tent before the storm gets worse."
-    );
-
-}
-
-
-function startTentSetup(){
-
-    if(
-        !stormActive
-    ){
-
-        return;
-
-    }
-
-    tentHolding=true;
-
-}
-
-
-function stopTentSetup(){
-
-    tentHolding=false;
-
-}
-
-
-function updateStorm(dt){
-
-    if(
-        !stormActive
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        tentHolding
-    ){
-
-        tentProgress+=
-            dt*.42;
-
-
-        document.querySelector(
-            "#stormProgress div"
-        ).style.width=
-            Math.min(
-                100,
-                tentProgress*100
-            )+
-            "%";
-
-    }
-
-
-    if(
-        tentProgress>=1
-    ){
-
-        stormActive=false;
-
-
-        document.getElementById(
-            "stormUI"
-        ).style.display="none";
-
-
-        sleepAvailable=true;
-
-
-        document.getElementById(
-            "sleepUI"
-        ).style.display="flex";
-
-
-        addMinutes(30);
-
-
-        setObjective(
-            "The storm has passed. Get some sleep."
-        );
-
-    }
-
-}
-
-
-function sleepUntilMorning(){
-
-    document.getElementById(
-        "sleepUI"
-    ).style.display="none";
-
-
-    sleepAvailable=false;
-
-
-    const current=
-        player.hour*60+
-        player.minute;
-
-
-    let minutesToMorning=
-        8*60-current;
-
-
-    if(
-        minutesToMorning<=0
-    ){
-
-        minutesToMorning+=1440;
-
-    }
-
-
-    addMinutes(
-        minutesToMorning
-    );
-
-
-    rainIntensity=.45;
-
-
-    showMessage(
-        "You wake up at 08:00."
-    );
-
-
-    setObjective(
-        "Continue hiking to the neighbouring city."
-    );
-
-}
-
-
-function finishHike(){
-
-    hikeActive=false;
-
-    scene="street";
-
-
-    player.x=3900;
-
-    player.y=1500;
-
-
-    rainIntensity=.45;
-
-
-    addMinutes(10);
-
-
-    setObjective(
-        "You've reached the neighbouring city. Find the ingredients."
-    );
-
-
-    showMessage(
-        "You made it to the neighbouring city!"
-    );
-
-}
-
-
-/* =========================================================
-   RAIN
-========================================================= */
-
-let rain=[];
-
-let rainIntensity=.5;
-
-let lightning=0;
-
-let lightningTimer=2;
-
-
-function makeRain(){
-
-    rain=[];
-
-
-    for(
-        let i=0;
-        i<700;
-        i++
-    ){
-
-        rain.push({
-
-            x:
-                Math.random()*W,
-
-            y:
-                Math.random()*H,
-
-            speed:
-                500+
-                Math.random()*700,
-
-            length:
-                12+
-                Math.random()*22,
-
-            drift:
-                -80-
-                Math.random()*100
-
-        });
-
-    }
-
-}
-
-
-makeRain();
-
-
-function updateRain(dt){
-
-    for(
-        const r of rain
-    ){
-
-        r.x+=
-            r.drift*dt;
-
-        r.y+=
-            r.speed*dt;
-
-
-        if(
-            r.y>H+40
-        ){
-
-            r.y=-40;
-
-            r.x=
-                Math.random()*W;
-
-        }
-
-
-        if(
-            r.x<-50
-        ){
-
-            r.x=W+50;
-
-        }
-
-    }
-
-}
-
-
-function drawRain(){
-
-    ctx.save();
-
-    ctx.globalAlpha=
-        rainIntensity;
-
-    ctx.strokeStyle=
-        "rgba(160,200,255,.55)";
-
-    ctx.lineWidth=1;
-
-
-    for(
-        const r of rain
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            r.x,
-            r.y
-        );
-
-        ctx.lineTo(
-            r.x+
-            r.drift*.025,
-            r.y+
-            r.length
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   LIGHTNING
-========================================================= */
-
-function updateLightning(dt){
-
-    lightningTimer-=dt;
-
-
-    if(
-        lightningTimer<=0
-    ){
-
-        lightningTimer=
-            2+
-            Math.random()*7;
-
-
-        if(
-            scene==="country" &&
-            Math.random()<.5
-        ){
-
-            lightning=.9;
-
-        }
-
-    }
-
-
-    lightning=
-        Math.max(
-            0,
-            lightning-dt*5
-        );
 
 }
 
@@ -5379,96 +2963,1750 @@ function draw(){
         H
     );
 
-
-    if(
-        scene==="title"
-    ){
-
-        ctx.fillStyle="#05070d";
-
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
-
-    }
-    else if(
-        scene==="apartment"
-    ){
-
+    if(scene==="apartment")
         drawApartment();
 
-    }
-    else if(
-        scene==="street"
-    ){
+    else if(scene==="street")
+        drawStreet();
 
-        drawCity();
-
-    }
-    else if(
-        scene==="store"
-    ){
-
-        drawStoreInterior();
-
-    }
-    else if(
-        scene==="job"
-    ){
-
-        drawJobInterior();
-
-    }
-    else if(
-        scene==="randomInterior"
-    ){
-
-        drawRandomInterior();
-
-    }
-    else if(
-        scene==="country"
-    ){
-
+    else if(scene==="country")
         drawCountryside();
 
+    else if(scene==="neighbor")
+        drawNeighborCity();
+
+    else if(scene==="job")
+        drawJobInterior();
+
+    else if(scene==="warehouse")
+        drawWarehouseInterior();
+
+    else if(scene==="neighborStore")
+        drawGroceryInterior();
+
+    else if(scene==="lab")
+        drawLabInterior();
+
+    else if(scene==="random")
+        drawRandomInterior();
+
+    drawRain();
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startGame(){
+
+    running=true;
+
+    scene="apartment";
+
+    player.x=W/2;
+    player.y=H/2;
+
+    gameMinutes=8*60;
+
+    hideAllMenus();
+
+    document.getElementById("start").style.display="none";
+
+    updateHUD();
+
+    startDialogue(
+        "You",
+        [
+            "I want a cake.",
+            "Wait... cake ingredients are considered non-essential.",
+            "That means getting them is going to be expensive.",
+            "The neighbouring city still sells them though.",
+            "Guess I'm going to have to work for it."
+        ],
+        ()=>{
+            scene="street";
+
+            player.x=1050;
+            player.y=1200;
+
+            updateHUD();
+        }
+    );
+
+}
+
+
+/* =========================================================
+   STREET INTERACTION
+========================================================= */
+
+const streetEntrances=[
+
+    {
+        name:"GENERAL STORE",
+        x:450,
+        y:650,
+        action:"store"
+    },
+
+    {
+        name:"CITY MART",
+        x:2250,
+        y:650,
+        action:"job"
+    },
+
+    {
+        name:"WAREHOUSE",
+        x:1425,
+        y:2170,
+        action:"warehouse"
+    },
+
+    {
+        name:"CENTRAL TRANSIT",
+        x:3500,
+        y:2150,
+        action:"train"
+    },
+
+    {
+        name:"OUTER CITY TRAIL",
+        x:4100,
+        y:950,
+        action:"hike"
+    }
+
+];
+
+
+function interact(){
+
+    if(scene==="street"){
+
+        for(const e of streetEntrances){
+
+            if(
+                Math.hypot(
+                    player.x-e.x,
+                    player.y-e.y
+                )<190
+            ){
+
+                if(e.action==="store")
+                    openStore();
+
+                if(e.action==="job")
+                    openJob();
+
+                if(e.action==="warehouse")
+                    openWarehouse();
+
+                if(e.action==="train")
+                    openTrain();
+
+                if(e.action==="hike")
+                    openHike();
+
+                return;
+            }
+
+        }
+
+        for(const b of randomBuildings){
+
+            const ex=b.x+b.w/2;
+            const ey=b.y+b.h+40;
+
+            if(
+                Math.hypot(
+                    player.x-ex,
+                    player.y-ey
+                )<130
+            ){
+
+                enterRandomBuilding(b);
+
+                return;
+
+            }
+
+        }
+
     }
 
 
-    /*
-        Rain stays visible in
-        outdoor scenes only.
-    */
+    if(scene==="job"){
 
-    if(
-        scene==="street" ||
-        scene==="apartment" ||
-        scene==="country"
-    ){
+        if(
+            player.y>H-130
+        ){
 
-        drawRain();
+            leaveJob();
+
+            return;
+
+        }
 
     }
 
 
-    if(
-        lightning>0
-    ){
+    if(scene==="warehouse"){
 
-        ctx.fillStyle=
-            `rgba(230,245,255,${lightning*.25})`;
+        if(
+            player.y>H-130
+        ){
 
-        ctx.fillRect(
+            leaveWarehouse();
+
+            return;
+
+        }
+
+        if(
+            player.x>W-350 &&
+            player.y>100 &&
+            player.y<450
+        ){
+
+            openWarehouseShop();
+
+            return;
+
+        }
+
+    }
+
+
+    if(scene==="neighbor"){
+
+        if(
+            Math.hypot(
+                player.x-5700,
+                player.y-1080
+            )<190
+        ){
+
+            openGrocery();
+
+            return;
+
+        }
+
+        if(
+            Math.hypot(
+                player.x-6825,
+                player.y-4250
+            )<190
+        ){
+
+            openLab();
+
+            return;
+
+        }
+
+    }
+
+
+    if(scene==="neighborStore"){
+
+        if(player.y>H-130){
+
+            leaveGrocery();
+
+            return;
+
+        }
+
+    }
+
+
+    if(scene==="lab"){
+
+        if(player.y>H-130){
+
+            leaveLab();
+
+            return;
+
+        }
+
+        if(
+            player.x>350 &&
+            player.x<760 &&
+            player.y>130 &&
+            player.y<420
+        ){
+
+            openCakeMenu();
+
+            return;
+
+        }
+
+    }
+
+
+    if(scene==="random"){
+
+        if(player.y>H-130){
+
+            leaveRandomBuilding();
+
+            return;
+
+        }
+
+        if(
+            Math.hypot(
+                player.x-W/2,
+                player.y-H/2
+            )<100
+        ){
+
+            searchBuilding();
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PROMPT
+========================================================= */
+
+function updatePrompt(){
+
+    const prompt=document.getElementById("interact");
+
+    prompt.style.display="none";
+
+    if(dialogueActive)
+        return;
+
+    if(scene==="street"){
+
+        for(const e of streetEntrances){
+
+            if(
+                Math.hypot(
+                    player.x-e.x,
+                    player.y-e.y
+                )<190
+            ){
+
+                prompt.textContent=
+                    "E — ENTER "+e.name;
+
+                prompt.style.display="block";
+
+                return;
+
+            }
+
+        }
+
+        for(const b of randomBuildings){
+
+            const ex=b.x+b.w/2;
+            const ey=b.y+b.h+40;
+
+            if(
+                Math.hypot(
+                    player.x-ex,
+                    player.y-ey
+                )<130
+            ){
+
+                prompt.textContent=
+                    "E — ENTER BUILDING";
+
+                prompt.style.display="block";
+
+                return;
+
+            }
+
+        }
+
+    }
+
+
+    if(scene==="job" && player.y>H-130){
+
+        prompt.textContent=
+            "E — EXIT CITY MART";
+
+        prompt.style.display="block";
+
+    }
+
+
+    if(scene==="warehouse"){
+
+        if(player.y>H-130){
+
+            prompt.textContent=
+                "E — EXIT WAREHOUSE";
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+        if(
+            player.x>W-350 &&
+            player.y>100 &&
+            player.y<450
+        ){
+
+            prompt.textContent=
+                "E — OPEN GEAR DEPOT";
+
+            prompt.style.display="block";
+
+        }
+
+    }
+
+
+    if(scene==="neighbor"){
+
+        if(
+            Math.hypot(
+                player.x-5700,
+                player.y-1080
+            )<190
+        ){
+
+            prompt.textContent=
+                "E — ENTER SUNRISE GROCER";
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+        if(
+            Math.hypot(
+                player.x-6825,
+                player.y-4250
+            )<190
+        ){
+
+            prompt.textContent=
+                "E — ENTER HIDDEN CAKE LAB";
+
+            prompt.style.display="block";
+
+        }
+
+    }
+
+
+    if(scene==="neighborStore" && player.y>H-130){
+
+        prompt.textContent=
+            "E — EXIT GROCER";
+
+        prompt.style.display="block";
+
+    }
+
+
+    if(scene==="lab"){
+
+        if(player.y>H-130){
+
+            prompt.textContent=
+                "E — EXIT CAKE LAB";
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+        if(
+            player.x>350 &&
+            player.x<760 &&
+            player.y>130 &&
+            player.y<420
+        ){
+
+            prompt.textContent=
+                cakeMade
+                    ? "CAKE COMPLETE"
+                    : "E — USE OVEN";
+
+            prompt.style.display="block";
+
+        }
+
+    }
+
+
+    if(scene==="random"){
+
+        if(player.y>H-130){
+
+            prompt.textContent=
+                "E — EXIT";
+
+            prompt.style.display="block";
+
+            return;
+
+        }
+
+        if(
+            Math.hypot(
+                player.x-W/2,
+                player.y-H/2
+            )<100
+        ){
+
+            prompt.textContent=
+                "E — SEARCH";
+
+            prompt.style.display="block";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   STORE
+========================================================= */
+
+const gearPrices={
+    Backpack:12,
+    Tent:25,
+    Boots:18,
+    Raincoat:15,
+    Flashlight:8
+};
+
+function buildGearUI(container){
+
+    container.innerHTML="";
+
+    const items=[
+        ["Backpack","backpack"],
+        ["Tent","tent"],
+        ["Boots","boots"],
+        ["Raincoat","raincoat"],
+        ["Flashlight","flashlight"]
+    ];
+
+    for(const item of items){
+
+        const row=document.createElement("div");
+
+        row.className="itemRow";
+
+        const left=document.createElement("div");
+
+        left.innerHTML=
+            "<b>"+item[0]+"</b><br>"+
+            "<span class='itemOwned'>"+
+            (
+                gear[item[1]]
+                    ? "OWNED"
+                    : "£"+gearPrices[item[0]]
+            )+
+            "</span>";
+
+        const btn=document.createElement("button");
+
+        btn.textContent=
+            gear[item[1]]
+                ? "OWNED"
+                : "BUY";
+
+        btn.disabled=gear[item[1]];
+
+        btn.onclick=()=>buyItem(
+            item[0],
+            gearPrices[item[0]]
+        );
+
+        row.appendChild(left);
+        row.appendChild(btn);
+
+        container.appendChild(row);
+
+    }
+
+}
+
+function openStore(){
+
+    scene="store";
+
+    buildGearUI(
+        document.getElementById("storeItems")
+    );
+
+    openMenu("storeUI");
+
+}
+
+function leaveStore(){
+
+    closeMenu("storeUI");
+
+    scene="street";
+
+}
+
+function buyItem(name,price){
+
+    const key=name.toLowerCase();
+
+    if(gear[key]){
+
+        showMessage("You already own the "+name+".");
+
+        return;
+
+    }
+
+    if(money<price){
+
+        showMessage("Not enough money.");
+
+        return;
+
+    }
+
+    money-=price;
+
+    gear[key]=true;
+
+    showMessage(
+        "Bought "+name+" for £"+price+"."
+    );
+
+    buildGearUI(
+        document.getElementById("storeItems")
+    );
+
+    buildGearUI(
+        document.getElementById("warehouseItems")
+    );
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   JOB
+========================================================= */
+
+function openJob(){
+
+    scene="job";
+
+    player.x=W/2;
+    player.y=H-150;
+
+    openMenu("jobUI");
+
+}
+
+function leaveJob(){
+
+    closeMenu("jobUI");
+
+    closeMenu("jobGame");
+
+    scene="street";
+
+    player.x=2250;
+    player.y=680;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   SHIFT
+========================================================= */
+
+let shiftRunning=false;
+let shiftTime=60;
+let shiftElapsed=0;
+let customer=1;
+let correctProduct="";
+let shiftEarnings=0;
+
+const products=[
+    ["🍞","Bread"],
+    ["🥛","Milk"],
+    ["🥚","Eggs"],
+    ["🧈","Butter"],
+    ["🍎","Apple"],
+    ["🥫","Beans"]
+];
+
+function startShift(){
+
+    closeMenu("jobUI");
+
+    openMenu("jobGame");
+
+    shiftRunning=true;
+
+    shiftTime=60;
+    shiftElapsed=0;
+    customer=1;
+    shiftEarnings=0;
+
+    nextCustomer();
+
+}
+
+function nextCustomer(){
+
+    const correct=
+        products[
+            Math.floor(
+                Math.random()*products.length
+            )
+        ];
+
+    correctProduct=correct[1];
+
+    document.getElementById(
+        "customerNumber"
+    ).textContent=
+        "Customer "+customer;
+
+    document.getElementById(
+        "itemIcon"
+    ).textContent=
+        correct[0];
+
+    document.getElementById(
+        "itemName"
+    ).textContent=
+        correct[1];
+
+    const choices=[
+        correct[1]
+    ];
+
+    while(choices.length<4){
+
+        const p=
+            products[
+                Math.floor(
+                    Math.random()*products.length
+                )
+            ][1];
+
+        if(!choices.includes(p))
+            choices.push(p);
+
+    }
+
+    choices.sort(()=>Math.random()-.5);
+
+    const box=document.getElementById(
+        "scanButtons"
+    );
+
+    box.innerHTML="";
+
+    for(const choice of choices){
+
+        const btn=document.createElement("button");
+
+        btn.textContent=choice;
+
+        btn.onclick=()=>scanItem(choice);
+
+        box.appendChild(btn);
+
+    }
+
+}
+
+function scanItem(choice){
+
+    if(!shiftRunning)
+        return;
+
+    if(choice===correctProduct){
+
+        shiftEarnings+=4;
+
+        money+=4;
+
+        showMessage("Correct scan! +£4");
+
+        customer++;
+
+        nextCustomer();
+
+    }else{
+
+        shiftTime=Math.max(
             0,
+            shiftTime-5
+        );
+
+        showMessage("Wrong product! -5 seconds");
+
+    }
+
+    updateHUD();
+
+}
+
+function updateShift(dt){
+
+    if(!shiftRunning)
+        return;
+
+    shiftTime-=dt;
+
+    document.getElementById(
+        "shiftTimer"
+    ).textContent=
+        Math.ceil(Math.max(0,shiftTime))+"s";
+
+    document.getElementById(
+        "shiftProgress"
+    ).style.width=
+        Math.max(
             0,
-            W,
-            H
+            shiftTime/60*100
+        )+"%";
+
+    if(shiftTime<=0){
+
+        endShift();
+
+    }
+
+}
+
+function endShift(){
+
+    shiftRunning=false;
+
+    closeMenu("jobGame");
+
+    scene="job";
+
+    player.x=W/2;
+    player.y=H-150;
+
+    showMessage(
+        "Shift complete! You earned £"+
+        shiftEarnings+"."
+    );
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   WAREHOUSE
+========================================================= */
+
+function openWarehouse(){
+
+    scene="warehouse";
+
+    player.x=250;
+    player.y=H-150;
+
+    buildGearUI(
+        document.getElementById("warehouseItems")
+    );
+
+    openMenu("warehouseUI");
+
+}
+
+function openWarehouseShop(){
+
+    buildGearUI(
+        document.getElementById("warehouseItems")
+    );
+
+    openMenu("warehouseUI");
+
+}
+
+function leaveWarehouse(){
+
+    closeMenu("warehouseUI");
+
+    scene="street";
+
+    player.x=1425;
+    player.y=2140;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   TRAIN
+========================================================= */
+
+function openTrain(){
+
+    scene="train";
+
+    const cost=
+        hasTrainTicket
+            ? 184.50
+            : 229.50;
+
+    document.getElementById(
+        "trainCost"
+    ).innerHTML=
+        hasTrainTicket
+            ? "Train ticket: FOUND<br>"+
+              "Non-essential import tax: £184.50<br>"+
+              "<b>Total: £184.50</b>"
+            :
+              "Ticket: £45<br>"+
+              "Non-essential import tax: £184.50<br>"+
+              "<b>Total: £229.50</b>";
+
+    openMenu("trainUI");
+
+}
+
+function closeTrain(){
+
+    closeMenu("trainUI");
+
+    scene="street";
+
+}
+
+function takeTrain(){
+
+    const cost=
+        hasTrainTicket
+            ? 184.50
+            : 229.50;
+
+    if(money<cost){
+
+        showMessage(
+            "You need £"+cost.toFixed(2)+
+            " to take the train."
+        );
+
+        return;
+
+    }
+
+    money-=cost;
+
+    closeMenu("trainUI");
+
+    scene="neighbor";
+
+    player.x=5000;
+    player.y=1150;
+
+    gameMinutes+=45;
+
+    startDialogue(
+        "Transit",
+        [
+            "Welcome aboard.",
+            "Please enjoy your completely normal journey.",
+            "Your import tax has been processed."
+        ],
+        ()=>{
+            updateHUD();
+        }
+    );
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   HIKE
+========================================================= */
+
+let hiking=false;
+
+let hikeDistance=0;
+
+const hikeTotalDistance=30000;
+
+let hikeEventTimer=0;
+
+let tentActive=false;
+
+let stormActive=false;
+
+let tentSetup=0;
+
+function openHike(){
+
+    scene="hike";
+
+    let missing=[];
+
+    if(!gear.backpack)
+        missing.push("Backpack");
+
+    if(!gear.boots)
+        missing.push("Boots");
+
+    if(!gear.raincoat)
+        missing.push("Raincoat");
+
+    if(!gear.tent)
+        missing.push("Tent");
+
+    document.getElementById(
+        "gearStatus"
+    ).innerHTML=
+        missing.length
+            ?
+            "<b>Missing:</b> "+
+            missing.join(", ")
+            :
+            "<b>All essential hiking gear acquired.</b>";
+
+    openMenu("hikeUI");
+
+}
+
+function closeHike(){
+
+    closeMenu("hikeUI");
+
+    scene="street";
+
+}
+
+function beginHike(){
+
+    if(!gear.backpack){
+
+        showMessage(
+            "You need a backpack."
+        );
+
+        return;
+
+    }
+
+    closeMenu("hikeUI");
+
+    scene="country";
+
+    hiking=true;
+
+    hikeDistance=0;
+
+    hikeEventTimer=45;
+
+    player.x=3600;
+    player.y=900;
+
+    gameMinutes+=10;
+
+    updateHUD();
+
+}
+
+function updateHike(dt){
+
+    if(!hiking)
+        return;
+
+    hikeDistance+=
+        dt*100;
+
+    hikeEventTimer-=dt;
+
+    gameMinutes+=
+        dt*.18;
+
+    if(hikeEventTimer<=0){
+
+        hikeEventTimer=
+            50+Math.random()*60;
+
+        if(Math.random()<.32){
+
+            triggerStorm();
+
+        }else{
+
+            showMessage(
+                "You find a quiet stretch of countryside."
+            );
+
+        }
+
+    }
+
+    if(hikeDistance>=hikeTotalDistance){
+
+        finishHike();
+
+    }
+
+}
+
+function triggerHikeEvent(){
+    triggerStorm();
+}
+
+function triggerStorm(){
+
+    if(stormActive)
+        return;
+
+    stormActive=true;
+
+    if(!gear.tent){
+
+        showMessage(
+            "A storm hits! You have no tent."
+        );
+
+        return;
+
+    }
+
+    openMenu("stormUI");
+
+    tentSetup=0;
+
+    document.getElementById(
+        "stormProgress"
+    ).style.width="0%";
+
+}
+
+function startTentSetup(){
+
+    if(!stormActive)
+        return;
+
+    tentActive=true;
+
+}
+
+function stopTentSetup(){
+
+    tentActive=false;
+
+}
+
+function updateStorm(dt){
+
+    if(!stormActive)
+        return;
+
+    if(tentActive){
+
+        tentSetup+=dt;
+
+        document.getElementById(
+            "stormProgress"
+        ).style.width=
+            Math.min(
+                100,
+                tentSetup/3*100
+            )+"%";
+
+        if(tentSetup>=3){
+
+            stormActive=false;
+
+            tentActive=false;
+
+            closeMenu("stormUI");
+
+            showMessage(
+                "Tent secured. The storm passes."
+            );
+
+            openMenu("sleepUI");
+
+        }
+
+    }
+
+}
+
+function sleepUntilMorning(){
+
+    closeMenu("sleepUI");
+
+    gameMinutes=7*60;
+
+    stormActive=false;
+
+    tentActive=true;
+
+    showMessage(
+        "You wake up at sunrise."
+    );
+
+    updateHUD();
+
+}
+
+function finishHike(){
+
+    hiking=false;
+
+    scene="neighbor";
+
+    player.x=5000;
+    player.y=1150;
+
+    gameMinutes+=5;
+
+    startDialogue(
+        "You",
+        [
+            "I actually made it.",
+            "Now I just need the ingredients.",
+            "And maybe a place to bake this thing."
+        ],
+        ()=>{
+            updateHUD();
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RANDOM BUILDINGS
+========================================================= */
+
+let currentRandomBuilding=null;
+
+function enterRandomBuilding(b){
+
+    scene="random";
+
+    currentRandomBuilding=b;
+
+    player.x=W/2;
+    player.y=H/2;
+
+    document.getElementById(
+        "buildingTitle"
+    ).textContent=
+        b.name;
+
+    document.getElementById(
+        "buildingDescription"
+    ).textContent=
+        b.searched
+            ? "You've already searched this building."
+            : "An abandoned building. There may still be something useful inside.";
+
+    document.getElementById(
+        "searchBuildingButton"
+    ).style.display=
+        b.searched
+            ? "none"
+            : "block";
+
+}
+
+function searchBuilding(){
+
+    if(!currentRandomBuilding)
+        return;
+
+    if(currentRandomBuilding.searched)
+        return;
+
+    currentRandomBuilding.searched=true;
+
+    const loot=currentRandomBuilding.loot;
+
+    if(loot==="money"){
+
+        money+=5;
+
+        showMessage(
+            "You found £5 on the floor."
         );
 
     }
+
+    if(loot==="ticket"){
+
+        hasTrainTicket=true;
+
+        showMessage(
+            "You found a train ticket!"
+        );
+
+    }
+
+    if(loot==="gear"){
+
+        const available=
+            Object.keys(gear)
+                .filter(k=>!gear[k]);
+
+        if(available.length){
+
+            const found=
+                available[
+                    Math.floor(
+                        Math.random()*available.length
+                    )
+                ];
+
+            gear[found]=true;
+
+            showMessage(
+                "You found a "+
+                found+
+                "!"
+            );
+
+        }else{
+
+            money+=5;
+
+            showMessage(
+                "The gear is already owned. You find £5 instead."
+            );
+
+        }
+
+    }
+
+    document.getElementById(
+        "searchBuildingButton"
+    ).style.display="none";
+
+    updateHUD();
+
+}
+
+function leaveRandomBuilding(){
+
+    closeMenu("randomBuildingUI");
+
+    scene="street";
+
+    if(currentRandomBuilding){
+
+        player.x=
+            currentRandomBuilding.x+
+            currentRandomBuilding.w/2;
+
+        player.y=
+            currentRandomBuilding.y+
+            currentRandomBuilding.h+
+            55;
+
+    }
+
+    currentRandomBuilding=null;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   NEIGHBOR CITY
+========================================================= */
+
+function enterNeighbor(){
+
+    scene="neighbor";
+
+    player.x=5000;
+    player.y=1150;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   GROCERY
+========================================================= */
+
+function openGrocery(){
+
+    scene="neighborStore";
+
+    buildIngredientUI();
+
+    openMenu("groceryUI");
+
+}
+
+function buildIngredientUI(){
+
+    const box=
+        document.getElementById(
+            "ingredientItems"
+        );
+
+    box.innerHTML="";
+
+    const items=[
+        ["Flour","flour"],
+        ["Sugar","sugar"],
+        ["Eggs","eggs"],
+        ["Milk","milk"],
+        ["Butter","butter"],
+        ["Vanilla","vanilla"]
+    ];
+
+    for(const item of items){
+
+        const row=
+            document.createElement("div");
+
+        row.className="itemRow";
+
+        const owned=
+            ingredients[item[1]];
+
+        const left=
+            document.createElement("div");
+
+        left.innerHTML=
+            "<b>"+item[0]+"</b><br>"+
+            "<span class='itemOwned'>Owned: "+
+            owned+
+            "</span>";
+
+        const btn=
+            document.createElement("button");
+
+        btn.textContent=
+            "BUY £"+
+            ingredientPrices[item[1]];
+
+        btn.onclick=()=>buyIngredient(
+            item[1]
+        );
+
+        row.appendChild(left);
+        row.appendChild(btn);
+
+        box.appendChild(row);
+
+    }
+
+}
+
+function buyIngredient(name){
+
+    const price=
+        ingredientPrices[name];
+
+    if(money<price){
+
+        showMessage(
+            "Not enough money."
+        );
+
+        return;
+
+    }
+
+    money-=price;
+
+    ingredients[name]++;
+
+    showMessage(
+        "Bought "+name+"."
+    );
+
+    buildIngredientUI();
+
+    updateHUD();
+
+}
+
+function leaveGrocery(){
+
+    closeMenu("groceryUI");
+
+    scene="neighbor";
+
+    player.x=5700;
+    player.y=1100;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   CAKE LAB
+========================================================= */
+
+let cakeStep=0;
+let cakeProgress=0;
+
+function openLab(){
+
+    scene="lab";
+
+    player.x=W/2;
+    player.y=H-150;
+
+    cakeStep=0;
+    cakeProgress=0;
+
+    updateCakeUI();
+
+}
+
+function openCakeMenu(){
+
+    if(cakeMade){
+
+        showMessage(
+            "The cake is already finished!"
+        );
+
+        return;
+
+    }
+
+    if(!hasAllIngredients()){
+
+        const missing=[];
+
+        for(const key in recipe){
+
+            const amount=
+                recipe[key]-ingredients[key];
+
+            if(amount>0){
+
+                missing.push(
+                    key+
+                    " x"+
+                    amount
+                );
+
+            }
+
+        }
+
+        showMessage(
+            "Missing: "+
+            missing.join(", ")
+        );
+
+        return;
+
+    }
+
+    openMenu("labUI");
+
+}
+
+function hasAllIngredients(){
+
+    for(const key in recipe){
+
+        if(
+            ingredients[key]<
+            recipe[key]
+        )
+            return false;
+
+    }
+
+    return true;
+
+}
+
+function updateCakeUI(){
+
+    const steps=[
+        "MIX INGREDIENTS",
+        "BAKE CAKE",
+        "FROST CAKE"
+    ];
+
+    document.getElementById(
+        "cakeAction"
+    ).textContent=
+        steps[
+            Math.min(cakeStep,2)
+        ];
+
+    for(let i=0;i<3;i++){
+
+        const el=
+            document.getElementById(
+                "step"+i
+            );
+
+        el.className="cakeStep";
+
+        if(i<cakeStep)
+            el.classList.add("done");
+
+        if(i===cakeStep)
+            el.classList.add("active");
+
+    }
+
+    document.getElementById(
+        "cakeProgress"
+    ).style.width=
+        cakeProgress+"%";
+
+}
+
+function cakeAction(){
+
+    if(!hasAllIngredients()){
+
+        showMessage(
+            "You don't have all the ingredients."
+        );
+
+        return;
+
+    }
+
+    cakeProgress+=25;
+
+    if(cakeProgress<100){
+
+        updateCakeUI();
+
+        return;
+
+    }
+
+    cakeProgress=0;
+
+    cakeStep++;
+
+    if(cakeStep>=3){
+
+        makeCake();
+
+        return;
+
+    }
+
+    updateCakeUI();
+
+}
+
+function makeCake(){
+
+    cakeMade=true;
+
+    closeMenu("labUI");
+
+    scene="lab";
+
+    gameMinutes+=30;
+
+    updateHUD();
+
+    openMenu("endingUI");
+
+}
+
+function leaveLab(){
+
+    closeMenu("labUI");
+
+    scene="neighbor";
+
+    player.x=6825;
+    player.y=3800;
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   INPUT INTERACTION
+========================================================= */
+
+function processInteraction(){
+
+    if(interactPressed){
+
+        interactPressed=false;
+
+        interact();
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE
+========================================================= */
+
+function update(dt){
+
+    processInteraction();
+
+    updatePlayer(dt);
+
+    updateShift(dt);
+
+    updateHike(dt);
+
+    updateStorm(dt);
+
+    updateRain(dt);
+
+    updateCamera();
+
+    updatePrompt();
+
+    updateHUD();
 
 }
 
@@ -5477,92 +4715,43 @@ function draw(){
    LOOP
 ========================================================= */
 
-let running=false;
-
-let lastTime=0;
-
-
 function loop(time){
 
-    if(!running){
-
+    if(!running)
         return;
-
-    }
-
 
     const dt=
         Math.min(
             (time-lastTime)/1000,
-            .05
+            .033
         );
-
 
     lastTime=time;
 
-
-    updateRain(dt);
-
-    updateLightning(dt);
-
-
-    updatePlayer(dt);
-
-
-    if(
-        scene==="country"
-    ){
-
-        updateHike(dt);
-
-        updateStorm(dt);
-
-    }
-
-
-    if(
-        scene==="job" &&
-        shiftActive
-    ){
-
-        updateShift(dt);
-
-    }
-
-
-    if(
-        messageTimer>0
-    ){
-
-        messageTimer-=dt;
-
-
-        if(
-            messageTimer<=0
-        ){
-
-            document.getElementById(
-                "message"
-            ).style.display="none";
-
-        }
-
-    }
-
-
-    updateCamera();
-
-    updatePrompt();
+    update(dt);
 
     draw();
 
-
-    requestAnimationFrame(
-        loop
-    );
+    requestAnimationFrame(loop);
 
 }
 
+
+/* =========================================================
+   START BUTTON
+========================================================= */
+
+document
+    .getElementById("start")
+    .addEventListener(
+        "click",
+        startGame
+    );
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
 
 updateHUD();
 
