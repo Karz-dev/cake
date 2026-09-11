@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAKE 2077</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111827;
+    font-family: "Courier New", monospace;
+    user-select: none;
+}
+
+canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    image-rendering: pixelated;
+}
+
+#ui {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    color: white;
+}
+
+#hud {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    padding: 12px 16px;
+    background: rgba(10, 15, 25, 0.85);
+    border: 2px solid #64748b;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.35);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#objective {
+    color: #facc15;
+}
+
+#interact {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 18px;
+    background: rgba(10,15,25,.9);
+    border: 2px solid #94a3b8;
+    font-size: 16px;
+    display: none;
+}
+
+#start {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 18px 42px;
+    border: 3px solid #93c5fd;
+    background: #1d4ed8;
+    color: white;
+    font-family: inherit;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 7px 7px 0 rgba(0,0,0,.45);
+}
+
+#start:hover {
+    background: #2563eb;
+}
+
+#dialogue {
+    position: absolute;
+    left: 50%;
+    bottom: 55px;
+    transform: translateX(-50%);
+    width: min(850px, 88vw);
+    padding: 22px 28px;
+    background: rgba(15,23,42,.96);
+    border: 3px solid #64748b;
+    box-shadow: 8px 8px 0 rgba(0,0,0,.4);
+    display: none;
+    pointer-events: auto;
+}
+
+#dialogueName {
+    color: #60a5fa;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#dialogueText {
+    color: white;
+    font-size: 19px;
+    line-height: 1.5;
+}
+
+#dialogueHint {
+    margin-top: 12px;
+    color: #cbd5e1;
+    font-size: 13px;
+    text-align: right;
+}
+
+#storeUI,
+#trainUI,
+#hikeUI {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2,6,23,.72);
+    pointer-events: auto;
+}
+
+.panel {
+    width: min(620px, 90vw);
+    padding: 28px;
+    background: #0f172a;
+    border: 3px solid #64748b;
+    box-shadow: 10px 10px 0 rgba(0,0,0,.45);
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #f8fafc;
+}
+
+.panel p {
+    color: #cbd5e1;
+}
+
+.shopItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 12px;
+    background: #1e293b;
+    border: 2px solid #475569;
+}
+
+.shopItem button {
+    padding: 7px 12px;
+    background: #2563eb;
+    border: 0;
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.shopItem button:hover {
+    background: #3b82f6;
+}
+
+.closeButton {
+    margin-top: 18px;
+    padding: 10px 18px;
+    background: #334155;
+    border: 0;
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="ui">
+
+```
+<div id="hud">
+    <div>£<span id="money">23</span></div>
+    <div>Time: <span id="time">08:00</span></div>
+    <div id="objective">Objective: Get a cake.</div>
+</div>
+
+<div id="interact">
+    [E] Interact
+</div>
+
+<div id="dialogue">
+    <div id="dialogueName">YOU</div>
+    <div id="dialogueText"></div>
+    <div id="dialogueHint">Press SPACE / click</div>
+</div>
+
+<button id="start">PLAY</button>
+
+<!-- PHYSICAL STORE UI -->
+<div id="storeUI">
+    <div class="panel">
+
+        <h2>GENERAL STORE</h2>
+
+        <p>
+            Supplies for people who still believe
+            going outside is a good idea.
+        </p>
+
+        <div class="shopItem">
+            <span>Backpack — £12</span>
+            <button onclick="buyItem('Backpack',12)">BUY</button>
+        </div>
+
+        <div class="shopItem">
+            <span>Tent — £25</span>
+            <button onclick="buyItem('Tent',25)">BUY</button>
+        </div>
+
+        <div class="shopItem">
+            <span>Boots — £18</span>
+            <button onclick="buyItem('Boots',18)">BUY</button>
+        </div>
+
+        <div class="shopItem">
+            <span>Raincoat — £15</span>
+            <button onclick="buyItem('Raincoat',15)">BUY</button>
+        </div>
+
+        <div class="shopItem">
+            <span>Flashlight — £8</span>
+            <button onclick="buyItem('Flashlight',8)">BUY</button>
+        </div>
+
+        <button class="closeButton" onclick="closeStore()">
+            LEAVE STORE
+        </button>
+
+    </div>
+</div>
+
+<div id="trainUI">
+    <div class="panel">
+
+        <h2>TRAIN STATION</h2>
+
+        <p>
+            Destination: Neighbouring City
+        </p>
+
+        <p>
+            Ticket: £45<br>
+            Import tax: £184.50<br>
+            <strong>Total: £229.50</strong>
+        </p>
+
+        <button class="shopItem"
+            style="width:100%;border:0;color:white;font-family:inherit;cursor:pointer;background:#2563eb"
+            onclick="takeTrain()">
+            BUY TICKET — £229.50
+        </button>
+
+        <button class="closeButton" onclick="closeTrain()">
+            LEAVE
+        </button>
+
+    </div>
+</div>
+
+<div id="hikeUI">
+    <div class="panel">
+
+        <h2>COUNTRYSIDE ROUTE</h2>
+
+        <p>
+            A walking route through the countryside.
+        </p>
+
+        <p>
+            Travel time: 8 hours<br>
+            Cost: £0
+        </p>
+
+        <p>
+            Recommended equipment:
+            backpack, boots, raincoat and flashlight.
+        </p>
+
+        <button class="shopItem"
+            style="width:100%;border:0;color:white;font-family:inherit;cursor:pointer;background:#16a34a"
+            onclick="startHike()">
+            START HIKE
+        </button>
+
+        <button class="closeButton" onclick="closeHike()">
+            CANCEL
+        </button>
+
+    </div>
+</div>
+```
+
+</div>
+
+<script>
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let W = 0;
+let H = 0;
+
+let running = false;
+let lastTime = 0;
+
+let scene = "apartment";
+
+let money = 23;
+let timeMinutes = 8 * 60;
+
+let inventory = [];
+
+let dialogueActive = false;
+let dialogueIndex = 0;
+
+let keys = {};
+
+const player = {
+    x: 0,
+    y: 0,
+
+    width: 34,
+    height: 48,
+
+    speed: 210,
+
+    direction: "down"
+};
+
+const camera = {
+    x: 0,
+    y: 0
+};
+
+const world = {
+    width: 1800,
+    height: 1100
+};
+
+
+/* =========================
+   RESIZE
+========================= */
+
+function resize() {
+
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+
+}
+
+window.addEventListener("resize", resize);
+
+resize();
+
+
+/* =========================
+   INPUT
+========================= */
+
+window.addEventListener("keydown", e => {
+
+    keys[e.key.toLowerCase()] = true;
+
+    if (
+        dialogueActive &&
+        e.code === "Space"
+    ) {
+
+        e.preventDefault();
+
+        advanceDialogue();
+
+    }
+
+    if (
+        e.key.toLowerCase() === "e" &&
+        !dialogueActive
+    ) {
+
+        interact();
+
+    }
+
+});
+
+window.addEventListener("keyup", e => {
+
+    keys[e.key.toLowerCase()] = false;
+
+});
+
+
+canvas.addEventListener("click", () => {
+
+    if (dialogueActive) {
+
+        advanceDialogue();
+
+    }
+
+});
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function random(min, max) {
+
+    return Math.random() * (max - min) + min;
+
+}
+
+
+function distance(a, b) {
+
+    return Math.hypot(
+        a.x - b.x,
+        a.y - b.y
+    );
+
+}
+
+
+/* =========================
+   DIALOGUE
+========================= */
+
+const openingDialogue = [
+
+    [
+        "YOU",
+        "I really want a cake."
+    ],
+
+    [
+        "YOU",
+        "..."
+    ],
+
+    [
+        "YOU",
+        "Yeah. I'm getting a cake."
+    ],
+
+    [
+        "GOVERNMENT NOTICE",
+        "Cakes are classified as non-essential goods."
+    ],
+
+    [
+        "YOU",
+        "Of course they are."
+    ],
+
+    [
+        "YOU",
+        "I'll figure something out."
+    ]
+
+];
+
+
+function startDialogue() {
+
+    dialogueActive = true;
+    dialogueIndex = 0;
+
+    showDialogue();
+
+}
+
+
+function showDialogue() {
+
+    const line =
+        openingDialogue[dialogueIndex];
+
+    document.getElementById(
+        "dialogueName"
+    ).textContent = line[0];
+
+    document.getElementById(
+        "dialogueText"
+    ).textContent = line[1];
+
+    document.getElementById(
+        "dialogue"
+    ).style.display = "block";
+
+}
+
+
+function advanceDialogue() {
+
+    dialogueIndex++;
+
+    if (
+        dialogueIndex >=
+        openingDialogue.length
+    ) {
+
+        dialogueActive = false;
+
+        document.getElementById(
+            "dialogue"
+        ).style.display = "none";
+
+        scene = "street";
+
+        player.x = 900;
+        player.y = 600;
+
+        updateObjective(
+            "Leave the apartment."
+        );
+
+        return;
+
+    }
+
+    showDialogue();
+
+}
+
+
+/* =========================
+   PLAYER
+========================= */
+
+function resetPlayer() {
+
+    player.x = 900;
+    player.y = 600;
+
+    player.direction = "down";
+
+}
+
+
+function updatePlayer(dt) {
+
+    if (dialogueActive) {
+        return;
+    }
+
+    let dx = 0;
+    let dy = 0;
+
+    if (
+        keys["w"] ||
+        keys["arrowup"]
+    ) {
+
+        dy -= 1;
+        player.direction = "up";
+
+    }
+
+    if (
+        keys["s"] ||
+        keys["arrowdown"]
+    ) {
+
+        dy += 1;
+        player.direction = "down";
+
+    }
+
+    if (
+        keys["a"] ||
+        keys["arrowleft"]
+    ) {
+
+        dx -= 1;
+        player.direction = "left";
+
+    }
+
+    if (
+        keys["d"] ||
+        keys["arrowright"]
+    ) {
+
+        dx += 1;
+        player.direction = "right";
+
+    }
+
+    if (dx !== 0 || dy !== 0) {
+
+        const length =
+            Math.hypot(dx, dy);
+
+        dx /= length;
+        dy /= length;
+
+        player.x +=
+            dx *
+            player.speed *
+            dt;
+
+        player.y +=
+            dy *
+            player.speed *
+            dt;
+
+    }
+
+
+    /* Keep player inside scene */
+
+    player.x =
+        Math.max(
+            35,
+            Math.min(
+                world.width - 35,
+                player.x
+            )
+        );
+
+    player.y =
+        Math.max(
+            60,
+            Math.min(
+                world.height - 35,
+                player.y
+            )
+        );
+
+
+    updateCamera();
+
+}
+
+
+/* =========================
+   CAMERA
+========================= */
+
+function updateCamera() {
+
+    camera.x =
+        player.x -
+        W / 2;
+
+    camera.y =
+        player.y -
+        H / 2;
+
+    camera.x =
+        Math.max(
+            0,
+            Math.min(
+                world.width - W,
+                camera.x
+            )
+        );
+
+    camera.y =
+        Math.max(
+            0,
+            Math.min(
+                world.height - H,
+                camera.y
+            )
+        );
+
+}
+
+
+/* =========================
+   DIRECTIONAL PLAYER SPRITE
+========================= */
+
+function drawPlayer() {
+
+    const x =
+        player.x - camera.x;
+
+    const y =
+        player.y - camera.y;
+
+
+    ctx.save();
+
+    /*
+        Larger, more human proportions.
+        Different shapes are used for each
+        direction so the player clearly
+        changes orientation.
+    */
+
+    if (player.direction === "down") {
+
+        drawFrontPlayer(x, y);
+
+    }
+
+    else if (player.direction === "up") {
+
+        drawBackPlayer(x, y);
+
+    }
+
+    else {
+
+        drawSidePlayer(
+            x,
+            y,
+            player.direction
+        );
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   FRONT
+========================= */
+
+function drawFrontPlayer(x, y) {
+
+    /* legs */
+
+    ctx.fillStyle = "#172033";
+
+    ctx.fillRect(
+        x - 13,
+        y + 12,
+        10,
+        24
+    );
+
+    ctx.fillRect(
+        x + 3,
+        y + 12,
+        10,
+        24
+    );
+
+
+    /* shoes */
+
+    ctx.fillStyle = "#080b12";
+
+    ctx.fillRect(
+        x - 15,
+        y + 33,
+        12,
+        5
+    );
+
+    ctx.fillRect(
+        x + 3,
+        y + 33,
+        12,
+        5
+    );
+
+
+    /* body */
+
+    ctx.fillStyle = "#315d8c";
+
+    ctx.fillRect(
+        x - 17,
+        y - 12,
+        34,
+        30
+    );
+
+
+    /* arms */
+
+    ctx.fillStyle = "#d39b72";
+
+    ctx.fillRect(
+        x - 23,
+        y - 7,
+        7,
+        23
+    );
+
+    ctx.fillRect(
+        x + 16,
+        y - 7,
+        7,
+        23
+    );
+
+
+    /* neck */
+
+    ctx.fillRect(
+        x - 6,
+        y - 18,
+        12,
+        8
+    );
+
+
+    /* head */
+
+    ctx.fillStyle = "#dca477";
+
+    ctx.fillRect(
+        x - 15,
+        y - 38,
+        30,
+        25
+    );
+
+
+    /* hair */
+
+    ctx.fillStyle = "#3b2a24";
+
+    ctx.fillRect(
+        x - 15,
+        y - 40,
+        30,
+        8
+    );
+
+    ctx.fillRect(
+        x - 17,
+        y - 36,
+        5,
+        12
+    );
+
+    ctx.fillRect(
+        x + 12,
+        y - 36,
+        5,
+        12
+    );
+
+
+    /* eyes */
+
+    ctx.fillStyle = "#111827";
+
+    ctx.fillRect(
+        x - 8,
+        y - 30,
+        4,
+        4
+    );
+
+    ctx.fillRect(
+        x + 4,
+        y - 30,
+        4,
+        4
+    );
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function drawBackPlayer(x, y) {
+
+    /* legs */
+
+    ctx.fillStyle = "#172033";
+
+    ctx.fillRect(
+        x - 13,
+        y + 12,
+        10,
+        24
+    );
+
+    ctx.fillRect(
+        x + 3,
+        y + 12,
+        10,
+        24
+    );
+
+
+    /* shoes */
+
+    ctx.fillStyle = "#080b12";
+
+    ctx.fillRect(
+        x - 15,
+        y + 33,
+        12,
+        5
+    );
+
+    ctx.fillRect(
+        x + 3,
+        y + 33,
+        12,
+        5
+    );
+
+
+    /* body */
+
+    ctx.fillStyle = "#315d8c";
+
+    ctx.fillRect(
+        x - 17,
+        y - 12,
+        34,
+        30
+    );
+
+
+    /* backpack */
+
+    if (
+        inventory.includes("Backpack")
+    ) {
+
+        ctx.fillStyle = "#78350f";
+
+        ctx.fillRect(
+            x - 22,
+            y - 8,
+            44,
+            25
+        );
+
+    }
+
+
+    /* arms */
+
+    ctx.fillStyle = "#c58e69";
+
+    ctx.fillRect(
+        x - 23,
+        y - 7,
+        7,
+        23
+    );
+
+    ctx.fillRect(
+        x + 16,
+        y - 7,
+        7,
+        23
+    );
+
+
+    /* neck */
+
+    ctx.fillRect(
+        x - 6,
+        y - 18,
+        12,
+        8
+    );
+
+
+    /* back of head */
+
+    ctx.fillStyle = "#d39b72";
+
+    ctx.fillRect(
+        x - 15,
+        y - 38,
+        30,
+        25
+    );
+
+
+    /* hair */
+
+    ctx.fillStyle = "#3b2a24";
+
+    ctx.fillRect(
+        x - 16,
+        y - 40,
+        32,
+        27
+    );
+
+}
+
+
+/* =========================
+   SIDE
+========================= */
+
+function drawSidePlayer(x, y, direction) {
+
+    const flip =
+        direction === "left"
+            ? -1
+            : 1;
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+    ctx.scale(
+        flip,
+        1
+    );
+
+
+    /* legs */
+
+    ctx.fillStyle = "#172033";
+
+    ctx.fillRect(
+        -9,
+        12,
+        10,
+        24
+    );
+
+    ctx.fillRect(
+        2,
+        12,
+        9,
+        24
+    );
+
+
+    /* shoe */
+
+    ctx.fillStyle = "#080b12";
+
+    ctx.fillRect(
+        3,
+        33,
+        14,
+        5
+    );
+
+
+    /* body */
+
+    ctx.fillStyle = "#315d8c";
+
+    ctx.fillRect(
+        -12,
+        -12,
+        25,
+        30
+    );
+
+
+    /* arm */
+
+    ctx.fillStyle = "#d39b72";
+
+    ctx.fillRect(
+        10,
+        -6,
+        7,
+        22
+    );
+
+
+    /* neck */
+
+    ctx.fillRect(
+        1,
+        -18,
+        10,
+        8
+    );
+
+
+    /* head */
+
+    ctx.fillStyle = "#dca477";
+
+    ctx.fillRect(
+        -7,
+        -38,
+        25,
+        25
+    );
+
+
+    /* hair */
+
+    ctx.fillStyle = "#3b2a24";
+
+    ctx.fillRect(
+        -7,
+        -40,
+        27,
+        8
+    );
+
+
+    ctx.fillRect(
+        15,
+        -35,
+        6,
+        14
+    );
+
+
+    /* nose */
+
+    ctx.fillStyle = "#dca477";
+
+    ctx.fillRect(
+        18,
+        -28,
+        5,
+        7
+    );
+
+
+    /* eye */
+
+    ctx.fillStyle = "#111827";
+
+    ctx.fillRect(
+        11,
+        -30,
+        4,
+        4
+    );
+
+}
+
+
+/* =========================
+   WORLD DRAW
+========================= */
+
+function drawWorld() {
+
+    ctx.fillStyle = "#6b7280";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    if (scene === "apartment") {
+
+        drawApartment();
+
+    }
+
+    else if (scene === "street") {
+
+        drawStreet();
+
+    }
+
+    else if (scene === "store") {
+
+        drawStoreInterior();
+
+    }
+
+    else if (scene === "train") {
+
+        drawTrainStation();
+
+    }
+
+    else if (scene === "country") {
+
+        drawCountryside();
+
+    }
+
+    drawPlayer();
+
+}
+
+
+/* =========================
+   APARTMENT
+========================= */
+
+function drawApartment() {
+
+    ctx.fillStyle = "#d1d5db";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    ctx.fillStyle = "#a78bfa";
+
+    ctx.fillRect(
+        80 - camera.x,
+        80 - camera.y,
+        420,
+        250
+    );
+
+
+    /* bed */
+
+    ctx.fillStyle = "#334155";
+
+    ctx.fillRect(
+        150 - camera.x,
+        450 - camera.y,
+        350,
+        170
+    );
+
+
+    /* kitchen */
+
+    ctx.fillStyle = "#475569";
+
+    ctx.fillRect(
+        1150 - camera.x,
+        120 - camera.y,
+        400,
+        260
+    );
+
+
+    /* exit */
+
+    ctx.fillStyle = "#92400e";
+
+    ctx.fillRect(
+        820 - camera.x,
+        30 - camera.y,
+        160,
+        50
+    );
+
+
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.font = "18px monospace";
+
+    ctx.fillText(
+        "APARTMENT",
+        70 - camera.x,
+        55 - camera.y
+    );
+
+}
+
+
+/* =========================
+   STREET
+========================= */
+
+function drawStreet() {
+
+    /* grass */
+
+    ctx.fillStyle = "#4d7c4d";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* road */
+
+    ctx.fillStyle = "#374151";
+
+    ctx.fillRect(
+        0,
+        400 - camera.y,
+        world.width,
+        300
+    );
+
+
+    /* road markings */
+
+    ctx.fillStyle = "#facc15";
+
+    for (
+        let x = 0;
+        x < world.width;
+        x += 140
+    ) {
+
+        ctx.fillRect(
+            x - camera.x,
+            545 - camera.y,
+            75,
+            8
+        );
+
+    }
+
+
+    /* STORE */
+
+    drawBuilding(
+        100,
+        160,
+        430,
+        220,
+        "#c2410c",
+        "GENERAL STORE"
+    );
+
+
+    /* TRAIN */
+
+    drawBuilding(
+        1240,
+        100,
+        420,
+        220,
+        "#475569",
+        "TRAIN STATION"
+    );
+
+
+    /* COUNTRY */
+
+    drawBuilding(
+        1200,
+        780,
+        450,
+        210,
+        "#166534",
+        "COUNTRYSIDE"
+    );
+
+
+    /* HOME */
+
+    drawBuilding(
+        80,
+        770,
+        430,
+        210,
+        "#7c3aed",
+        "MY APARTMENT"
+    );
+
+}
+
+
+/* =========================
+   BUILDING
+========================= */
+
+function drawBuilding(
+    x,
+    y,
+    width,
+    height,
+    color,
+    label
+) {
+
+    ctx.fillStyle = color;
+
+    ctx.fillRect(
+        x - camera.x,
+        y - camera.y,
+        width,
+        height
+    );
+
+
+    ctx.fillStyle = "#111827";
+
+    ctx.fillRect(
+        x + 25 - camera.x,
+        y + 50 - camera.y,
+        width - 50,
+        80
+    );
+
+
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.font = "22px monospace";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        label,
+        x + width / 2 - camera.x,
+        y + height - 30 - camera.y
+    );
+
+    ctx.textAlign = "left";
+
+}
+
+
+/* =========================
+   PHYSICAL STORE INTERIOR
+========================= */
+
+function drawStoreInterior() {
+
+    /* floor */
+
+    ctx.fillStyle = "#c4a484";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* walls */
+
+    ctx.fillStyle = "#7c5c46";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        70
+    );
+
+    ctx.fillRect(
+        0,
+        0,
+        70,
+        H
+    );
+
+    ctx.fillRect(
+        W - 70,
+        0,
+        70,
+        H
+    );
+
+
+    /* shelves */
+
+    drawShelf(150, 150);
+    drawShelf(430, 150);
+    drawShelf(710, 150);
+
+    drawShelf(150, 420);
+    drawShelf(430, 420);
+    drawShelf(710, 420);
+
+
+    /* counter */
+
+    ctx.fillStyle = "#713f12";
+
+    ctx.fillRect(
+        W - 350,
+        H - 220,
+        230,
+        90
+    );
+
+
+    /* shopkeeper */
+
+    drawShopkeeper(
+        W - 235,
+        H - 270
+    );
+
+
+    /* sign */
+
+    ctx.fillStyle = "#fef3c7";
+
+    ctx.fillRect(
+        W / 2 - 160,
+        80,
+        320,
+        55
+    );
+
+    ctx.fillStyle = "#111827";
+
+    ctx.font = "25px monospace";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        "GENERAL STORE",
+        W / 2,
+        116
+    );
+
+    ctx.textAlign = "left";
+
+}
+
+
+/* =========================
+   SHELF
+========================= */
+
+function drawShelf(x, y) {
+
+    ctx.fillStyle = "#78350f";
+
+    ctx.fillRect(
+        x,
+        y,
+        180,
+        55
+    );
+
+    ctx.fillRect(
+        x,
+        y + 90,
+        180,
+        55
+    );
+
+    ctx.fillRect(
+        x,
+        y + 180,
+        180,
+        55
+    );
+
+
+    /* products */
+
+    const products = [
+        "#ef4444",
+        "#22c55e",
+        "#3b82f6",
+        "#eab308",
+        "#a855f7"
+    ];
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        ctx.fillStyle =
+            products[i];
+
+        ctx.fillRect(
+            x + 15 + i * 32,
+            y + 15,
+            20,
+            25
+        );
+
+        ctx.fillRect(
+            x + 15 + i * 32,
+            y + 105,
+            20,
+            25
+        );
+
+        ctx.fillRect(
+            x + 15 + i * 32,
+            y + 195,
+            20,
+            25
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SHOPKEEPER
+========================= */
+
+function drawShopkeeper(x, y) {
+
+    ctx.fillStyle = "#1e293b";
+
+    ctx.fillRect(
+        x - 17,
+        y,
+        34,
+        55
+    );
+
+
+    ctx.fillStyle = "#d39b72";
+
+    ctx.fillRect(
+        x - 15,
+        y - 35,
+        30,
+        25
+    );
+
+
+    ctx.fillStyle = "#111827";
+
+    ctx.fillRect(
+        x - 18,
+        y - 40,
+        36,
+        8
+    );
+
+
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.font = "16px monospace";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        "SHOPKEEPER",
+        x,
+        y + 80
+    );
+
+    ctx.textAlign = "left";
+
+}
+
+
+/* =========================
+   TRAIN
+========================= */
+
+function drawTrainStation() {
+
+    ctx.fillStyle = "#334155";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    ctx.fillStyle = "#64748b";
+
+    ctx.fillRect(
+        80,
+        120,
+        W - 160,
+        100
+    );
+
+
+    ctx.fillStyle = "#1e293b";
+
+    ctx.fillRect(
+        80,
+        H - 180,
+        W - 160,
+        100
+    );
+
+
+    ctx.fillStyle = "#f8fafc";
+
+    ctx.font = "30px monospace";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        "NATIONAL TRANSIT",
+        W / 2,
+        180
+    );
+
+    ctx.textAlign = "left";
+
+}
+
+
+/* =========================
+   COUNTRYSIDE
+========================= */
+
+function drawCountryside() {
+
+    ctx.fillStyle = "#5f8f4f";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* path */
+
+    ctx.fillStyle = "#c2a878";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        W / 2 - 120,
+        H
+    );
+
+    ctx.lineTo(
+        W / 2 + 120,
+        H
+    );
+
+    ctx.lineTo(
+        W / 2 + 40,
+        0
+    );
+
+    ctx.lineTo(
+        W / 2 - 40,
+        0
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* trees */
+
+    for (
+        let i = 0;
+        i < 20;
+        i++
+    ) {
+
+        const x =
+            (i * 173) % W;
+
+        const y =
+            (i * 91) % H;
+
+        ctx.fillStyle = "#365314";
+
+        ctx.fillRect(
+            x,
+            y,
+            25,
+            45
+        );
+
+        ctx.fillStyle = "#166534";
+
+        ctx.fillRect(
+            x - 15,
+            y - 25,
+            55,
+            45
+        );
+
+    }
+
+}
+
+
+/* =========================
+   INTERACTION
+========================= */
+
+function interact() {
+
+    if (scene === "street") {
+
+        /*
+            STORE ENTRANCE
+        */
+
+        if (
+            player.x > 100 &&
+            player.x < 530 &&
+            player.y > 160 &&
+            player.y < 380
+        ) {
+
+            enterStore();
+
+            return;
+
+        }
+
+
+        /*
+            TRAIN
+        */
+
+        if (
+            player.x > 1240 &&
+            player.x < 1660 &&
+            player.y > 100 &&
+            player.y < 320
+        ) {
+
+            enterTrain();
+
+            return;
+
+        }
+
+
+        /*
+            COUNTRY
+        */
+
+        if (
+            player.x > 1200 &&
+            player.x < 1650 &&
+            player.y > 780 &&
+            player.y < 990
+        ) {
+
+            enterHike();
+
+            return;
+
+        }
+
+    }
+
+    else if (scene === "store") {
+
+        openStoreMenu();
+
+    }
+
+    else if (scene === "train") {
+
+        openTrainMenu();
+
+    }
+
+    else if (scene === "country") {
+
+        openHikeMenu();
+
+    }
+
+}
+
+
+/* =========================
+   STORE
+========================= */
+
+function enterStore() {
+
+    scene = "store";
+
+    player.x = 300;
+    player.y = 700;
+
+    updateObjective(
+        "Explore the store."
+    );
+
+}
+
+
+function openStoreMenu() {
+
+    document.getElementById(
+        "storeUI"
+    ).style.display = "flex";
+
+}
+
+
+function closeStore() {
+
+    document.getElementById(
+        "storeUI"
+    ).style.display = "none";
+
+}
+
+
+function buyItem(name, cost) {
+
+    if (money < cost) {
+
+        alert("Not enough money.");
+
+        return;
+
+    }
+
+    money -= cost;
+
+    inventory.push(name);
+
+    updateHUD();
+
+}
+
+
+function leaveStore() {
+
+    closeStore();
+
+    scene = "street";
+
+    player.x = 550;
+    player.y = 270;
+
+}
+
+
+/* =========================
+   TRAIN
+========================= */
+
+function enterTrain() {
+
+    scene = "train";
+
+    player.x = 300;
+    player.y = 650;
+
+    updateObjective(
+        "Buy a train ticket or leave."
+    );
+
+}
+
+
+function openTrainMenu() {
+
+    document.getElementById(
+        "trainUI"
+    ).style.display = "flex";
+
+}
+
+
+function closeTrain() {
+
+    document.getElementById(
+        "trainUI"
+    ).style.display = "none";
+
+}
+
+
+function takeTrain() {
+
+    if (money < 229.5) {
+
+        alert(
+            "You need £229.50."
+        );
+
+        return;
+
+    }
+
+    money -= 229.5;
+
+    timeMinutes += 45;
+
+    closeTrain();
+
+    updateHUD();
+
+    scene = "street";
+
+    updateObjective(
+        "You made it to the neighbouring city."
+    );
+
+}
+
+
+/* =========================
+   HIKE
+========================= */
+
+function enterHike() {
+
+    scene = "country";
+
+    player.x = W / 2;
+    player.y = H - 100;
+
+    updateObjective(
+        "Start the hike."
+    );
+
+}
+
+
+function openHikeMenu() {
+
+    document.getElementById(
+        "hikeUI"
+    ).style.display = "flex";
+
+}
+
+
+function closeHike() {
+
+    document.getElementById(
+        "hikeUI"
+    ).style.display = "none";
+
+}
+
+
+function startHike() {
+
+    closeHike();
+
+    timeMinutes += 8 * 60;
+
+    updateHUD();
+
+    updateObjective(
+        "You reached the neighbouring city on foot."
+    );
+
+}
+
+
+/* =========================
+   HUD
+========================= */
+
+function updateHUD() {
+
+    document.getElementById(
+        "money"
+    ).textContent =
+        money.toFixed(2);
+
+    document.getElementById(
+        "time"
+    ).textContent =
+        formatTime(timeMinutes);
+
+}
+
+
+function formatTime(minutes) {
+
+    minutes =
+        minutes % (24 * 60);
+
+    const h =
+        Math.floor(minutes / 60);
+
+    const m =
+        minutes % 60;
+
+    return (
+        String(h).padStart(2, "0") +
+        ":" +
+        String(m).padStart(2, "0")
+    );
+
+}
+
+
+function updateObjective(text) {
+
+    document.getElementById(
+        "objective"
+    ).textContent =
+        "Objective: " +
+        text;
+
+}
+
+
+/* =========================
+   LOOP
+========================= */
+
+function loop(time) {
+
+    if (!running) {
+        return;
+    }
+
+    const dt =
+        Math.min(
+            (time - lastTime) / 1000,
+            0.033
+        );
+
+    lastTime = time;
+
+    updatePlayer(dt);
+
+    draw();
+
+    requestAnimationFrame(loop);
+
+}
+
+
+/* =========================
+   DRAW
+========================= */
+
+function draw() {
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawWorld();
+
+    updateInteractionPrompt();
+
+}
+
+
+/* =========================
+   INTERACTION PROMPT
+========================= */
+
+function updateInteractionPrompt() {
+
+    const prompt =
+        document.getElementById(
+            "interact"
+        );
+
+    let visible = false;
+
+    if (
+        scene === "street"
+    ) {
+
+        if (
+            player.x > 70 &&
+            player.x < 560 &&
+            player.y > 120 &&
+            player.y < 420
+        ) {
+
+            visible = true;
+
+        }
+
+        if (
+            player.x > 1200 &&
+            player.x < 1690 &&
+            player.y > 60 &&
+            player.y < 360
+        ) {
+
+            visible = true;
+
+        }
+
+        if (
+            player.x > 1170 &&
+            player.x < 1690 &&
+            player.y > 740 &&
+            player.y < 1020
+        ) {
+
+            visible = true;
+
+        }
+
+    }
+
+    else if (
+        scene === "store" ||
+        scene === "train" ||
+        scene === "country"
+    ) {
+
+        visible = true;
+
+    }
+
+    prompt.style.display =
+        visible
+            ? "block"
+            : "none";
+
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame() {
+
+    document.getElementById(
+        "start"
+    ).style.display = "none";
+
+    resetPlayer();
+
+    scene = "apartment";
+
+    money = 23;
+
+    timeMinutes = 8 * 60;
+
+    inventory = [];
+
+    updateHUD();
+
+    running = true;
+
+    lastTime =
+        performance.now();
+
+    startDialogue();
+
+    requestAnimationFrame(loop);
+
+}
+
+
+document.getElementById(
+    "start"
+).addEventListener(
+    "click",
+    startGame
+);
+
+
+/* =========================
+   INITIAL
+========================= */
+
+updateHUD();
+
+resetPlayer();
+
+draw();
+
+</script>
+
+</body>
+</html>
