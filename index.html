@@ -16,7 +16,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #111827;
+    background: #05070d;
     font-family: "Courier New", monospace;
     user-select: none;
 }
@@ -40,9 +40,9 @@ canvas {
     top: 18px;
     left: 20px;
     padding: 12px 16px;
-    background: rgba(10, 15, 25, 0.85);
-    border: 2px solid #64748b;
-    box-shadow: 5px 5px 0 rgba(0,0,0,.35);
+    background: rgba(3, 5, 12, .9);
+    border: 2px solid #334155;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.5);
     font-size: 16px;
     line-height: 1.5;
 }
@@ -57,8 +57,8 @@ canvas {
     left: 50%;
     transform: translateX(-50%);
     padding: 10px 18px;
-    background: rgba(10,15,25,.9);
-    border: 2px solid #94a3b8;
+    background: rgba(3,5,12,.95);
+    border: 2px solid #64748b;
     font-size: 16px;
     display: none;
 }
@@ -69,19 +69,19 @@ canvas {
     top: 50%;
     transform: translate(-50%, -50%);
     padding: 18px 42px;
-    border: 3px solid #93c5fd;
-    background: #1d4ed8;
-    color: white;
+    border: 3px solid #38bdf8;
+    background: #111827;
+    color: #f8fafc;
     font-family: inherit;
     font-size: 26px;
     font-weight: bold;
     cursor: pointer;
     pointer-events: auto;
-    box-shadow: 7px 7px 0 rgba(0,0,0,.45);
+    box-shadow: 8px 8px 0 rgba(0,0,0,.6);
 }
 
 #start:hover {
-    background: #2563eb;
+    background: #172033;
 }
 
 #dialogue {
@@ -91,15 +91,15 @@ canvas {
     transform: translateX(-50%);
     width: min(850px, 88vw);
     padding: 22px 28px;
-    background: rgba(15,23,42,.96);
-    border: 3px solid #64748b;
-    box-shadow: 8px 8px 0 rgba(0,0,0,.4);
+    background: rgba(5,8,17,.97);
+    border: 3px solid #475569;
+    box-shadow: 8px 8px 0 rgba(0,0,0,.55);
     display: none;
     pointer-events: auto;
 }
 
 #dialogueName {
-    color: #60a5fa;
+    color: #38bdf8;
     font-weight: bold;
     margin-bottom: 8px;
 }
@@ -112,7 +112,7 @@ canvas {
 
 #dialogueHint {
     margin-top: 12px;
-    color: #cbd5e1;
+    color: #94a3b8;
     font-size: 13px;
     text-align: right;
 }
@@ -125,16 +125,16 @@ canvas {
     display: none;
     align-items: center;
     justify-content: center;
-    background: rgba(2,6,23,.72);
+    background: rgba(0,0,0,.72);
     pointer-events: auto;
 }
 
 .panel {
     width: min(620px, 90vw);
     padding: 28px;
-    background: #0f172a;
-    border: 3px solid #64748b;
-    box-shadow: 10px 10px 0 rgba(0,0,0,.45);
+    background: #080b13;
+    border: 3px solid #475569;
+    box-shadow: 10px 10px 0 rgba(0,0,0,.65);
 }
 
 .panel h2 {
@@ -152,13 +152,13 @@ canvas {
     align-items: center;
     margin: 10px 0;
     padding: 12px;
-    background: #1e293b;
-    border: 2px solid #475569;
+    background: #111827;
+    border: 2px solid #334155;
 }
 
 .shopItem button {
     padding: 7px 12px;
-    background: #2563eb;
+    background: #0ea5e9;
     border: 0;
     color: white;
     font-family: inherit;
@@ -166,13 +166,13 @@ canvas {
 }
 
 .shopItem button:hover {
-    background: #3b82f6;
+    background: #38bdf8;
 }
 
 .closeButton {
     margin-top: 18px;
     padding: 10px 18px;
-    background: #334155;
+    background: #1e293b;
     border: 0;
     color: white;
     font-family: inherit;
@@ -190,7 +190,7 @@ canvas {
 
 ```
 <div id="hud">
-    <div>£<span id="money">23</span></div>
+    <div>£<span id="money">23.00</span></div>
     <div>Time: <span id="time">08:00</span></div>
     <div id="objective">Objective: Get a cake.</div>
 </div>
@@ -207,15 +207,18 @@ canvas {
 
 <button id="start">PLAY</button>
 
-<!-- PHYSICAL STORE UI -->
 <div id="storeUI">
     <div class="panel">
 
         <h2>GENERAL STORE</h2>
 
         <p>
-            Supplies for people who still believe
-            going outside is a good idea.
+            GOVERNMENT APPROVED SUPPLIES ONLY.
+        </p>
+
+        <p>
+            Luxury goods have been restricted
+            for economic stability.
         </p>
 
         <div class="shopItem">
@@ -243,7 +246,7 @@ canvas {
             <button onclick="buyItem('Flashlight',8)">BUY</button>
         </div>
 
-        <button class="closeButton" onclick="closeStore()">
+        <button class="closeButton" onclick="leaveStore()">
             LEAVE STORE
         </button>
 
@@ -253,20 +256,20 @@ canvas {
 <div id="trainUI">
     <div class="panel">
 
-        <h2>TRAIN STATION</h2>
+        <h2>CENTRAL TRANSIT</h2>
 
         <p>
-            Destination: Neighbouring City
+            DESTINATION: NEIGHBOURING CITY
         </p>
 
         <p>
-            Ticket: £45<br>
-            Import tax: £184.50<br>
+            Standard fare: £45<br>
+            NON-ESSENTIAL IMPORT TAX: £184.50<br>
             <strong>Total: £229.50</strong>
         </p>
 
         <button class="shopItem"
-            style="width:100%;border:0;color:white;font-family:inherit;cursor:pointer;background:#2563eb"
+            style="width:100%;border:0;color:white;font-family:inherit;cursor:pointer;background:#0ea5e9"
             onclick="takeTrain()">
             BUY TICKET — £229.50
         </button>
@@ -281,10 +284,11 @@ canvas {
 <div id="hikeUI">
     <div class="panel">
 
-        <h2>COUNTRYSIDE ROUTE</h2>
+        <h2>OUTER CITY ROUTE</h2>
 
         <p>
-            A walking route through the countryside.
+            An old service road leading through
+            the countryside.
         </p>
 
         <p>
@@ -293,8 +297,7 @@ canvas {
         </p>
 
         <p>
-            Recommended equipment:
-            backpack, boots, raincoat and flashlight.
+            WARNING: Weather conditions may vary.
         </p>
 
         <button class="shopItem"
@@ -421,27 +424,6 @@ canvas.addEventListener("click", () => {
     }
 
 });
-
-
-/* =========================
-   HELPERS
-========================= */
-
-function random(min, max) {
-
-    return Math.random() * (max - min) + min;
-
-}
-
-
-function distance(a, b) {
-
-    return Math.hypot(
-        a.x - b.x,
-        a.y - b.y
-    );
-
-}
 
 
 /* =========================
@@ -630,8 +612,6 @@ function updatePlayer(dt) {
     }
 
 
-    /* Keep player inside scene */
-
     player.x =
         Math.max(
             35,
@@ -649,7 +629,6 @@ function updatePlayer(dt) {
                 player.y
             )
         );
-
 
     updateCamera();
 
@@ -692,7 +671,7 @@ function updateCamera() {
 
 
 /* =========================
-   DIRECTIONAL PLAYER SPRITE
+   PLAYER
 ========================= */
 
 function drawPlayer() {
@@ -703,25 +682,17 @@ function drawPlayer() {
     const y =
         player.y - camera.y;
 
-
     ctx.save();
-
-    /*
-        Larger, more human proportions.
-        Different shapes are used for each
-        direction so the player clearly
-        changes orientation.
-    */
 
     if (player.direction === "down") {
 
-        drawFrontPlayer(x, y);
+        drawFrontPlayer(x,y);
 
     }
 
     else if (player.direction === "up") {
 
-        drawBackPlayer(x, y);
+        drawBackPlayer(x,y);
 
     }
 
@@ -744,72 +715,102 @@ function drawPlayer() {
    FRONT
 ========================= */
 
-function drawFrontPlayer(x, y) {
+function drawFrontPlayer(x,y) {
+
+    /* shadow */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.45)";
+
+    ctx.fillRect(
+        x - 18,
+        y + 34,
+        36,
+        7
+    );
+
 
     /* legs */
 
-    ctx.fillStyle = "#172033";
+    ctx.fillStyle =
+        "#202938";
 
     ctx.fillRect(
         x - 13,
-        y + 12,
+        y + 10,
         10,
-        24
+        25
     );
 
     ctx.fillRect(
         x + 3,
-        y + 12,
+        y + 10,
         10,
-        24
+        25
     );
 
 
     /* shoes */
 
-    ctx.fillStyle = "#080b12";
+    ctx.fillStyle =
+        "#080b12";
 
     ctx.fillRect(
-        x - 15,
+        x - 16,
         y + 33,
-        12,
-        5
+        13,
+        6
     );
 
     ctx.fillRect(
         x + 3,
         y + 33,
-        12,
-        5
+        13,
+        6
     );
 
 
     /* body */
 
-    ctx.fillStyle = "#315d8c";
+    ctx.fillStyle =
+        "#315d8c";
 
     ctx.fillRect(
         x - 17,
-        y - 12,
+        y - 13,
         34,
         30
     );
 
 
-    /* arms */
+    /* jacket detail */
 
-    ctx.fillStyle = "#d39b72";
+    ctx.fillStyle =
+        "#1e3a5f";
 
     ctx.fillRect(
-        x - 23,
-        y - 7,
+        x - 2,
+        y - 12,
+        4,
+        28
+    );
+
+
+    /* arms */
+
+    ctx.fillStyle =
+        "#d39b72";
+
+    ctx.fillRect(
+        x - 24,
+        y - 8,
         7,
         23
     );
 
     ctx.fillRect(
-        x + 16,
-        y - 7,
+        x + 17,
+        y - 8,
         7,
         23
     );
@@ -819,7 +820,7 @@ function drawFrontPlayer(x, y) {
 
     ctx.fillRect(
         x - 6,
-        y - 18,
+        y - 19,
         12,
         8
     );
@@ -827,45 +828,48 @@ function drawFrontPlayer(x, y) {
 
     /* head */
 
-    ctx.fillStyle = "#dca477";
+    ctx.fillStyle =
+        "#dca477";
 
     ctx.fillRect(
         x - 15,
-        y - 38,
+        y - 39,
         30,
-        25
+        26
     );
 
 
     /* hair */
 
-    ctx.fillStyle = "#3b2a24";
+    ctx.fillStyle =
+        "#30231f";
 
     ctx.fillRect(
-        x - 15,
-        y - 40,
-        30,
-        8
+        x - 16,
+        y - 41,
+        32,
+        9
     );
 
     ctx.fillRect(
-        x - 17,
-        y - 36,
+        x - 18,
+        y - 37,
         5,
-        12
+        13
     );
 
     ctx.fillRect(
-        x + 12,
-        y - 36,
+        x + 13,
+        y - 37,
         5,
-        12
+        13
     );
 
 
     /* eyes */
 
-    ctx.fillStyle = "#111827";
+    ctx.fillStyle =
+        "#111827";
 
     ctx.fillRect(
         x - 8,
@@ -888,55 +892,45 @@ function drawFrontPlayer(x, y) {
    BACK
 ========================= */
 
-function drawBackPlayer(x, y) {
+function drawBackPlayer(x,y) {
 
     /* legs */
 
-    ctx.fillStyle = "#172033";
+    ctx.fillStyle =
+        "#202938";
 
     ctx.fillRect(
         x - 13,
-        y + 12,
+        y + 10,
         10,
-        24
+        25
     );
 
     ctx.fillRect(
         x + 3,
-        y + 12,
+        y + 10,
         10,
-        24
+        25
     );
 
 
     /* shoes */
 
-    ctx.fillStyle = "#080b12";
+    ctx.fillStyle =
+        "#080b12";
 
     ctx.fillRect(
-        x - 15,
+        x - 16,
         y + 33,
-        12,
-        5
+        13,
+        6
     );
 
     ctx.fillRect(
         x + 3,
         y + 33,
-        12,
-        5
-    );
-
-
-    /* body */
-
-    ctx.fillStyle = "#315d8c";
-
-    ctx.fillRect(
-        x - 17,
-        y - 12,
-        34,
-        30
+        13,
+        6
     );
 
 
@@ -946,32 +940,47 @@ function drawBackPlayer(x, y) {
         inventory.includes("Backpack")
     ) {
 
-        ctx.fillStyle = "#78350f";
+        ctx.fillStyle =
+            "#713f12";
 
         ctx.fillRect(
             x - 22,
-            y - 8,
+            y - 9,
             44,
-            25
+            28
         );
 
     }
 
 
-    /* arms */
+    /* body */
 
-    ctx.fillStyle = "#c58e69";
+    ctx.fillStyle =
+        "#315d8c";
 
     ctx.fillRect(
-        x - 23,
-        y - 7,
+        x - 17,
+        y - 13,
+        34,
+        30
+    );
+
+
+    /* arms */
+
+    ctx.fillStyle =
+        "#c58e69";
+
+    ctx.fillRect(
+        x - 24,
+        y - 8,
         7,
         23
     );
 
     ctx.fillRect(
-        x + 16,
-        y - 7,
+        x + 17,
+        y - 8,
         7,
         23
     );
@@ -981,7 +990,7 @@ function drawBackPlayer(x, y) {
 
     ctx.fillRect(
         x - 6,
-        y - 18,
+        y - 19,
         12,
         8
     );
@@ -989,25 +998,27 @@ function drawBackPlayer(x, y) {
 
     /* back of head */
 
-    ctx.fillStyle = "#d39b72";
+    ctx.fillStyle =
+        "#d39b72";
 
     ctx.fillRect(
         x - 15,
-        y - 38,
+        y - 39,
         30,
-        25
+        26
     );
 
 
     /* hair */
 
-    ctx.fillStyle = "#3b2a24";
+    ctx.fillStyle =
+        "#30231f";
 
     ctx.fillRect(
-        x - 16,
-        y - 40,
-        32,
-        27
+        x - 17,
+        y - 41,
+        34,
+        29
     );
 
 }
@@ -1017,63 +1028,59 @@ function drawBackPlayer(x, y) {
    SIDE
 ========================= */
 
-function drawSidePlayer(x, y, direction) {
+function drawSidePlayer(x,y,direction) {
 
     const flip =
         direction === "left"
             ? -1
             : 1;
 
+    ctx.translate(x,y);
 
-    ctx.translate(
-        x,
-        y
-    );
-
-    ctx.scale(
-        flip,
-        1
-    );
+    ctx.scale(flip,1);
 
 
     /* legs */
 
-    ctx.fillStyle = "#172033";
+    ctx.fillStyle =
+        "#202938";
 
     ctx.fillRect(
-        -9,
-        12,
+        -10,
         10,
-        24
+        10,
+        25
     );
 
     ctx.fillRect(
-        2,
-        12,
-        9,
-        24
+        1,
+        10,
+        10,
+        25
     );
 
 
     /* shoe */
 
-    ctx.fillStyle = "#080b12";
+    ctx.fillStyle =
+        "#080b12";
 
     ctx.fillRect(
-        3,
+        2,
         33,
-        14,
-        5
+        15,
+        6
     );
 
 
     /* body */
 
-    ctx.fillStyle = "#315d8c";
+    ctx.fillStyle =
+        "#315d8c";
 
     ctx.fillRect(
         -12,
-        -12,
+        -13,
         25,
         30
     );
@@ -1081,21 +1088,22 @@ function drawSidePlayer(x, y, direction) {
 
     /* arm */
 
-    ctx.fillStyle = "#d39b72";
+    ctx.fillStyle =
+        "#d39b72";
 
     ctx.fillRect(
-        10,
-        -6,
-        7,
-        22
+        9,
+        -8,
+        8,
+        23
     );
 
 
     /* neck */
 
     ctx.fillRect(
-        1,
-        -18,
+        2,
+        -19,
         10,
         8
     );
@@ -1103,43 +1111,45 @@ function drawSidePlayer(x, y, direction) {
 
     /* head */
 
-    ctx.fillStyle = "#dca477";
+    ctx.fillStyle =
+        "#dca477";
 
     ctx.fillRect(
         -7,
-        -38,
+        -39,
         25,
-        25
+        26
     );
 
 
     /* hair */
 
-    ctx.fillStyle = "#3b2a24";
+    ctx.fillStyle =
+        "#30231f";
 
     ctx.fillRect(
-        -7,
-        -40,
-        27,
-        8
+        -8,
+        -41,
+        28,
+        9
     );
-
 
     ctx.fillRect(
         15,
-        -35,
-        6,
-        14
+        -37,
+        7,
+        15
     );
 
 
     /* nose */
 
-    ctx.fillStyle = "#dca477";
+    ctx.fillStyle =
+        "#dca477";
 
     ctx.fillRect(
         18,
-        -28,
+        -29,
         5,
         7
     );
@@ -1147,11 +1157,12 @@ function drawSidePlayer(x, y, direction) {
 
     /* eye */
 
-    ctx.fillStyle = "#111827";
+    ctx.fillStyle =
+        "#111827";
 
     ctx.fillRect(
         11,
-        -30,
+        -31,
         4,
         4
     );
@@ -1160,20 +1171,10 @@ function drawSidePlayer(x, y, direction) {
 
 
 /* =========================
-   WORLD DRAW
+   WORLD
 ========================= */
 
 function drawWorld() {
-
-    ctx.fillStyle = "#6b7280";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
 
     if (scene === "apartment") {
 
@@ -1183,7 +1184,7 @@ function drawWorld() {
 
     else if (scene === "street") {
 
-        drawStreet();
+        drawCyberpunkStreet();
 
     }
 
@@ -1216,234 +1217,8 @@ function drawWorld() {
 
 function drawApartment() {
 
-    ctx.fillStyle = "#d1d5db";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    ctx.fillStyle = "#a78bfa";
-
-    ctx.fillRect(
-        80 - camera.x,
-        80 - camera.y,
-        420,
-        250
-    );
-
-
-    /* bed */
-
-    ctx.fillStyle = "#334155";
-
-    ctx.fillRect(
-        150 - camera.x,
-        450 - camera.y,
-        350,
-        170
-    );
-
-
-    /* kitchen */
-
-    ctx.fillStyle = "#475569";
-
-    ctx.fillRect(
-        1150 - camera.x,
-        120 - camera.y,
-        400,
-        260
-    );
-
-
-    /* exit */
-
-    ctx.fillStyle = "#92400e";
-
-    ctx.fillRect(
-        820 - camera.x,
-        30 - camera.y,
-        160,
-        50
-    );
-
-
-    ctx.fillStyle = "#f8fafc";
-
-    ctx.font = "18px monospace";
-
-    ctx.fillText(
-        "APARTMENT",
-        70 - camera.x,
-        55 - camera.y
-    );
-
-}
-
-
-/* =========================
-   STREET
-========================= */
-
-function drawStreet() {
-
-    /* grass */
-
-    ctx.fillStyle = "#4d7c4d";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    /* road */
-
-    ctx.fillStyle = "#374151";
-
-    ctx.fillRect(
-        0,
-        400 - camera.y,
-        world.width,
-        300
-    );
-
-
-    /* road markings */
-
-    ctx.fillStyle = "#facc15";
-
-    for (
-        let x = 0;
-        x < world.width;
-        x += 140
-    ) {
-
-        ctx.fillRect(
-            x - camera.x,
-            545 - camera.y,
-            75,
-            8
-        );
-
-    }
-
-
-    /* STORE */
-
-    drawBuilding(
-        100,
-        160,
-        430,
-        220,
-        "#c2410c",
-        "GENERAL STORE"
-    );
-
-
-    /* TRAIN */
-
-    drawBuilding(
-        1240,
-        100,
-        420,
-        220,
-        "#475569",
-        "TRAIN STATION"
-    );
-
-
-    /* COUNTRY */
-
-    drawBuilding(
-        1200,
-        780,
-        450,
-        210,
-        "#166534",
-        "COUNTRYSIDE"
-    );
-
-
-    /* HOME */
-
-    drawBuilding(
-        80,
-        770,
-        430,
-        210,
-        "#7c3aed",
-        "MY APARTMENT"
-    );
-
-}
-
-
-/* =========================
-   BUILDING
-========================= */
-
-function drawBuilding(
-    x,
-    y,
-    width,
-    height,
-    color,
-    label
-) {
-
-    ctx.fillStyle = color;
-
-    ctx.fillRect(
-        x - camera.x,
-        y - camera.y,
-        width,
-        height
-    );
-
-
-    ctx.fillStyle = "#111827";
-
-    ctx.fillRect(
-        x + 25 - camera.x,
-        y + 50 - camera.y,
-        width - 50,
-        80
-    );
-
-
-    ctx.fillStyle = "#f8fafc";
-
-    ctx.font = "22px monospace";
-
-    ctx.textAlign = "center";
-
-    ctx.fillText(
-        label,
-        x + width / 2 - camera.x,
-        y + height - 30 - camera.y
-    );
-
-    ctx.textAlign = "left";
-
-}
-
-
-/* =========================
-   PHYSICAL STORE INTERIOR
-========================= */
-
-function drawStoreInterior() {
-
-    /* floor */
-
-    ctx.fillStyle = "#c4a484";
+    ctx.fillStyle =
+        "#171b26";
 
     ctx.fillRect(
         0,
@@ -1455,44 +1230,839 @@ function drawStoreInterior() {
 
     /* walls */
 
-    ctx.fillStyle = "#7c5c46";
+    ctx.fillStyle =
+        "#242938";
 
     ctx.fillRect(
         0,
         0,
         W,
+        80
+    );
+
+
+    /* window */
+
+    ctx.fillStyle =
+        "#080b13";
+
+    ctx.fillRect(
+        90 - camera.x,
+        90 - camera.y,
+        380,
+        220
+    );
+
+
+    ctx.fillStyle =
+        "#111827";
+
+    ctx.fillRect(
+        110 - camera.x,
+        110 - camera.y,
+        340,
+        180
+    );
+
+
+    /* city lights outside */
+
+    for (
+        let i = 0;
+        i < 35;
+        i++
+    ) {
+
+        const x =
+            115 + (i * 83) % 320;
+
+        const y =
+            125 + (i * 47) % 150;
+
+        ctx.fillStyle =
+            i % 3 === 0
+                ? "#38bdf8"
+                : "#facc15";
+
+        ctx.fillRect(
+            x - camera.x,
+            y - camera.y,
+            5,
+            5
+        );
+
+    }
+
+
+    /* bed */
+
+    ctx.fillStyle =
+        "#31394c";
+
+    ctx.fillRect(
+        130 - camera.x,
+        470 - camera.y,
+        390,
+        170
+    );
+
+
+    /* desk */
+
+    ctx.fillStyle =
+        "#4b5563";
+
+    ctx.fillRect(
+        1100 - camera.x,
+        160 - camera.y,
+        430,
+        40
+    );
+
+
+    /* monitor */
+
+    ctx.fillStyle =
+        "#020617";
+
+    ctx.fillRect(
+        1250 - camera.x,
+        85 - camera.y,
+        180,
+        80
+    );
+
+    ctx.strokeStyle =
+        "#334155";
+
+    ctx.strokeRect(
+        1250 - camera.x,
+        85 - camera.y,
+        180,
+        80
+    );
+
+
+    /* exit */
+
+    ctx.fillStyle =
+        "#7c2d12";
+
+    ctx.fillRect(
+        820 - camera.x,
+        30 - camera.y,
+        160,
+        50
+    );
+
+
+    ctx.fillStyle =
+        "#f8fafc";
+
+    ctx.font =
+        "18px monospace";
+
+    ctx.fillText(
+        "UNIT 14-B",
+        70 - camera.x,
+        55 - camera.y
+    );
+
+}
+
+
+/* =========================
+   CYBERPUNK STREET
+========================= */
+
+function drawCyberpunkStreet() {
+
+    /* deep city background */
+
+    ctx.fillStyle =
+        "#05070d";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* distant skyscrapers */
+
+    for (
+        let i = 0;
+        i < 18;
+        i++
+    ) {
+
+        const bx =
+            i * 110 - 20 - camera.x * .25;
+
+        const bw =
+            80 + (i % 4) * 25;
+
+        const bh =
+            300 + (i % 5) * 80;
+
+        ctx.fillStyle =
+            i % 2 === 0
+                ? "#101522"
+                : "#0b101b";
+
+        ctx.fillRect(
+            bx,
+            330 - bh,
+            bw,
+            bh
+        );
+
+
+        /* windows */
+
+        for (
+            let wy = 350 - bh;
+            wy < 320;
+            wy += 34
+        ) {
+
+            for (
+                let wx = bx + 14;
+                wx < bx + bw - 10;
+                wx += 25
+            ) {
+
+                if (
+                    (wx + wy + i) % 5 <
+                    2
+                ) {
+
+                    ctx.fillStyle =
+                        "#1e3a4c";
+
+                    ctx.fillRect(
+                        wx,
+                        wy,
+                        8,
+                        12
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /* giant government tower */
+
+    ctx.fillStyle =
+        "#080d17";
+
+    ctx.fillRect(
+        690 - camera.x * .35,
+        -100,
+        420,
+        530
+    );
+
+
+    ctx.fillStyle =
+        "#111827";
+
+    ctx.fillRect(
+        730 - camera.x * .35,
+        -100,
+        340,
+        530
+    );
+
+
+    /* government symbol */
+
+    ctx.fillStyle =
+        "#334155";
+
+    ctx.fillRect(
+        835 - camera.x * .35,
+        30,
+        130,
+        65
+    );
+
+
+    ctx.fillStyle =
+        "#facc15";
+
+    ctx.font =
+        "16px monospace";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        "CIVIC",
+        900 - camera.x * .35,
+        57
+    );
+
+    ctx.fillText(
+        "ECONOMIC AUTHORITY",
+        900 - camera.x * .35,
+        78
+    );
+
+    ctx.textAlign =
+        "left";
+
+
+    /* street */
+
+    ctx.fillStyle =
+        "#171b24";
+
+    ctx.fillRect(
+        0,
+        400 - camera.y,
+        world.width,
+        330
+    );
+
+
+    /* wet road */
+
+    ctx.fillStyle =
+        "#0f141d";
+
+    ctx.fillRect(
+        0,
+        470 - camera.y,
+        world.width,
+        230
+    );
+
+
+    /* road reflection strips */
+
+    for (
+        let x = 0;
+        x < world.width;
+        x += 130
+    ) {
+
+        ctx.fillStyle =
+            "#1d3340";
+
+        ctx.fillRect(
+            x - camera.x,
+            560 - camera.y,
+            80,
+            3
+        );
+
+    }
+
+
+    /* sidewalks */
+
+    ctx.fillStyle =
+        "#272d38";
+
+    ctx.fillRect(
+        0,
+        400 - camera.y,
+        world.width,
+        65
+    );
+
+    ctx.fillRect(
+        0,
+        700 - camera.y,
+        world.width,
         70
     );
 
+
+    /* neon reflections */
+
+    for (
+        let i = 0;
+        i < 25;
+        i++
+    ) {
+
+        const x =
+            (i * 191) % world.width;
+
+        ctx.fillStyle =
+            i % 2 === 0
+                ? "#164e63"
+                : "#3f2d0d";
+
+        ctx.fillRect(
+            x - camera.x,
+            600 - camera.y,
+            45,
+            4
+        );
+
+    }
+
+
+    /* STORE */
+
+    drawCyberBuilding(
+        80,
+        150,
+        450,
+        250,
+        "#0f172a",
+        "GENERAL STORE",
+        "ESSENTIALS ONLY"
+    );
+
+
+    /* TRAIN */
+
+    drawCyberBuilding(
+        1240,
+        100,
+        480,
+        300,
+        "#111827",
+        "CENTRAL TRANSIT",
+        "AUTHORIZED TRAVEL"
+    );
+
+
+    /* COUNTRY EXIT */
+
+    drawCyberBuilding(
+        1180,
+        800,
+        500,
+        190,
+        "#0b1218",
+        "OUTER CITY",
+        "SERVICE ROUTE"
+    );
+
+
+    /* HOME */
+
+    drawCyberBuilding(
+        70,
+        790,
+        440,
+        180,
+        "#111827",
+        "RESIDENTIAL",
+        "UNIT 14-B"
+    );
+
+
+    /* propaganda signs */
+
+    drawNeonSign(
+        570,
+        190,
+        260,
+        75,
+        "NON-ESSENTIAL",
+        "GOODS ARE WASTEFUL"
+    );
+
+
+    drawNeonSign(
+        900,
+        460,
+        330,
+        70,
+        "SAVE MONEY",
+        "BUY ONLY WHAT MATTERS"
+    );
+
+
+    /* street lamps */
+
+    for (
+        let x = 40;
+        x < world.width;
+        x += 220
+    ) {
+
+        drawLamp(
+            x,
+            385
+        );
+
+    }
+
+
+    /* rain */
+
+    ctx.strokeStyle =
+        "rgba(150,190,220,.16)";
+
+    ctx.lineWidth = 1;
+
+    for (
+        let i = 0;
+        i < 100;
+        i++
+    ) {
+
+        const x =
+            (i * 137) % W;
+
+        const y =
+            (i * 79) % H;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            y
+        );
+
+        ctx.lineTo(
+            x - 5,
+            y + 18
+        );
+
+        ctx.stroke();
+
+    }
+
+}
+
+
+/* =========================
+   CYBER BUILDING
+========================= */
+
+function drawCyberBuilding(
+    x,
+    y,
+    width,
+    height,
+    base,
+    title,
+    subtitle
+) {
+
+    ctx.fillStyle =
+        base;
+
+    ctx.fillRect(
+        x - camera.x,
+        y - camera.y,
+        width,
+        height
+    );
+
+
+    ctx.strokeStyle =
+        "#334155";
+
+    ctx.lineWidth =
+        3;
+
+    ctx.strokeRect(
+        x - camera.x,
+        y - camera.y,
+        width,
+        height
+    );
+
+
+    /* windows */
+
+    for (
+        let wx = x + 25;
+        wx < x + width - 25;
+        wx += 45
+    ) {
+
+        for (
+            let wy = y + 25;
+            wy < y + 100;
+            wy += 30
+        ) {
+
+            ctx.fillStyle =
+                "#182b39";
+
+            ctx.fillRect(
+                wx - camera.x,
+                wy - camera.y,
+                25,
+                12
+            );
+
+        }
+
+    }
+
+
+    /* entrance */
+
+    ctx.fillStyle =
+        "#020617";
+
+    ctx.fillRect(
+        x + width / 2 - 55 - camera.x,
+        y + height - 105 - camera.y,
+        110,
+        105
+    );
+
+
+    /* sign */
+
+    ctx.fillStyle =
+        "#111827";
+
+    ctx.fillRect(
+        x + 35 - camera.x,
+        y + 120 - camera.y,
+        width - 70,
+        70
+    );
+
+
+    ctx.strokeStyle =
+        "#38bdf8";
+
+    ctx.strokeRect(
+        x + 35 - camera.x,
+        y + 120 - camera.y,
+        width - 70,
+        70
+    );
+
+
+    ctx.fillStyle =
+        "#e2e8f0";
+
+    ctx.font =
+        "20px monospace";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        title,
+        x + width / 2 - camera.x,
+        y + 148 - camera.y
+    );
+
+
+    ctx.fillStyle =
+        "#94a3b8";
+
+    ctx.font =
+        "13px monospace";
+
+    ctx.fillText(
+        subtitle,
+        x + width / 2 - camera.x,
+        y + 172 - camera.y
+    );
+
+    ctx.textAlign =
+        "left";
+
+}
+
+
+/* =========================
+   NEON SIGN
+========================= */
+
+function drawNeonSign(
+    x,
+    y,
+    width,
+    height,
+    line1,
+    line2
+) {
+
+    ctx.fillStyle =
+        "#080b12";
+
+    ctx.fillRect(
+        x - camera.x,
+        y - camera.y,
+        width,
+        height
+    );
+
+
+    ctx.strokeStyle =
+        "#0ea5e9";
+
+    ctx.lineWidth =
+        3;
+
+    ctx.strokeRect(
+        x - camera.x,
+        y - camera.y,
+        width,
+        height
+    );
+
+
+    ctx.fillStyle =
+        "#38bdf8";
+
+    ctx.font =
+        "18px monospace";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        line1,
+        x + width / 2 - camera.x,
+        y + 29 - camera.y
+    );
+
+
+    ctx.fillStyle =
+        "#f8fafc";
+
+    ctx.font =
+        "12px monospace";
+
+    ctx.fillText(
+        line2,
+        x + width / 2 - camera.x,
+        y + 50 - camera.y
+    );
+
+    ctx.textAlign =
+        "left";
+
+}
+
+
+/* =========================
+   STREET LAMP
+========================= */
+
+function drawLamp(x,y) {
+
+    ctx.fillStyle =
+        "#202938";
+
+    ctx.fillRect(
+        x - camera.x,
+        y - camera.y,
+        8,
+        90
+    );
+
+
+    ctx.fillStyle =
+        "#facc15";
+
+    ctx.fillRect(
+        x - 7 - camera.x,
+        y - 5 - camera.y,
+        22,
+        12
+    );
+
+}
+
+
+/* =========================
+   STORE INTERIOR
+========================= */
+
+function drawStoreInterior() {
+
+    ctx.fillStyle =
+        "#17120f";
+
     ctx.fillRect(
         0,
         0,
-        70,
+        W,
+        H
+    );
+
+
+    /* walls */
+
+    ctx.fillStyle =
+        "#30251e";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        75
+    );
+
+
+    ctx.fillRect(
+        0,
+        0,
+        65,
         H
     );
 
     ctx.fillRect(
-        W - 70,
+        W - 65,
         0,
-        70,
+        65,
         H
     );
+
+
+    /* fluorescent lights */
+
+    for (
+        let x = 100;
+        x < W - 100;
+        x += 250
+    ) {
+
+        ctx.fillStyle =
+            "#e2e8f0";
+
+        ctx.fillRect(
+            x,
+            25,
+            150,
+            8
+        );
+
+    }
 
 
     /* shelves */
 
-    drawShelf(150, 150);
-    drawShelf(430, 150);
-    drawShelf(710, 150);
+    drawShelf(120,150);
+    drawShelf(390,150);
+    drawShelf(660,150);
 
-    drawShelf(150, 420);
-    drawShelf(430, 420);
-    drawShelf(710, 420);
+    drawShelf(120,430);
+    drawShelf(390,430);
+    drawShelf(660,430);
 
 
     /* counter */
 
-    ctx.fillStyle = "#713f12";
+    ctx.fillStyle =
+        "#4a2f1c";
 
     ctx.fillRect(
         W - 350,
@@ -1502,8 +2072,6 @@ function drawStoreInterior() {
     );
 
 
-    /* shopkeeper */
-
     drawShopkeeper(
         W - 235,
         H - 270
@@ -1512,28 +2080,34 @@ function drawStoreInterior() {
 
     /* sign */
 
-    ctx.fillStyle = "#fef3c7";
+    ctx.fillStyle =
+        "#fef3c7";
 
     ctx.fillRect(
-        W / 2 - 160,
-        80,
-        320,
+        W / 2 - 170,
+        90,
+        340,
         55
     );
 
-    ctx.fillStyle = "#111827";
 
-    ctx.font = "25px monospace";
+    ctx.fillStyle =
+        "#111827";
 
-    ctx.textAlign = "center";
+    ctx.font =
+        "24px monospace";
+
+    ctx.textAlign =
+        "center";
 
     ctx.fillText(
-        "GENERAL STORE",
+        "ESSENTIAL GOODS",
         W / 2,
-        116
+        125
     );
 
-    ctx.textAlign = "left";
+    ctx.textAlign =
+        "left";
 
 }
 
@@ -1542,9 +2116,10 @@ function drawStoreInterior() {
    SHELF
 ========================= */
 
-function drawShelf(x, y) {
+function drawShelf(x,y) {
 
-    ctx.fillStyle = "#78350f";
+    ctx.fillStyle =
+        "#5b371f";
 
     ctx.fillRect(
         x,
@@ -1568,15 +2143,14 @@ function drawShelf(x, y) {
     );
 
 
-    /* products */
-
     const products = [
-        "#ef4444",
-        "#22c55e",
-        "#3b82f6",
-        "#eab308",
-        "#a855f7"
+        "#64748b",
+        "#475569",
+        "#78716c",
+        "#52525b",
+        "#57534e"
     ];
+
 
     for (
         let i = 0;
@@ -1617,9 +2191,10 @@ function drawShelf(x, y) {
    SHOPKEEPER
 ========================= */
 
-function drawShopkeeper(x, y) {
+function drawShopkeeper(x,y) {
 
-    ctx.fillStyle = "#1e293b";
+    ctx.fillStyle =
+        "#1e293b";
 
     ctx.fillRect(
         x - 17,
@@ -1629,7 +2204,8 @@ function drawShopkeeper(x, y) {
     );
 
 
-    ctx.fillStyle = "#d39b72";
+    ctx.fillStyle =
+        "#d39b72";
 
     ctx.fillRect(
         x - 15,
@@ -1639,7 +2215,8 @@ function drawShopkeeper(x, y) {
     );
 
 
-    ctx.fillStyle = "#111827";
+    ctx.fillStyle =
+        "#111827";
 
     ctx.fillRect(
         x - 18,
@@ -1649,11 +2226,14 @@ function drawShopkeeper(x, y) {
     );
 
 
-    ctx.fillStyle = "#f8fafc";
+    ctx.fillStyle =
+        "#f8fafc";
 
-    ctx.font = "16px monospace";
+    ctx.font =
+        "16px monospace";
 
-    ctx.textAlign = "center";
+    ctx.textAlign =
+        "center";
 
     ctx.fillText(
         "SHOPKEEPER",
@@ -1661,7 +2241,8 @@ function drawShopkeeper(x, y) {
         y + 80
     );
 
-    ctx.textAlign = "left";
+    ctx.textAlign =
+        "left";
 
 }
 
@@ -1672,7 +2253,8 @@ function drawShopkeeper(x, y) {
 
 function drawTrainStation() {
 
-    ctx.fillStyle = "#334155";
+    ctx.fillStyle =
+        "#080c14";
 
     ctx.fillRect(
         0,
@@ -1682,39 +2264,81 @@ function drawTrainStation() {
     );
 
 
-    ctx.fillStyle = "#64748b";
+    /* huge windows */
+
+    for (
+        let x = 80;
+        x < W - 80;
+        x += 230
+    ) {
+
+        ctx.fillStyle =
+            "#0b1824";
+
+        ctx.fillRect(
+            x,
+            100,
+            180,
+            260
+        );
+
+    }
+
+
+    /* platform */
+
+    ctx.fillStyle =
+        "#252b35";
 
     ctx.fillRect(
-        80,
-        120,
-        W - 160,
-        100
+        0,
+        H - 220,
+        W,
+        120
     );
 
 
-    ctx.fillStyle = "#1e293b";
+    /* tracks */
+
+    ctx.fillStyle =
+        "#0a0d12";
 
     ctx.fillRect(
-        80,
-        H - 180,
-        W - 160,
-        100
+        0,
+        H - 80,
+        W,
+        50
     );
 
 
-    ctx.fillStyle = "#f8fafc";
+    ctx.fillStyle =
+        "#94a3b8";
 
-    ctx.font = "30px monospace";
+    ctx.fillRect(
+        0,
+        H - 65,
+        W,
+        5
+    );
 
-    ctx.textAlign = "center";
+
+    ctx.fillStyle =
+        "#f8fafc";
+
+    ctx.font =
+        "30px monospace";
+
+    ctx.textAlign =
+        "center";
 
     ctx.fillText(
-        "NATIONAL TRANSIT",
+        "CENTRAL TRANSIT",
         W / 2,
-        180
+        70
     );
 
-    ctx.textAlign = "left";
+    ctx.textAlign =
+        "left";
 
 }
 
@@ -1725,7 +2349,8 @@ function drawTrainStation() {
 
 function drawCountryside() {
 
-    ctx.fillStyle = "#5f8f4f";
+    ctx.fillStyle =
+        "#283b2b";
 
     ctx.fillRect(
         0,
@@ -1735,29 +2360,43 @@ function drawCountryside() {
     );
 
 
-    /* path */
+    /* dark storm clouds */
 
-    ctx.fillStyle = "#c2a878";
+    ctx.fillStyle =
+        "#18202b";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        170
+    );
+
+
+    /* road */
+
+    ctx.fillStyle =
+        "#8b7354";
 
     ctx.beginPath();
 
     ctx.moveTo(
-        W / 2 - 120,
+        W / 2 - 130,
         H
     );
 
     ctx.lineTo(
-        W / 2 + 120,
+        W / 2 + 130,
         H
     );
 
     ctx.lineTo(
-        W / 2 + 40,
+        W / 2 + 35,
         0
     );
 
     ctx.lineTo(
-        W / 2 - 40,
+        W / 2 - 35,
         0
     );
 
@@ -1770,7 +2409,7 @@ function drawCountryside() {
 
     for (
         let i = 0;
-        i < 20;
+        i < 25;
         i++
     ) {
 
@@ -1778,25 +2417,61 @@ function drawCountryside() {
             (i * 173) % W;
 
         const y =
-            (i * 91) % H;
+            180 + (i * 91) % 500;
 
-        ctx.fillStyle = "#365314";
+        ctx.fillStyle =
+            "#16251a";
 
         ctx.fillRect(
             x,
             y,
             25,
-            45
+            55
         );
 
-        ctx.fillStyle = "#166534";
+        ctx.fillStyle =
+            "#1d4d2a";
 
         ctx.fillRect(
-            x - 15,
+            x - 18,
             y - 25,
-            55,
+            60,
             45
         );
+
+    }
+
+
+    /* rain */
+
+    ctx.strokeStyle =
+        "rgba(190,210,220,.25)";
+
+    for (
+        let i = 0;
+        i < 100;
+        i++
+    ) {
+
+        const x =
+            (i * 139) % W;
+
+        const y =
+            (i * 71) % H;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            y
+        );
+
+        ctx.lineTo(
+            x - 6,
+            y + 20
+        );
+
+        ctx.stroke();
 
     }
 
@@ -1811,15 +2486,11 @@ function interact() {
 
     if (scene === "street") {
 
-        /*
-            STORE ENTRANCE
-        */
-
         if (
-            player.x > 100 &&
+            player.x > 80 &&
             player.x < 530 &&
-            player.y > 160 &&
-            player.y < 380
+            player.y > 150 &&
+            player.y < 400
         ) {
 
             enterStore();
@@ -1829,15 +2500,11 @@ function interact() {
         }
 
 
-        /*
-            TRAIN
-        */
-
         if (
             player.x > 1240 &&
-            player.x < 1660 &&
+            player.x < 1720 &&
             player.y > 100 &&
-            player.y < 320
+            player.y < 400
         ) {
 
             enterTrain();
@@ -1847,15 +2514,11 @@ function interact() {
         }
 
 
-        /*
-            COUNTRY
-        */
-
         if (
-            player.x > 1200 &&
-            player.x < 1650 &&
-            player.y > 780 &&
-            player.y < 990
+            player.x > 1180 &&
+            player.x < 1680 &&
+            player.y > 800 &&
+            player.y < 1000
         ) {
 
             enterHike();
@@ -1895,11 +2558,11 @@ function enterStore() {
 
     scene = "store";
 
-    player.x = 300;
-    player.y = 700;
+    player.x = W / 2;
+    player.y = H - 130;
 
     updateObjective(
-        "Explore the store."
+        "Enter the general store."
     );
 
 }
@@ -1923,7 +2586,7 @@ function closeStore() {
 }
 
 
-function buyItem(name, cost) {
+function buyItem(name,cost) {
 
     if (money < cost) {
 
@@ -1948,8 +2611,12 @@ function leaveStore() {
 
     scene = "street";
 
-    player.x = 550;
-    player.y = 270;
+    player.x = 555;
+    player.y = 275;
+
+    updateObjective(
+        "Find a way to get the cake ingredients."
+    );
 
 }
 
@@ -1962,11 +2629,11 @@ function enterTrain() {
 
     scene = "train";
 
-    player.x = 300;
-    player.y = 650;
+    player.x = W / 2;
+    player.y = H - 130;
 
     updateObjective(
-        "Buy a train ticket or leave."
+        "Check the train fare."
     );
 
 }
@@ -2013,7 +2680,7 @@ function takeTrain() {
     scene = "street";
 
     updateObjective(
-        "You made it to the neighbouring city."
+        "You reached the neighbouring city."
     );
 
 }
@@ -2031,7 +2698,7 @@ function enterHike() {
     player.y = H - 100;
 
     updateObjective(
-        "Start the hike."
+        "Check the countryside route."
     );
 
 }
@@ -2101,9 +2768,9 @@ function formatTime(minutes) {
         minutes % 60;
 
     return (
-        String(h).padStart(2, "0") +
+        String(h).padStart(2,"0") +
         ":" +
-        String(m).padStart(2, "0")
+        String(m).padStart(2,"0")
     );
 
 }
@@ -2168,7 +2835,7 @@ function draw() {
 
 
 /* =========================
-   INTERACTION PROMPT
+   PROMPT
 ========================= */
 
 function updateInteractionPrompt() {
@@ -2188,7 +2855,7 @@ function updateInteractionPrompt() {
             player.x > 70 &&
             player.x < 560 &&
             player.y > 120 &&
-            player.y < 420
+            player.y < 430
         ) {
 
             visible = true;
@@ -2197,9 +2864,9 @@ function updateInteractionPrompt() {
 
         if (
             player.x > 1200 &&
-            player.x < 1690 &&
+            player.x < 1740 &&
             player.y > 60 &&
-            player.y < 360
+            player.y < 430
         ) {
 
             visible = true;
@@ -2207,10 +2874,10 @@ function updateInteractionPrompt() {
         }
 
         if (
-            player.x > 1170 &&
-            player.x < 1690 &&
-            player.y > 740 &&
-            player.y < 1020
+            player.x > 1140 &&
+            player.x < 1720 &&
+            player.y > 750 &&
+            player.y < 1030
         ) {
 
             visible = true;
@@ -2238,14 +2905,15 @@ function updateInteractionPrompt() {
 
 
 /* =========================
-   START GAME
+   START
 ========================= */
 
 function startGame() {
 
     document.getElementById(
         "start"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
     resetPlayer();
 
@@ -2253,7 +2921,8 @@ function startGame() {
 
     money = 23;
 
-    timeMinutes = 8 * 60;
+    timeMinutes =
+        8 * 60;
 
     inventory = [];
 
@@ -2266,17 +2935,11 @@ function startGame() {
 
     startDialogue();
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(
+        loop
+    );
 
 }
-
-
-document.getElementById(
-    "start"
-).addEventListener(
-    "click",
-    startGame
-);
 
 
 /* =========================
